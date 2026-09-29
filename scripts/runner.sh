@@ -25,6 +25,7 @@ WORK_REPO="${WORK_REPO:-$HOME/venulo}"          # the app repo agents work in
 POLL_INTERVAL="${POLL_INTERVAL:-300}"           # seconds between polls; 0 = single pass
 ENABLED_AGENTS="${ENABLED_AGENTS:-claude-code,codex}"
 CODEX_MODEL="${CODEX_MODEL:-}"                  # e.g. gpt-5-mini; empty = codex default
+PYTHON_BIN="${PYTHON_BIN:-}"                  # python3 preferred; python fallback on Windows
 MAX_ATTEMPTS=2
 XP_PER_BRIEF=100
 # ------------------------------------------------------------
@@ -122,7 +123,7 @@ run_agent() {
 # Parses agent output for token usage, appends to status/tokens.jsonl.
 record_usage() {
   local owner="$1" brief_id="$2" outdir="$3" rc="$4"
-  python3 - "$owner" "$brief_id" "$outdir" "$rc" "$SWARM_REPO" <<'PYEOF'
+  "$PYTHON_BIN" - "$owner" "$brief_id" "$outdir" "$rc" "$SWARM_REPO" <<'PYEOF'
 import json, os, sys, datetime
 owner, brief_id, outdir, rc, swarm = sys.argv[1:6]
 entry = {
@@ -155,7 +156,7 @@ PYEOF
 # write_dashboard <current_working_id> — regenerates status/dashboard.json
 write_dashboard() {
   local working_id="${1:-}"
-  python3 - "$SWARM_REPO" "$working_id" "$XP_PER_BRIEF" <<'PYEOF'
+  "$PYTHON_BIN" - "$SWARM_REPO" "$working_id" "$XP_PER_BRIEF" <<'PYEOF'
 import json, os, sys, datetime, glob, re
 swarm, working_id, xp_per = sys.argv[1], sys.argv[2] or None, int(sys.argv[3])
 
@@ -341,7 +342,17 @@ EOF
 [ -d "$WORK_REPO/.git" ] || { log "ERROR: work repo not found at $WORK_REPO"; exit 1; }
 command -v claude >/dev/null || log "WARN: 'claude' CLI not found on PATH"
 command -v codex >/dev/null || log "WARN: 'codex' CLI not found on PATH"
-command -v python3 >/dev/null || { log "ERROR: python3 required for telemetry"; exit 1; }
+if [ -z "$PYTHON_BIN" ]; then
+  if command -v python3 >/dev/null; then
+    PYTHON_BIN=python3
+  elif command -v python >/dev/null; then
+    PYTHON_BIN=python
+  else
+    log "ERROR: Python 3 required for telemetry"
+    exit 1
+  fi
+fi
+command -v "$PYTHON_BIN" >/dev/null || { log "ERROR: configured Python command not found: $PYTHON_BIN"; exit 1; }
 
 log "swarm runner starting (poll every ${POLL_INTERVAL}s; agents: $ENABLED_AGENTS)"
 if [ "$POLL_INTERVAL" -le 0 ]; then

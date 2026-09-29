@@ -1,0 +1,40 @@
+{
+  "updated": "2026-09-29T23:25:33.136129+00:00",
+  "agents": {
+    "runner": {
+      "state": "online"
+    },
+    "claude-code": {
+      "state": "standby",
+      "current_brief": null,
+      "current_title": null
+    },
+    "codex": {
+      "state": "standby",
+      "current_brief": null,
+      "current_title": null
+    },
+    "soup": {
+      "state": "standby",
+      "note": "reviewer job enriches this"
+    }
+  },
+  "briefs": [
+    {
+      "id": "2026-09-29-example-add-health-endpoint",
+      "title": "EXAMPLE: Add a /health endpoint (do not run)",
+      "owner": "claude-code",
+      "status": "open",
+      "budget": "cheap",
+      "priority": "low"
+    }
+  ],
+  "tokens_today": {},
+  "stats": {
+    "done_total": 0,
+    "open": 1,
+    "claimed": 0,
+    "needs_human": 0,
+    "xp": 0
+  }
+}
