@@ -335,6 +335,7 @@ EOF
 
   heartbeat "polling" "idle"
   write_dashboard ""
+  push_swarm "runner: heartbeat"
 }
 
 # ---------------- main ----------------
