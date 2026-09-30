@@ -2,7 +2,7 @@
 id: 2026-09-29-actionable-upload-errors
 title: Show actionable upload errors; fix premature job-failed state (G4)
 owner: codex
-status: claimed
+status: done
 repo: venulo
 branch: swarm/2026-09-29-actionable-upload-errors
 created: 2026-09-29

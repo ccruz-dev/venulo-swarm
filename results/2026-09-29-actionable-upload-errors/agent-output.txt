@@ -1,5 +1,10 @@
-The required prior-run file, `results/2026-09-29-actionable-upload-errors/agent-output.txt`, is empty (0 bytes), so the five mapped drop points are unavailable. Per your instructions, I stopped without re-deriving them.
+Implemented on `swarm/2026-09-29-actionable-upload-errors`.
 
-Confirmed the correct branch. No files changed or tests run. Restore the findings file to unblock this task.
+- Specific CSV errors reach the UI, including missing Date columns.
+- Pending retries show `retrying`; invalid files fail immediately without retries.
+- Failure emails are sent at most once, including duplicate job delivery.
+- All 59 test suites passed; additional UI error tests passed.
 
-SWARM_STATUS: needs-human: Required prior-run findings file is empty.
+The diagnosis matched the code. No deployment or real emails were sent. Changes remain uncommitted.
+
+SWARM_STATUS: done
