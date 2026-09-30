@@ -32,7 +32,7 @@ MAX_ATTEMPTS=2
 # an attempt; it waits. After this many hits (~3h of 5-minute polls) a person
 # is asked to look.
 MAX_QUOTA_HITS="${MAX_QUOTA_HITS:-36}"
-QUOTA_PATTERN='usage limit|rate_limit_error|rate limit exceeded|rate limit reached|API Error: 429|429 Too Many Requests|overloaded_error|quota exceeded|insufficient_quota|try again (later|at [0-9])'
+QUOTA_PATTERN='(usage|session) limit|limit[^.]{0,12}resets [0-9]|rate_limit_error|rate limit exceeded|rate limit reached|API Error: 429|429 Too Many Requests|overloaded_error|quota exceeded|insufficient_quota|try again (later|at [0-9])'
 XP_PER_BRIEF=100
 
 # Headless agents cannot answer permission prompts, so anything not granted
@@ -162,7 +162,9 @@ is_quota_hit() { # <outdir> <brief file>
     "$PYTHON_BIN" - "$outdir/agent-raw.json" "$QUOTA_PATTERN" <<'PYEOF' && return 0
 import json, re, sys
 try:
-    r = json.load(open(sys.argv[1], encoding="utf-8"))
+    # errors="replace": one stray non-UTF-8 byte must not turn a quota hit
+    # into a "real failure" that burns attempts.
+    r = json.load(open(sys.argv[1], encoding="utf-8", errors="replace"))
 except Exception:
     sys.exit(1)
 text = r.get("result") if isinstance(r.get("result"), str) else ""
@@ -236,9 +238,12 @@ entry = {
 }
 if owner == "claude-code":
     try:
-        raw = json.load(open(os.path.join(outdir, "agent-raw.json")))
+        # Explicit UTF-8 both ways: Windows defaults to cp1252, which cannot encode
+        # characters agents routinely write (→ ✓), so agent-output.txt came out
+        # missing or truncated and the SWARM_STATUS line with it.
+        raw = json.load(open(os.path.join(outdir, "agent-raw.json"), encoding="utf-8", errors="replace"))
         text = raw.get("result", "")
-        with open(os.path.join(outdir, "agent-output.txt"), "w") as f:
+        with open(os.path.join(outdir, "agent-output.txt"), "w", encoding="utf-8") as f:
             f.write(text if isinstance(text, str) else json.dumps(text))
         usage = raw.get("usage") or {}
         entry["input_tokens"] = usage.get("input_tokens")
