@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T03:57:38.901525+00:00",
+  "updated": "2026-09-30T04:00:48.622802+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -24,7 +24,7 @@
       "id": "2026-09-29-actionable-upload-errors",
       "title": "Show actionable upload errors; fix premature job-failed state (G4)",
       "owner": "claude-code",
-      "status": "done",
+      "status": "open",
       "budget": "standard",
       "priority": "normal"
     },
@@ -40,7 +40,7 @@
       "id": "2026-09-29-ecc-evaluation",
       "title": "Evaluate Everything Claude Code for swarm integration",
       "owner": "claude-code",
-      "status": "done",
+      "status": "open",
       "budget": "cheap",
       "priority": "normal"
     },
@@ -56,7 +56,7 @@
       "id": "2026-09-29-fix-dev-setup-docs",
       "title": "Fix dev setup and docs (env examples, README, seed guard, benchmarks)",
       "owner": "claude-code",
-      "status": "done",
+      "status": "open",
       "budget": "standard",
       "priority": "normal"
     },
@@ -64,7 +64,7 @@
       "id": "2026-09-29-fix-paid-signup-handoff",
       "title": "Fix the paid-signup handoff (G1, G3)",
       "owner": "claude-code",
-      "status": "done",
+      "status": "open",
       "budget": "standard",
       "priority": "high"
     },
@@ -72,15 +72,23 @@
       "id": "2026-09-29-report-calibration-backfill",
       "title": "Snapshot report calibration; allow history backfill for new locations (G5, G6)",
       "owner": "claude-code",
-      "status": "done",
+      "status": "open",
       "budget": "standard",
       "priority": "normal"
+    },
+    {
+      "id": "2026-09-29-security-tenant-qa",
+      "title": "Tenant-isolation and auth-boundary QA probe (local app)",
+      "owner": "codex",
+      "status": "open",
+      "budget": "standard",
+      "priority": "high"
     },
     {
       "id": "2026-09-29-stripe-webhook-safety",
       "title": "Make the Stripe webhook safe (G2)",
       "owner": "claude-code",
-      "status": "done",
+      "status": "open",
       "budget": "standard",
       "priority": "high"
     },
@@ -88,7 +96,7 @@
       "id": "2026-09-29-venulo-qa-pass",
       "title": "End-to-end QA pass on Venulo \u00e2\u20ac\u201d find logic and UI bugs",
       "owner": "claude-code",
-      "status": "done",
+      "status": "open",
       "budget": "standard",
       "priority": "high"
     },
@@ -116,10 +124,10 @@
     }
   },
   "stats": {
-    "done_total": 8,
-    "open": 2,
+    "done_total": 1,
+    "open": 10,
     "claimed": 0,
     "needs_human": 0,
-    "xp": 800
+    "xp": 100
   }
 }

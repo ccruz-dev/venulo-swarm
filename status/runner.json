@@ -1,6 +1,6 @@
 {
   "agent": "runner",
-  "ts": "2026-09-30T03:57:38Z",
+  "ts": "2026-09-30T04:00:48Z",
   "state": "polling",
-  "detail": "idle"
+  "detail": "looking for open briefs"
 }
