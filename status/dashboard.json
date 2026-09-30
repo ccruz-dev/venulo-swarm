@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T00:20:32.383396+00:00",
+  "updated": "2026-09-30T00:29:37.051005+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -21,18 +21,50 @@
   },
   "briefs": [
     {
+      "id": "2026-09-29-business-repo-research",
+      "title": "Research public repos for Venulo business patterns",
+      "owner": "soup",
+      "status": "open",
+      "budget": "cheap",
+      "priority": "normal"
+    },
+    {
+      "id": "2026-09-29-ecc-evaluation",
+      "title": "Evaluate Everything Claude Code for swarm integration",
+      "owner": "codex",
+      "status": "open",
+      "budget": "cheap",
+      "priority": "normal"
+    },
+    {
       "id": "2026-09-29-example-add-health-endpoint",
       "title": "EXAMPLE: Add a /health endpoint (do not run)",
       "owner": "claude-code",
       "status": "open",
       "budget": "cheap",
       "priority": "low"
+    },
+    {
+      "id": "2026-09-29-venulo-qa-pass",
+      "title": "End-to-end QA pass on Venulo \u00e2\u20ac\u201d find logic and UI bugs",
+      "owner": "codex",
+      "status": "open",
+      "budget": "standard",
+      "priority": "high"
+    },
+    {
+      "id": "2026-09-29-venulo-repo-audit",
+      "title": "Audit the Venulo app repo and propose the next build briefs",
+      "owner": "claude-code",
+      "status": "open",
+      "budget": "standard",
+      "priority": "high"
     }
   ],
   "tokens_today": {},
   "stats": {
     "done_total": 0,
-    "open": 1,
+    "open": 5,
     "claimed": 0,
     "needs_human": 0,
     "xp": 0
