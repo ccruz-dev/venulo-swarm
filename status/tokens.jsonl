@@ -14,3 +14,4 @@
 {"ts": "2026-09-30T05:01:07.401056+00:00", "brief": "2026-09-29-actionable-upload-errors", "owner": "codex", "exit": 0, "input_tokens": null, "output_tokens": null, "model": null}
 {"ts": "2026-09-30T05:02:48.361221+00:00", "brief": "2026-09-29-ecc-evaluation", "owner": "codex", "exit": 0, "input_tokens": null, "output_tokens": null, "model": null}
 {"ts": "2026-09-30T05:06:10.394258+00:00", "brief": "2026-09-29-fix-paid-signup-handoff", "owner": "claude-code", "exit": 1, "input_tokens": 22, "output_tokens": 5684, "model": null}
+{"ts": "2026-09-30T05:06:17.583579+00:00", "brief": "2026-09-29-report-calibration-backfill", "owner": "claude-code", "exit": 1, "input_tokens": 0, "output_tokens": 0, "model": null}
