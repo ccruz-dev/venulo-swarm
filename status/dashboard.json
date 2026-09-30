@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T01:30:57.251492+00:00",
+  "updated": "2026-09-30T01:36:01.157436+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -21,6 +21,14 @@
   },
   "briefs": [
     {
+      "id": "2026-09-29-actionable-upload-errors",
+      "title": "Show actionable upload errors; fix premature job-failed state (G4)",
+      "owner": "claude-code",
+      "status": "open",
+      "budget": "standard",
+      "priority": "normal"
+    },
+    {
       "id": "2026-09-29-business-repo-research",
       "title": "Research public repos for Venulo business patterns",
       "owner": "soup",
@@ -31,8 +39,8 @@
     {
       "id": "2026-09-29-ecc-evaluation",
       "title": "Evaluate Everything Claude Code for swarm integration",
-      "owner": "codex",
-      "status": "needs-human",
+      "owner": "claude-code",
+      "status": "open",
       "budget": "cheap",
       "priority": "normal"
     },
@@ -45,10 +53,42 @@
       "priority": "low"
     },
     {
+      "id": "2026-09-29-fix-dev-setup-docs",
+      "title": "Fix dev setup and docs (env examples, README, seed guard, benchmarks)",
+      "owner": "claude-code",
+      "status": "open",
+      "budget": "standard",
+      "priority": "normal"
+    },
+    {
+      "id": "2026-09-29-fix-paid-signup-handoff",
+      "title": "Fix the paid-signup handoff (G1, G3)",
+      "owner": "claude-code",
+      "status": "open",
+      "budget": "standard",
+      "priority": "high"
+    },
+    {
+      "id": "2026-09-29-report-calibration-backfill",
+      "title": "Snapshot report calibration; allow history backfill for new locations (G5, G6)",
+      "owner": "claude-code",
+      "status": "open",
+      "budget": "standard",
+      "priority": "normal"
+    },
+    {
+      "id": "2026-09-29-stripe-webhook-safety",
+      "title": "Make the Stripe webhook safe (G2)",
+      "owner": "claude-code",
+      "status": "open",
+      "budget": "standard",
+      "priority": "high"
+    },
+    {
       "id": "2026-09-29-venulo-qa-pass",
       "title": "End-to-end QA pass on Venulo \u00e2\u20ac\u201d find logic and UI bugs",
-      "owner": "codex",
-      "status": "needs-human",
+      "owner": "claude-code",
+      "status": "open",
       "budget": "standard",
       "priority": "high"
     },
@@ -77,9 +117,9 @@
   },
   "stats": {
     "done_total": 1,
-    "open": 2,
+    "open": 9,
     "claimed": 0,
-    "needs_human": 2,
+    "needs_human": 0,
     "xp": 100
   }
 }
