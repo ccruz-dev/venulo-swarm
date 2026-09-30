@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T05:00:38.038870+00:00",
+  "updated": "2026-09-30T05:01:08.131850+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -24,7 +24,7 @@
       "id": "2026-09-29-actionable-upload-errors",
       "title": "Show actionable upload errors; fix premature job-failed state (G4)",
       "owner": "codex",
-      "status": "open",
+      "status": "needs-human",
       "budget": "standard",
       "priority": "normal"
     },
@@ -113,8 +113,8 @@
     "codex": {
       "input": 0,
       "output": 0,
-      "runs": 4,
-      "unknown": 4
+      "runs": 5,
+      "unknown": 5
     },
     "claude-code": {
       "input": 332,
@@ -125,9 +125,9 @@
   },
   "stats": {
     "done_total": 1,
-    "open": 9,
+    "open": 8,
     "claimed": 0,
-    "needs_human": 1,
+    "needs_human": 2,
     "xp": 100
   }
 }

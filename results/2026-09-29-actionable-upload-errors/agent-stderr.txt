@@ -1,0 +1,73 @@
+OpenAI Codex v0.158.0-alpha.2
+--------
+workdir: C:\Users\Cruzz\venulo-swarm-workrepo
+model: gpt-6-astra
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, C:\Users\Cruzz\venulo-swarm\results]
+reasoning effort: low
+reasoning summaries: none
+session id: 01a0f0af-b59f-7302-9d8f-650e642374c7
+--------
+user
+
+## Context
+Audit gap G4: the isolated CSV parser drops specific error messages (e.g. "missing Date column"), so users only see "could not be processed". Related: a job shows "failed" while a retry is still pending, and the failure email can go out twice. Users can't self-serve past the most common failure.
+
+## Task
+Start from `results/2026-09-29-actionable-upload-errors/agent-output.txt` in the swarm repo: a previous run mapped all five drop points with file/line references. Do not re-derive them.
+
+In the work repo at `$WORK_REPO`:
+1. Propagate specific parser error messages to the UI (e.g. missing column names, bad date formats, empty file) instead of the generic "could not be processed". Keep messages user-friendly, not stack traces.
+2. Only mark a job `failed` after its last retry is exhausted; while a retry is pending the status must reflect that.
+3. Ensure the failure notification/email fires exactly once per failed job.
+4. If the audit's description doesn't match the code you find, trust the code and note the discrepancy in your summary.
+
+## Acceptance criteria
+- [ ] Uploading a CSV missing the Date column shows a message naming the missing column (verify manually or with a test).
+- [ ] A job with a retry pending does not display as failed; the failure email is sent at most once (covered by a test or verified in code path).
+- [ ] Existing passing tests still pass.
+
+## Constraints
+- Work ONLY on branch `swarm/2026-09-29-actionable-upload-errors`. Never commit to or merge into `main`.
+- Never deploy, send email, or spend money (do not send real emails while testing — stub or assert the send call).
+- Keep the diff minimal — no drive-by refactors.
+- If the task is ambiguous or blocked, stop and mark `needs-human` instead of guessing.
+
+---
+Runner contract: end your final message with exactly one of these lines:
+SWARM_STATUS: done
+SWARM_STATUS: needs-human: <one-line reason>
+Use needs-human if you could not complete the task, were refused permission,
+or stopped for a decision. Never claim done for work you did not do.
+codex
+I’ll read the previous run’s findings, confirm the branch, then patch the mapped paths and test them with email sends stubbed.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content C:\\Users\\Cruzz\\venulo-swarm\\results\\2026-09-29-actionable-upload-errors\\agent-output.txt; git branch --show-current; git status --short" in C:\Users\Cruzz\venulo-swarm-workrepo
+ succeeded in 397ms:
+swarm/2026-09-29-actionable-upload-errors
+warning: unable to access 'C:\Users\Cruzz/.config/git/ignore': Permission denied
+warning: unable to access 'C:\Users\Cruzz/.config/git/ignore': Permission denied
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Item C:\\Users\\Cruzz\\venulo-swarm\\results\\2026-09-29-actionable-upload-errors\\agent-output.txt | Select-Object FullName,Length; Get-ChildItem C:\\Users\\Cruzz\\venulo-swarm\\results\\2026-09-29-actionable-upload-errors | Select-Object Name,Length" in C:\Users\Cruzz\venulo-swarm-workrepo
+ succeeded in 291ms:
+
+FullName                                                                                 Length
+--------                                                                                 ------
+C:\Users\Cruzz\venulo-swarm\results\2026-09-29-actionable-upload-errors\agent-output.txt      0
+                                                                                              0
+                                                                                           8246
+                                                                                           2531
+                                                                                            416
+
+
+
+codex
+The required prior-run file, `results/2026-09-29-actionable-upload-errors/agent-output.txt`, is empty (0 bytes), so the five mapped drop points are unavailable. Per your instructions, I stopped without re-deriving them.
+
+Confirmed the correct branch. No files changed or tests run. Restore the findings file to unblock this task.
+
+SWARM_STATUS: needs-human: Required prior-run findings file is empty.
+tokens used
+8,013

@@ -1,10 +1,8 @@
 # Result: 2026-09-29-actionable-upload-errors
-- brief: [2026-09-29-actionable-upload-errors.md](../../briefs/2026-09-29-actionable-upload-errors.md)
-- owner: claude-code
-- branch: `swarm/2026-09-29-actionable-upload-errors`
-- finished: 2026-09-30T01:37:54Z
-- exit: 0
 
-## Summary
-Agent completed without errors. Full log in agent-output.txt.
-Review the branch diff before merging — the runner never merges to main.
+- finished: 2026-09-30T05:01:07Z
+- exit: 0
+- status: needs-human
+- reason: agent reported: Required prior-run findings file is empty.
+
+See agent-output.txt for what the agent found; it is often worth reading.
