@@ -2,14 +2,14 @@
 id: 2026-09-29-venulo-repo-audit
 title: Audit the Venulo app repo and propose the next build briefs
 owner: claude-code
-status: open
+status: claimed
 repo: venulo
 branch: swarm/2026-09-29-venulo-repo-audit
 created: 2026-09-29
 priority: high
 budget: standard
 needs_approval: false
-attempts: 0
+attempts: 1
 ---
 
 ## Context
