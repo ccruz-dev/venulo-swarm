@@ -1,6 +1,6 @@
 {
   "agent": "runner",
-  "ts": "2026-09-30T06:27:23Z",
-  "state": "working",
-  "detail": "2026-09-29-stripe-webhook-safety"
+  "ts": "2026-09-30T06:29:40Z",
+  "state": "polling",
+  "detail": "idle"
 }
