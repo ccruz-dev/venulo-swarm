@@ -2,21 +2,21 @@
 id: 2026-09-29-ecc-evaluation
 title: Evaluate Everything Claude Code for swarm integration
 owner: claude-code
-status: done
+status: open
 repo: venulo
 branch: swarm/2026-09-29-ecc-evaluation
 created: 2026-09-29
 priority: normal
 budget: cheap
 needs_approval: false
-attempts: 1
+attempts: 0
 ---
 
 ## Context
 "Everything Claude Code" (ECC) by Afaan Mustafa — winner of an Anthropic hackathon — is an open-source stack of specialized subagents, 100+ workflow skills, slash commands, memory hooks, and token-optimization config, compatible with Claude Code, Codex, Cursor, and OpenCode. It could upgrade our swarm's individual workers. Evaluate before we install anything.
 
 ## Task
-Report-only brief. Locate the canonical ECC repo (Anthropic hackathon winner by Afaan Mustafa; if you cannot verify the canonical repo, mark this brief `needs-human` instead of guessing). Then:
+Report-only brief. The canonical ECC repo is https://github.com/WorldFlowAI/everything-claude-code (verified by Soup: its README documents it as the continuation of affaan-m/everything-claude-code and the Anthropic x Forum Ventures hackathon win). Evaluate that repo only. If it is unreachable, mark needs-human; do not evaluate a fork or a lookalike. Then:
 1. Inventory: subagents, skills, slash commands, and especially memory hooks — flag every hook that executes shell commands automatically.
 2. Compatibility: determine whether our runner's headless CLI invocations would load ECC skills/subagents (config paths, env vars, flags involved). Test with a no-op if possible without installing.
 3. Token story: describe ECC's token-optimization mechanisms concretely; assess whether the "up to 60%" claim is plausible or marketing.

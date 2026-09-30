@@ -2,14 +2,14 @@
 id: 2026-09-29-stripe-webhook-safety
 title: Make the Stripe webhook safe (G2)
 owner: claude-code
-status: done
+status: open
 repo: venulo
 branch: swarm/2026-09-29-stripe-webhook-safety
 created: 2026-09-29
 priority: high
 budget: standard
 needs_approval: false
-attempts: 1
+attempts: 0
 ---
 
 ## Context

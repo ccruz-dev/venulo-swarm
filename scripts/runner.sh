@@ -28,6 +28,26 @@ CODEX_MODEL="${CODEX_MODEL:-}"                  # e.g. gpt-5-mini; empty = codex
 PYTHON_BIN="${PYTHON_BIN:-}"                  # python3 preferred; python fallback on Windows
 MAX_ATTEMPTS=2
 XP_PER_BRIEF=100
+
+# Headless agents cannot answer permission prompts, so anything not granted
+# here is silently denied. On 2026-09-29 that meant every code brief changed
+# nothing: the agents were refused write access, said so, and exited 0.
+# Edits are granted; the shell is limited to reading and running tests.
+# Pushing, merging, deploying and network access stay denied by design.
+# Comma-separated. Verify the patterns with a dry run before relying on them.
+CLAUDE_ALLOWED_TOOLS="${CLAUDE_ALLOWED_TOOLS:-Read,Edit,Write,Glob,Grep,Bash(npm test:*),Bash(npm run test:*),Bash(npm run build:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*)}"
+CLAUDE_DISALLOWED_TOOLS="${CLAUDE_DISALLOWED_TOOLS:-Bash(git push:*),Bash(git merge:*),Bash(railway:*),Bash(curl:*),Bash(npx prisma migrate deploy:*),WebFetch,WebSearch}"
+
+# Appended to every brief. Exit code 0 only means the CLI did not crash; it says
+# nothing about whether the work happened. The agent must say which it was.
+STATUS_CONTRACT='
+
+---
+Runner contract: end your final message with exactly one of these lines:
+SWARM_STATUS: done
+SWARM_STATUS: needs-human: <one-line reason>
+Use needs-human if you could not complete the task, were refused permission,
+or stopped for a decision. Never claim done for work you did not do.'
 # ------------------------------------------------------------
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"; }
@@ -65,7 +85,10 @@ sync_swarm() {
 
 push_swarm() { # <commit message>
   cd "$SWARM_REPO"
-  git add -A
+  # Only the paths the runner owns. `git add -A` swept up files another agent
+  # had staged in this checkout on 2026-09-29 and pushed them under a runner
+  # commit message. Humans and agents should still write from their own clone.
+  git add -- briefs results status
   if ! git diff --cached --quiet; then
     git commit -q -m "$1" || return 0
     git push -q || log "WARN: push failed; will retry next loop"
@@ -94,15 +117,22 @@ run_agent() {
   local owner="$1" brief_id="$2" brief="$3" workdir="$4" outdir="$5"
   local budget prompt rc=0
   budget=$(frontmatter "$brief" budget); budget=${budget:-standard}
-  prompt=$(brief_body "$brief")
+  prompt="$(brief_body "$brief")${STATUS_CONTRACT}"
+  # --add-dir: report-only briefs must write results/<id>.md into the SWARM
+  # repo, which is outside the work tree the agent runs in and so is otherwise
+  # not writable. Scoped to results/ only.
+  local perms=(--permission-mode acceptEdits
+               --allowedTools "$CLAUDE_ALLOWED_TOOLS"
+               --disallowedTools "$CLAUDE_DISALLOWED_TOOLS"
+               --add-dir "$SWARM_REPO/results")
   (
     cd "$workdir"
     case "$owner" in
       claude-code)
         if [ "$budget" = "cheap" ]; then
-          claude -p "$prompt" --model haiku --output-format json > "$outdir/agent-raw.json" 2> "$outdir/agent-stderr.txt" || rc=$?
+          claude -p "$prompt" --model haiku "${perms[@]}" --output-format json > "$outdir/agent-raw.json" 2> "$outdir/agent-stderr.txt" || rc=$?
         else
-          claude -p "$prompt" --output-format json > "$outdir/agent-raw.json" 2> "$outdir/agent-stderr.txt" || rc=$?
+          claude -p "$prompt" "${perms[@]}" --output-format json > "$outdir/agent-raw.json" 2> "$outdir/agent-stderr.txt" || rc=$?
         fi
         ;;
       codex)
@@ -278,7 +308,12 @@ pass_once() {
 
     # fresh branch off main in the work repo
     git -C "$WORK_REPO" fetch -q origin 2>/dev/null || true
-    if git -C "$WORK_REPO" show-ref --quiet refs/heads/main; then
+    # Branch from origin/main, not local main. fetch never moves local main, so
+    # a stale local main would put agents on old code — including code from
+    # before a security fix was merged.
+    if git -C "$WORK_REPO" show-ref --quiet refs/remotes/origin/main; then
+      git -C "$WORK_REPO" checkout -q -B "$branch" origin/main
+    elif git -C "$WORK_REPO" show-ref --quiet refs/heads/main; then
       git -C "$WORK_REPO" checkout -q -B "$branch" main
     else
       git -C "$WORK_REPO" checkout -q -B "$branch"
@@ -292,9 +327,10 @@ pass_once() {
     record_usage "$owner" "$id" "$outdir" "$rc"
 
     # commit whatever the agent did, push the branch (never main)
+    local committed=0
     git -C "$WORK_REPO" add -A
     if ! git -C "$WORK_REPO" diff --cached --quiet; then
-      git -C "$WORK_REPO" commit -q -m "swarm($id): agent work" || true
+      git -C "$WORK_REPO" commit -q -m "swarm($id): agent work" && committed=1 || true
       git -C "$WORK_REPO" push -q -u origin "$branch" || log "WARN: branch push failed"
     fi
     git -C "$WORK_REPO" checkout -q main 2>/dev/null || true
@@ -302,7 +338,38 @@ pass_once() {
     local attempts
     attempts=$(frontmatter "$brief" attempts); attempts=${attempts:-1}
 
-    if [ "$rc" -eq 0 ]; then
+    # What the agent SAYS happened: the last SWARM_STATUS line. A missing line
+    # is treated as needs-human, not done — fail closed.
+    local declared reason why=""
+    # `|| true`: under set -euo pipefail a grep with no match would otherwise
+    # abort the whole runner — in exactly the case this check exists for.
+    declared=$(grep -E '^SWARM_STATUS:' "$outdir/agent-output.txt" 2>/dev/null | tail -1 | sed 's/^SWARM_STATUS:[[:space:]]*//' || true)
+    reason=""
+    case "$declared" in
+      done) ;;
+      needs-human*) why="${declared#needs-human}"; why="${why#:}"; why="${why# }"
+                    reason="agent reported: ${why:-no reason given}" ;;
+      "") reason="agent gave no SWARM_STATUS line" ;;
+      *) reason="unrecognised SWARM_STATUS: $declared" ;;
+    esac
+
+    # What the evidence SAYS happened: commits on the branch, or the report file
+    # a report-only brief is required to write. "done" needs both the agent's
+    # word and the evidence.
+    if [ -z "$reason" ] && [ "$committed" -eq 0 ] && [ ! -s "$SWARM_REPO/results/$id.md" ]; then
+      reason="agent said done, but produced no commits and no results/$id.md"
+    fi
+
+    if [ "$rc" -eq 0 ] && [ -n "$reason" ]; then
+      # Not a crash, so retrying will not help: permission refusals and
+      # decisions need a person. Straight to needs-human, with the reason.
+      printf '# Result: %s\n\n- finished: %s\n- exit: 0\n- status: needs-human\n- reason: %s\n\nSee agent-output.txt for what the agent found; it is often worth reading.\n' \
+        "$id" "$(utcnow)" "$reason" > "$outdir/RESULT.md"
+      set_status "$brief" "needs-human"
+      write_dashboard ""
+      push_swarm "runner: $id needs-human ($reason)"
+      log "needs-human: $id — $reason"
+    elif [ "$rc" -eq 0 ]; then
       cat > "$outdir/RESULT.md" <<EOF
 # Result: $id
 - brief: [$(basename "$brief")](../../briefs/$(basename "$brief"))

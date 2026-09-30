@@ -2,14 +2,14 @@
 id: 2026-09-29-fix-paid-signup-handoff
 title: Fix the paid-signup handoff (G1, G3)
 owner: claude-code
-status: done
+status: open
 repo: venulo
 branch: swarm/2026-09-29-fix-paid-signup-handoff
 created: 2026-09-29
 priority: high
 budget: standard
 needs_approval: false
-attempts: 1
+attempts: 0
 ---
 
 ## Context

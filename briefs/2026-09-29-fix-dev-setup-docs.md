@@ -2,14 +2,14 @@
 id: 2026-09-29-fix-dev-setup-docs
 title: Fix dev setup and docs (env examples, README, seed guard, benchmarks)
 owner: claude-code
-status: done
+status: open
 repo: venulo
 branch: swarm/2026-09-29-fix-dev-setup-docs
 created: 2026-09-29
 priority: normal
 budget: standard
 needs_approval: false
-attempts: 1
+attempts: 0
 ---
 
 ## Context

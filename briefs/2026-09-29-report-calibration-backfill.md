@@ -2,14 +2,14 @@
 id: 2026-09-29-report-calibration-backfill
 title: Snapshot report calibration; allow history backfill for new locations (G5, G6)
 owner: claude-code
-status: done
+status: open
 repo: venulo
 branch: swarm/2026-09-29-report-calibration-backfill
 created: 2026-09-29
 priority: normal
 budget: standard
 needs_approval: false
-attempts: 1
+attempts: 0
 ---
 
 ## Context

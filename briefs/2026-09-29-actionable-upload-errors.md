@@ -2,20 +2,22 @@
 id: 2026-09-29-actionable-upload-errors
 title: Show actionable upload errors; fix premature job-failed state (G4)
 owner: claude-code
-status: done
+status: open
 repo: venulo
 branch: swarm/2026-09-29-actionable-upload-errors
 created: 2026-09-29
 priority: normal
 budget: standard
 needs_approval: false
-attempts: 1
+attempts: 0
 ---
 
 ## Context
 Audit gap G4: the isolated CSV parser drops specific error messages (e.g. "missing Date column"), so users only see "could not be processed". Related: a job shows "failed" while a retry is still pending, and the failure email can go out twice. Users can't self-serve past the most common failure.
 
 ## Task
+Start from `results/2026-09-29-actionable-upload-errors/agent-output.txt` in the swarm repo: a previous run mapped all five drop points with file/line references. Do not re-derive them.
+
 In the work repo at `$WORK_REPO`:
 1. Propagate specific parser error messages to the UI (e.g. missing column names, bad date formats, empty file) instead of the generic "could not be processed". Keep messages user-friendly, not stack traces.
 2. Only mark a job `failed` after its last retry is exhausted; while a retry is pending the status must reflect that.
