@@ -1,1 +1,33 @@
-You've hit your session limit · resets 12:40am (America/Chicago)
+I made the fix and wrote a test for it, but I couldn't run anything or commit. Running `node` and `git add`/`git commit` both need approval that this session doesn't have. The changes are uncommitted on `swarm/2026-09-29-stripe-webhook-safety`, and none of the acceptance criteria are verified yet.
+
+## What the code actually does
+The audit's description was right, but the cause is more specific than the audit said. In `server/routes/webhooks.js`, the onboarding branch called `createSubscription` inside the database transaction. That function reads and writes the user row through the shared database client, outside the transaction, so it fails one of two ways:
+- **First checkout:** it can't see the not-yet-committed `stripeCustomerId`, so it throws "No Stripe customer ID found". That error was swallowed, so the payment went through but no subscription was created.
+- **Customer ID already set:** it creates the subscription in Stripe, then waits on the row the transaction has locked until the transaction times out. That rolls back `onboardingPaid` and the duplicate-event record, and the handler still returned 200, so Stripe never retried.
+
+## Changes
+1. **Lock fix:** the handler now creates the subscription after the transaction commits. The transaction only contains the event record and the user-row updates, and no Stripe calls happen while it's open.
+2. **Retries:** the error handler now returns **500**, so Stripe redelivers. The event record is written in the same transaction as the state change, so a failure undoes both and the retry applies the change exactly once.
+3. **Two deliveries at once:** if both pass the duplicate check and one hits the unique-key error on `eventId`, that one now returns 200 as a duplicate.
+4. **Tests:** I added `server/tests/webhookSafety.test.js` and registered it in `server/tests/run-all.js`. It fakes the database with rollback and row locks and checks four things:
+   - On success, `onboardingPaid`, the customer ID, the event record and the subscription are all saved.
+   - A redelivered event makes no second change, record or subscription.
+   - A failure returns non-2xx and leaves nothing behind; the retry applies the change once.
+   - Two simultaneous deliveries count as one.
+
+   Tracing through by hand, it should fail on the old code and pass on the new. The existing text-matching checks on `webhooks.js` in `billing.test.js` should still pass.
+
+## Still open
+- **Failed subscription creation still returns 200.** This was already the behaviour: the error is logged and the event isn't retried. Retrying it without a Stripe idempotency key could create two subscriptions for one customer. That needs a separate decision.
+- **Bad user ID now retries:** an event whose `userId` doesn't exist now gets a 500, so Stripe will keep retrying it until it gives up (up to 3 days).
+
+## To finish
+```
+cd server
+node tests/webhookSafety.test.js
+npm test
+git add routes/webhooks.js tests/webhookSafety.test.js tests/run-all.js
+git commit
+```
+
+SWARM_STATUS: needs-human: fix and test written but not run or committed — running node and git commit need approval this session doesn't have
