@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T05:06:17.964651+00:00",
+  "updated": "2026-09-30T05:08:20.218350+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -80,7 +80,7 @@
       "id": "2026-09-29-security-tenant-qa",
       "title": "Tenant-isolation and auth-boundary QA probe (local app)",
       "owner": "codex",
-      "status": "open",
+      "status": "needs-human",
       "budget": "standard",
       "priority": "high"
     },
@@ -113,8 +113,8 @@
     "codex": {
       "input": 0,
       "output": 0,
-      "runs": 6,
-      "unknown": 6
+      "runs": 7,
+      "unknown": 7
     },
     "claude-code": {
       "input": 354,
@@ -125,9 +125,9 @@
   },
   "stats": {
     "done_total": 1,
-    "open": 7,
+    "open": 6,
     "claimed": 0,
-    "needs_human": 3,
+    "needs_human": 4,
     "xp": 100
   }
 }

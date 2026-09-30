@@ -2,7 +2,7 @@
 id: 2026-09-29-security-tenant-qa
 title: Tenant-isolation and auth-boundary QA probe (local app)
 owner: codex
-status: claimed
+status: needs-human
 repo: venulo
 branch: swarm/2026-09-29-security-tenant-qa
 created: 2026-09-29

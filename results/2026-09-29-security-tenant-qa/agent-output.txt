@@ -1,0 +1,5 @@
+Wrote the [blocked-run report](C:/Users/Cruzz/venulo-swarm/results/2026-09-29-security-tenant-qa.md), including planned probes and sibling exclusions.
+
+No usable local PostgreSQL was found; loopback ports 5432/5433 refused connections. Per your instruction, testing stopped. No application code changed, and nothing touched production.
+
+SWARM_STATUS: needs-human: Provide a disposable local PostgreSQL instance to run the two-tenant probes.
