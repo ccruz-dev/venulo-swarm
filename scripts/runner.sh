@@ -28,6 +28,11 @@ CODEX_MODEL="${CODEX_MODEL:-}"                  # e.g. gpt-5-mini; empty = codex
 PYTHON_BIN="${PYTHON_BIN:-}"                  # python3 preferred; python fallback on Windows
 ONLY_BRIEF="${ONLY_BRIEF:-}"                    # run just this brief id (dry runs); empty = all
 MAX_ATTEMPTS=2
+# A quota/rate-limit cutoff is not a failure of the brief, so it does not spend
+# an attempt; it waits. After this many hits (~3h of 5-minute polls) a person
+# is asked to look.
+MAX_QUOTA_HITS="${MAX_QUOTA_HITS:-36}"
+QUOTA_PATTERN='usage limit|rate_limit_error|rate limit exceeded|rate limit reached|API Error: 429|429 Too Many Requests|overloaded_error|quota exceeded|insufficient_quota|try again (later|at [0-9])'
 XP_PER_BRIEF=100
 
 # Headless agents cannot answer permission prompts, so anything not granted
@@ -58,7 +63,10 @@ utcnow() { date -u +%Y-%m-%dT%H:%M:%SZ; }
 
 # frontmatter <file> <key> -> value (first match)
 frontmatter() {
+  # Tolerates CRLF: a stray \r in a value like `attempts: 1\r` would otherwise
+  # reach shell arithmetic and abort the runner under set -e.
   awk -v k="$2" '
+    { sub(/\r$/, "") }
     /^---$/ { if (++n == 2) exit; next }
     n == 1 && $1 == k":" { sub(/^[^:]+:[ \t]*/, ""); print; exit }
   ' "$1"
@@ -66,7 +74,9 @@ frontmatter() {
 
 # brief_body <file> -> markdown below the frontmatter
 brief_body() {
-  awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$1"
+  # CRLF-tolerant for the same reason as frontmatter(): on a CRLF file the
+  # markers never match and the agent would be sent an empty prompt.
+  awk 'BEGIN{n=0} { sub(/\r$/, "") } /^---$/{n++; next} n>=2' "$1"
 }
 
 heartbeat() { # <state> <detail>
@@ -91,7 +101,12 @@ push_swarm() { # <commit message>
   # Only the paths the runner owns. `git add -A` swept up files another agent
   # had staged in this checkout on 2026-09-29 and pushed them under a runner
   # commit message. Humans and agents should still write from their own clone.
-  git add -- briefs results status
+  # One path at a time, and only those that exist: `git add -- a b c` fails
+  # outright if any path is missing, which aborts the runner under set -e.
+  local p
+  for p in briefs results status; do
+    if [ -e "$p" ]; then git add -A -- "$p"; fi
+  done
   if ! git diff --cached --quiet; then
     git commit -q -m "$1" || return 0
     git push -q || log "WARN: push failed; will retry next loop"
@@ -107,6 +122,54 @@ claim_brief() { # <brief file>
   else
     sed -i "s/^status: claimed$/status: claimed\nattempts: $((attempts + 1))/" "$f"
   fi
+}
+
+set_fm() { # <brief file> <key> <value> — set a frontmatter key, adding it if absent
+  local f="$1" tmp="$1.tmp.$$"
+  awk -v k="$2" -v v="$3" '
+    { cr = sub(/\r$/, "") ? "\r" : "" }
+    /^---$/ { n++; if (n == 2 && !done) { print k ": " v cr; done = 1 } print $0 cr; next }
+    n == 1 && $1 == k ":" { print k ": " v cr; done = 1; next }
+    { print $0 cr }
+  ' "$f" > "$tmp" && mv "$tmp" "$f"
+}
+
+# is_quota_hit <outdir> — did a quota / rate limit cut this run off?
+#
+# Deliberately narrow, because a false positive is expensive: the brief goes
+# back to open and is re-run in full on the next poll, up to MAX_QUOTA_HITS
+# times.
+#   - A run that declared a SWARM_STATUS finished; it was not cut off, even if
+#     its report talks about rate limits (the security QA brief probes 429s on
+#     purpose). Agent output is never scanned for these words.
+#   - Only genuine error lines in stderr count. Codex echoes the whole brief to
+#     stderr, so a plain word match would fire on any brief that mentions
+#     rate limiting.
+#   - claude -p reports API failures inside its JSON result, not on stderr.
+is_quota_hit() { # <outdir> <brief file>
+  local outdir="$1" brief="$2"
+  if grep -q '^SWARM_STATUS:' "$outdir/agent-output.txt" 2>/dev/null; then return 1; fi
+  # Drop stderr lines that are verbatim lines of the brief (the echoed prompt):
+  # a brief line such as "Error handling: rate limit exceeded ..." must not
+  # read as an error the agent hit.
+  if tr -d '\r' < "$outdir/agent-stderr.txt" 2>/dev/null \
+      | grep -vxF -f <(brief_body "$brief") \
+      | grep -E '^[[:space:]]*(ERROR|Error|error|API Error)\b' \
+      | grep -qiE "$QUOTA_PATTERN"; then
+    return 0
+  fi
+  if [ -s "$outdir/agent-raw.json" ]; then
+    "$PYTHON_BIN" - "$outdir/agent-raw.json" "$QUOTA_PATTERN" <<'PYEOF' && return 0
+import json, re, sys
+try:
+    r = json.load(open(sys.argv[1], encoding="utf-8"))
+except Exception:
+    sys.exit(1)
+text = r.get("result") if isinstance(r.get("result"), str) else ""
+sys.exit(0 if r.get("is_error") and re.search(sys.argv[2], text, re.I) else 1)
+PYEOF
+  fi
+  return 1
 }
 
 set_status() { # <brief file> <status>
@@ -288,6 +351,10 @@ pass_once() {
   heartbeat "polling" "looking for open briefs"
   write_dashboard ""
 
+  # Owners that hit a quota this pass. Their remaining briefs are skipped
+  # rather than each failing instantly and logging its own hit.
+  local quota_blocked=""
+
   for brief in "$SWARM_REPO"/briefs/*.md; do
     [ -e "$brief" ] || continue
     case "$brief" in *_TEMPLATE.md) continue ;; esac
@@ -302,6 +369,7 @@ pass_once() {
     [ "$status" = "open" ] || continue
     owner=$(frontmatter "$brief" owner)
     case ",$ENABLED_AGENTS," in *",$owner,"*) ;; *) continue ;; esac
+    case "$quota_blocked," in *",$owner,"*) continue ;; esac
     approval=$(frontmatter "$brief" needs_approval)
     if [ "$approval" = "true" ]; then
       log "skipping $(basename "$brief"): needs_approval=true"
@@ -348,6 +416,37 @@ pass_once() {
 
     local attempts
     attempts=$(frontmatter "$brief" attempts); attempts=${attempts:-1}
+
+    if is_quota_hit "$outdir" "$brief"; then
+      local qh
+      qh=$(frontmatter "$brief" quota_hits); qh=$(( ${qh:-0} + 1 ))
+      set_fm "$brief" quota_hits "$qh"
+      # claim_brief already spent an attempt; a quota cutoff should not.
+      set_fm "$brief" attempts "$(( attempts > 0 ? attempts - 1 : 0 ))"
+      quota_blocked="$quota_blocked,$owner"
+      if [ "$qh" -gt "$MAX_QUOTA_HITS" ]; then
+        printf '# Result: %s\n\n- finished: %s\n- status: needs-human\n- reason: still blocked on %s quota after %s polls\n' \
+          "$id" "$(utcnow)" "$owner" "$qh" > "$outdir/RESULT.md"
+        set_fm "$brief" note "blocked on $owner quota for $qh polls"
+        set_status "$brief" "needs-human"
+        log "needs-human: $id — $owner quota for $qh polls"
+      else
+        printf '# Result: %s\n\n- finished: %s\n- status: open (waiting)\n- reason: waiting on %s quota (hit %s of %s); no attempt spent\n' \
+          "$id" "$(utcnow)" "$owner" "$qh" "$MAX_QUOTA_HITS" > "$outdir/RESULT.md"
+        set_fm "$brief" note "waiting on $owner quota"
+        set_status "$brief" "open"
+        log "quota: $id waiting on $owner ($qh/$MAX_QUOTA_HITS)"
+      fi
+      write_dashboard ""
+      push_swarm "runner: $id waiting on $owner quota ($qh/$MAX_QUOTA_HITS)"
+      continue
+    fi
+
+    # A real outcome ends any quota wait.
+    if [ -n "$(frontmatter "$brief" quota_hits)" ]; then
+      set_fm "$brief" quota_hits 0
+      set_fm "$brief" note ""
+    fi
 
     # What the agent SAYS happened: the last SWARM_STATUS line. A missing line
     # is treated as needs-human, not done — fail closed.
