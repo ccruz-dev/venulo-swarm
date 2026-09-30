@@ -1,1 +1,28 @@
-You've hit your session limit · resets 12:40am (America/Chicago)
+The fix is written and the server tests pass, but nothing is committed. `git add`/`git commit` and the client build (`npm run build`) were both blocked pending approval, so the changes are only in the working tree on `swarm/2026-09-29-fix-paid-signup-handoff`. The client code is not build-checked, and I didn't run a real Stripe test-mode checkout.
+
+**Tests:** `npm test` in `server/` passes all 60 suites. That includes a new `tests/paidSignupHandoff.test.js` (11 checks), which uses a fake Stripe client, so it makes no network calls and needs no real keys.
+
+**What changed**
+1. **Checkout success goes to venue setup.** `server/services/stripeService.js`: after paying, Stripe now sends the user to `/venue-setup?first=1&onboarding=success` instead of `/dashboard?onboarding=success`. That page already picks up the user's location automatically. Once setup is saved, the report pipeline reads that location's venue profile, so the first report uses it instead of generic defaults. On arrival, `VenueOnboarding.jsx` shows the "Payment successful" toast. It also re-checks the account status every 3s, up to 10 times, until Stripe's payment notification switches the account out of `pending`.
+2. **A way back for users who abandon checkout:**
+   - Cancelling checkout now returns the user to `/billing?checkout=cancelled`. It used to go to `/register`, which sends signed-in users on to the dashboard with no way back to checkout.
+   - New `client/src/components/ResumeCheckoutBanner.jsx` appears on every signed-in page while the account is `pending`. Its "Resume Checkout" button starts a new checkout through `/stripe/create-checkout` (already rate-limited). It stays hidden right after a successful payment, so a paying customer isn't told to pay again.
+   - `server/middleware/requireActiveSubscription.js`: uploads from a `pending` account still get a 402, but now with `code: 'CHECKOUT_REQUIRED'` and a message saying to finish checkout on the Billing page. The Upload page already shows the server's message as-is. Other plan states behave as before.
+   - The Billing page said the $249 onboarding fee was "Paid" for `pending` users. It now says "Unpaid".
+
+**Where the audit didn't match the code**
+- The audit says uploads fail with a bare 402. They actually returned a message, but it was "Your subscription is inactive. Please reactivate to continue.", which is wrong for someone who never paid and doesn't mention checkout.
+- The real dead end was the cancel link: it pointed at `/register`, which bounces signed-in users to the dashboard.
+- Venue setup already handled arriving without a location, and reports already use the saved venue profile. Only the post-payment redirect was missing.
+
+**Known gaps**
+- "Skip for now" on venue setup still lets a user go to upload without a profile. The Upload page already warns about that; I didn't make setup mandatory.
+- Resuming checkout doesn't carry over a pilot code entered at signup.
+- If Stripe's payment notification takes more than about 30s, a user who just paid could briefly see the resume banner.
+
+**Still needed from you**
+1. Approve or run the commit on this branch.
+2. Run `npm run build` in `client/`.
+3. Walk one Stripe test-mode signup through both the pay and cancel paths, to confirm the redirect and banner end to end.
+
+SWARM_STATUS: needs-human: changes written and server tests pass (60/60), but the commit and client build were blocked pending approval and no test-mode checkout was run
