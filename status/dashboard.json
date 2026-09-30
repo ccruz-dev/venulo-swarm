@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T00:50:05.017240+00:00",
+  "updated": "2026-09-30T00:50:14.173474+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -32,7 +32,7 @@
       "id": "2026-09-29-ecc-evaluation",
       "title": "Evaluate Everything Claude Code for swarm integration",
       "owner": "codex",
-      "status": "open",
+      "status": "needs-human",
       "budget": "cheap",
       "priority": "normal"
     },
@@ -65,8 +65,8 @@
     "codex": {
       "input": 0,
       "output": 0,
-      "runs": 2,
-      "unknown": 2
+      "runs": 3,
+      "unknown": 3
     },
     "claude-code": {
       "input": 0,
@@ -77,9 +77,9 @@
   },
   "stats": {
     "done_total": 1,
-    "open": 4,
+    "open": 3,
     "claimed": 0,
-    "needs_human": 0,
+    "needs_human": 1,
     "xp": 100
   }
 }
