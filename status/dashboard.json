@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T01:39:57.745938+00:00",
+  "updated": "2026-09-30T01:42:21.693822+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -64,7 +64,7 @@
       "id": "2026-09-29-fix-paid-signup-handoff",
       "title": "Fix the paid-signup handoff (G1, G3)",
       "owner": "claude-code",
-      "status": "open",
+      "status": "done",
       "budget": "standard",
       "priority": "high"
     },
@@ -109,17 +109,17 @@
       "unknown": 4
     },
     "claude-code": {
-      "input": 108,
-      "output": 19772,
-      "runs": 4,
+      "input": 158,
+      "output": 33232,
+      "runs": 5,
       "unknown": 1
     }
   },
   "stats": {
-    "done_total": 4,
-    "open": 6,
+    "done_total": 5,
+    "open": 5,
     "claimed": 0,
     "needs_human": 0,
-    "xp": 400
+    "xp": 500
   }
 }
