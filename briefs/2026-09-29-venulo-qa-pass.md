@@ -2,7 +2,7 @@
 id: 2026-09-29-venulo-qa-pass
 title: End-to-end QA pass on Venulo — find logic and UI bugs
 owner: codex
-status: claimed
+status: needs-human
 repo: venulo
 branch: swarm/2026-09-29-venulo-qa-pass
 created: 2026-09-29

@@ -1,0 +1,734 @@
+OpenAI Codex v0.158.0-alpha.2
+--------
+workdir: C:\Users\Cruzz\venulo-swarm-workrepo
+model: gpt-6-astra
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, C:\Users\Cruzz\venulo-swarm\results]
+reasoning effort: low
+reasoning summaries: none
+session id: 01a0f0b6-e653-7cc3-89e0-48a7704f840a
+--------
+user
+
+## Context
+Venulo is a revenue-intelligence platform for independent restaurants (Postgres, Prisma, Railway). Before pilots see it, we need a ruthless end-to-end QA pass: broken flows, wrong logic, and UI flaws, severity-ordered so builders know what to fix first.
+
+## Task
+Report-only brief — do not modify application code. Use fake restaurant data everywhere; never submit real data.
+1. Read the audit findings first: in the swarm repo, `results/2026-09-29-venulo-repo-audit/agent-raw.json`, field `result` — it contains the full audit (flow map, run notes, known gaps G1–G6). Use it; don't re-derive what the audit already documented.
+2. Get the app running locally from `$WORK_REPO` (the audit notes the `.env.example` files are broken as shipped — expect to fix env values locally without committing those changes).
+3. Walk every user-facing flow that exists: landing page, restaurant onboarding/signup, POS data import or upload, revenue-leak report generation and viewing, dashboards/alerts, settings. Note which expected flows are missing entirely.
+4. For each flow, record: logic issues (wrong math, impossible states, bad defaults), UI bugs (broken layout, dead buttons, missing loading/error feedback), and blockers (crashes, 500s, hangs). Pay special attention to the audit's G1–G6 — verify each is real and find what the audit missed.
+5. Produce a bug list ordered by severity — P0 (flow completely broken), P1 (wrong data or logic), P2 (UI/UX flaws). Every bug needs: repro steps, expected vs actual, severity.
+
+## Acceptance criteria
+- [ ] Bug report written to `results/2026-09-29-venulo-qa-pass.md` in the swarm repo, with severity-ordered bugs (each with repro steps, expected vs actual), a list of flows tested vs flows missing, and local run notes.
+- [ ] Report ends with a short "definition of done" checklist per flow (what "working" means).
+- [ ] No application code was modified.
+
+## Constraints
+- Work ONLY on branch `swarm/2026-09-29-venulo-qa-pass`. Never commit to or merge into `main`.
+- Never deploy, send email, or spend money.
+- Report-only: read and run code, don't change it. Use only fake data.
+- If the app cannot be run locally, document the blocker precisely and stop instead of guessing.
+
+---
+Runner contract: end your final message with exactly one of these lines:
+SWARM_STATUS: done
+SWARM_STATUS: needs-human: <one-line reason>
+Use needs-human if you could not complete the task, were refused permission,
+or stopped for a decision. Never claim done for work you did not do.
+codex
+I’ll read the existing audit, verify the required branch, and try the documented local setup. I’ll keep application code unchanged and use only fake data.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Location; git status --short; git branch --show-current; Get-Content -Raw 'C:\\Users\\Cruzz\\venulo-swarm\\results\\2026-09-29-venulo-repo-audit\\agent-raw.json'" in C:\Users\Cruzz\venulo-swarm-workrepo
+ succeeded in 300ms:
+
+warning: unable to access 'C:\Users\Cruzz/.config/git/ignore': Permission denied
+warning: unable to access 'C:\Users\Cruzz/.config/git/ignore': Permission denied
+swarm/2026-09-29-venulo-qa-pass
+Path                                
+----                                
+C:\Users\Cruzz\venulo-swarm-workrepo
+{"duration_api_ms":276763,"stop_reason":"end_turn","session_id":"3ebd2aea-b7b7-4fd1-b805-1275016b7322","total_cost_usd":2.8782066000000013,"usage":{"input_tokens":90,"cache_creation_input_tokens":168557,"cache_read_input_tokens":4862153,"output_tokens":27848,"output_tokens_details":{"thinking_tokens":7844},"server_tool_use":{"web_search_requests":0,"web_fetch_requests":0},"service_tier":"standard","cache_creation":{"ephemeral_1h_input_tokens":168557,"ephemeral_5m_input_tokens":0},"inference_geo":"not_available","iterations":[{"input_tokens":2,"output_tokens":1413,"cache_read_input_tokens":172437,"cache_creation_input_tokens":9929,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":9929},"type":"message"}],"speed":"standard","fallback_credit":null},"modelUsage":{"claude-opus-5-5":{"inputTokens":90,"outputTokens":27848,"cacheReadInputTokens":4862153,"cacheCreationInputTokens":168557,"webSearchRequests":0,"costUSD":2.8782066000000013,"contextWindow":1000000,"maxOutputTokens":128000,"thinkingTokens":7844,"canonicalModel":"claude-opus-5-5","provider":"firstParty","costBasis":"list"}},"permission_denials":[{"tool_name":"Bash","tool_use_id":"toolu_01SZWY7LNR8txvWwLNfAtoqd","tool_input":{"command":"echo \"WORK_REPO=$WORK_REPO\"; echo \"SWARM_REPO=$SWARM_REPO\"; pwd; git -C /c/Users/Cruzz/venulo-swarm-workrepo remote -v; git -C /c/Users/Cruzz/venulo-swarm-workrepo worktree list; ls /c/Users/Cruzz/venulo-swarm-workrepo; env | grep -i -E 'swarm|repo' ","description":"Check work repo env vars and layout"}},{"tool_name":"PowerShell","tool_use_id":"toolu_01XKPmfBeaMAqBrhuZuAdBue","tool_input":{"command":"\"WORK_REPO=$env:WORK_REPO\"; \"SWARM_REPO=$env:SWARM_REPO\"; Get-ChildItem env: | Where-Object { $_.Name -match 'SWARM|REPO' }; git remote -v; git worktree list; Get-ChildItem -Force | Select-Object Mode,Name","description":"Check work repo env vars and layout"}},{"tool_name":"PowerShell","tool_use_id":"toolu_012BsSVTFKWxGcr39RH4efn1","tool_input":{"command":"\"WORK_REPO=$env:WORK_REPO\"; \"SWARM_REPO=$env:SWARM_REPO\"; git remote -v; git worktree list; Get-ChildItem -Force -Name","description":"Check work repo env vars and layout"}},{"tool_name":"PowerShell","tool_use_id":"toolu_014zSHe56WyPJ7cqB5bu3qKb","tool_input":{"command":"$env:WORK_REPO; $env:SWARM_REPO; git remote -v; git worktree list; Get-ChildItem -Force -Name","description":"Check work repo env vars and layout"}},{"tool_name":"Bash","tool_use_id":"toolu_011GYgnTwsi991yKbxCKXqVc","tool_input":{"command":"printenv WORK_REPO SWARM_REPO","description":"Print work/swarm repo env vars"}},{"tool_name":"Glob","tool_use_id":"toolu_01TyjLa6LrmthSWP5W4PrED3","tool_input":{"pattern":"*swarm*/results/*","path":"C:\\Users\\Cruzz"}},{"tool_name":"Write","tool_use_id":"toolu_01Y21SnGNtcss3yRa9NMxvUm","tool_input":{"file_path":"C:\\Users\\Cruzz\\venulo-swarm-workrepo\\results\\2026-09-29-venulo-repo-audit.md","content":"# Venulo repo audit â€” 2026-09-29\n\n**Brief:** swarm/2026-09-29-venulo-repo-audit Â· **Commit audited:** `4b057f4a` (main after PR #4) Â· **Mode:** read-only; no application code modified.\n\n**How this was produced:** by reading the code statically. Nothing was run: the worktree has no `node_modules`, and installing dependencies or starting Postgres was out of scope for a report-only brief. Every finding below cites file:line. Findings marked **(unverified)** follow from reading the code but still need a live check.\n\n---\n\n## 1. Structure map\n\n### Stack (actual, vs. what CLAUDE.md says)\n\n| Layer | Actual | Doc drift |\n|---|---|---|\n| Frontend | React **19.2**, Vite **6.4**, react-router **7**, Tailwind 3.4, shadcn/Radix, Astryx design system, Recharts, PostHog, PWA (vite-plugin-pwa) | CLAUDE.md says React 18 / Vite 5 |\n| Backend | Express 4, Prisma 5 (PostgreSQL), BullMQ 5 + ioredis (optional), pino, zod, express-validator | â€” |\n| Email | **Resend** (`RESEND_API_KEY` is prod-required, `validateEnv.js:26`) | README/CLAUDE.md say nodemailer/SMTP; `.env.example` still documents `EMAIL_*` SMTP vars |\n| AI | `@anthropic-ai/sdk` (AI insights, \"ask your data\", explain-finding) | â€” |\n| Payments | Stripe (onboarding fee checkout + per-location subscription) | â€” |\n| Deploy | Railway via nixpacks: builds client, then `cd server && npx prisma migrate deploy && node index.js` (`railway.json`) | README still describes a Vercel frontend + `VITE_API_URL`, which the code no longer uses (`apiClient.js` uses `baseURL: '/api'`) |\n\n### Entry points\n- **Server:** `server/index.js`. Boot order: dotenv â†’ Sentry â†’ `validateEnv()` (exits the process on error) â†’ storage init â†’ middleware â†’ 25 router mounts â†’ cron jobs â†’ listen on `PORT` (3001).\n- **Worker:** `server/workers/uploadWorker.js` runs **inside the web process** (BullMQ `Worker` if `REDIS_URL` is set, otherwise an in-memory `MemoryWorker`). There is no separate worker service.\n- **Client:** `client/src/main.jsx` (lazy routes). In dev, Vite proxies `/api` and `/sample-data` to `DEV_API_TARGET`, defaulting to `http://localhost:3001` (`client/vite.config.js:14`).\n- **Cron jobs (in-process):** weekly digest and lead nurture (both gated by `ENABLE_MARKETING_EMAILS`), billing reconciliation, data retention, nightly POS sync at 02:30 (`ENABLE_POS_INTEGRATIONS`), monthly soft-delete purge (refuses to run in prod).\n\n### Database (`server/prisma/schema.prisma`) â€” 24 models (CLAUDE.md says 20)\n- **Core tenant:** User, Location, VenueProfile (1:1 with Location), TeamMember\n- **Pipeline:** Upload â†’ Transaction (item-level rows), UploadJob (status/progress), Report (findings/upsells stored as **JSON strings**), LocationMetric (monthly rollup per report)\n- **Product add-ons:** Goal, ShareToken, EmployeeScorecard, Forecast (`restaurantId` = locationId, with no FK), PosConnection (Square/Clover OAuth), FindingFeedback, BusinessContextNote, ItemCost, PromotionScenario\n- **Ops/compliance:** AuditLog, SecurityLog, EmailLog, NotificationLog, CancellationReason, ProcessedWebhookEvent, DataRetentionLog\n- **Migrations:** 12 (from `0_init` through `20260915010000_mfa_replay_protection`). There are also stale SQLite files at `server/prisma/dev.db` and `server/prisma/prisma/dev.db`, left over from before the move to Postgres.\n\n### API surface (mount â†’ router)\n`/api/auth` (24 endpoints: session, 2FA, Google OAuth, GDPR export/delete, email change) Â· `/api/uploads` (preview, confirm, status, list) Â· `/api/reports` (16: list, detail, share, AI insights, ask, explain, feedback, fixed-toggle, xlsx, pdf, compare, metrics, algorithm catalog) Â· `/api/locations` Â· `/api/venue-profile` Â· `/api/stripe` Â· `/api/webhooks/stripe` Â· `/api/analytics` Â· `/api/operations` (Pro) Â· `/api/scorecards` Â· `/api/employees` Â· `/api/forecasts` (Enterprise) Â· `/api/drilldown` Â· `/api/menu-economics` Â· `/api/notes` Â· `/api/goals` Â· `/api/notifications` Â· `/api/pos` (flag-gated) Â· `/api/free-report` (flag-gated) Â· `/api/team` (Enterprise seats + manager portal) Â· `/api/legal` Â· `/api/email` (unsubscribe) Â· `/api/admin/{auth,data,queues}` plus the inline `INTERNAL_API_KEY` admin endpoints in `index.js` Â· `/health`, `/api/health`, `/api/csrf-token`, `/api/sample-csv`.\n\n### Frontend pages (`client/src/pages`, 37 files, all routed in `main.jsx`)\n- **Public:** Landing, Login, Register, ForgotPassword, ResetPassword, VerifyEmail, ConfirmEmailChange, Demo, Terms, Privacy, DoNotSell, Security, SharedReport, NotFound, ServerError\n- **Authed:** Dashboard, Upload, ReportView, UpsellPlaybook, Compare, Locations, Operations, Analytics, MenuEconomics, Scorecards, EmployeeDetail, Forecast, VenueOnboarding, Billing, Settings, Changelog, Help, Notifications\n- **Separate auth:** Admin, team/TeamLogin, team/TeamAccept, team/TeamPortal\n- Plan gating happens **server-side only** (`requirePlan`, `planGate.js`); client routes are just `ProtectedRoute`, and pages render `UpgradePrompt` themselves.\n\n### Analysis engine\n- `services/leakEngine.js` (~2,640 lines): 13 core detectors, plus the plan-tiered registry in `services/algorithms/` (20 algorithm modules), plus the operational suite (labor-dependent ones need an optional labor CSV). A 25%-of-revenue cap applies per finding, and leak and opportunity totals are kept separate.\n- `upsellEngine.js` (market basket), `scorecardEngine.js` (Pro+), `forecastEngine.js` (Enterprise), `reportGenerator.js` (PDFKit), `excelExport.js`.\n- **Parsing:** `safeParser.js` forks `parserIsolateChild.js` (256 MB heap, 30 s timeout, secrets stripped from env). All providers route to `parsers/genericAdapter.js`; the provider-specific adapters are dead code kept for reference (`parsers/index.js:9-24`).\n\n### Tests / CI\n- `server/tests/`: 59 suites run by `tests/run-all.js`. They stub Prisma, so no DB is needed. CI is `.github/workflows/test.yml` (TruffleHog secret scan, then `npm ci`, `prisma generate`, `npm test`) on push to main and on PRs.\n- `client/e2e/`: 6 Playwright specs (access, auth setup, journey, public, responsive, venue-setup). **These are not in CI.**\n- I did not run either suite (no deps installed; report-only brief).\n\n---\n\n## 2. Per-area status\n\n| Area | Status | Notes |\n|---|---|---|\n| Auth (password, JWT refresh rotation, CSRF, lockout, TOTP 2FA, Google OAuth, email change double opt-in) | **Working** | Most heavily hardened area; many security suites. |\n| Locations + venue profile | **Working** | Per-location profile, copy-from, benchmark calibration. |\n| CSV/XLSX upload â†’ queue â†’ worker | **Working, with gaps** | See Â§4. Upload is solid and defensive (signature check, threat scan, staged-claim, isolated parser, idempotent retries). The failure paths are where the gaps are. |\n| Leak engine / algorithms | **Working** | Broad and heavily tested; normalized to a 30-day period, capped. |\n| Report view / PDF / XLSX / share links | **Working, with gaps** | Calibration note can misstate the basis of an old report (Â§4, G5). |\n| Upsell playbook, Compare, Analytics, Operations, Drilldown | **Working** (by code; no runtime check) | `compareLocations()` in leakEngine is labeled \"placeholder\" (`leakEngine.js:2545`); the Compare page uses `/reports/compare/locations` instead. |\n| Scorecards (Pro) / Forecast (Enterprise) / Spike alerts | **Working, fragile on retry** | Both generated inside the upload job and non-fatal. `forecast.create` violates `uploadId @unique` on a job retry (caught and logged). |\n| Menu economics (item costs, promo scenarios) | **Working** | Newest feature; has route tests. |\n| Stripe billing | **Partially built / risky** | Checkout â†’ webhook â†’ subscription works on the happy path. There is a likely lock contention in the webhook, and processing errors are swallowed with a 200 (Â§4, G2). |\n| POS direct sync (Square, Clover OAuth + nightly sync) | **Partial, off in prod** | Gated by `ENABLE_POS_INTEGRATIONS` (default off in production). No Toast or Lightspeed direct sync. Dedupe logic differs from CSV (Â§4, G7). |\n| Free anonymous audit | **Built, disabled** | `ENABLE_FREE_REPORTS` default off in prod; per-IP limit is an in-memory `Map`. |\n| Weekly digest / lead nurture | **Built, disabled in prod** | Both behind `ENABLE_MARKETING_EMAILS`. The digest is a **paid Pro feature** (README pricing) but is gated as marketing. |\n| SMS / WhatsApp daily summaries (Enterprise, per README) | **Missing** | No Twilio code anywhere in `server/`. This is the advertised Enterprise differentiator. |\n| Team seats (Enterprise manager portal) | **Working** | Separate cookie/auth, location-scoped. |\n| Admin dashboard + Bull Board | **Working** | Bull Board only mounts when Redis exists. |\n| Seed / local dev tooling | **Partially broken** | See Â§3; both `.env.example` files fail `validateEnv` as shipped. |\n| Docs (README, CLAUDE.md) | **Stale** | Wrong stack versions, model count, email provider, and deploy topology. Pricing text is inconsistent: README says a $199 onboarding fee; `Terms.jsx:8` says $249. |\n\n---\n\n## 3. Running locally\n\n**Prereqs:** Node 20 (the nixpacks pin), a **PostgreSQL** instance (SQLite no longer works), and Redis (optional).\n\n```bash\n# 1. Install\ncd server && npm install\ncd ../client && npm install\n\n# 2. Env â€” copy the ROOT example, then FIX two values (see gotchas)\ncp .env.example server/.env\n#   DATABASE_URL=postgresql://user:pass@localhost:5432/venulo   # must be postgres:// â€” file: URLs are rejected\n#   JWT_SECRET=<64+ chars>  node -e \"console.log(require('crypto').randomBytes(64).toString('hex'))\"\n\n# 3. Schema + seed\ncd server\nnpx prisma migrate deploy        # applies the 12 checked-in migrations\nnpx prisma generate\nnpm run seed                     # DESTRUCTIVE: wipes ALL users/locations/reports first\n\n# 4. Run (two terminals)\ncd server && npm run dev         # nodemon â†’ http://localhost:3001\ncd client && npm run dev         # vite   â†’ http://localhost:5173 (proxies /api â†’ :3001)\n\n# Tests\ncd server && npm test            # no DB required (Prisma stubbed)\ncd client && npm run e2e         # Playwright; needs both servers running\n```\n\n**Required env in dev:** only `DATABASE_URL` (a postgres URL) and `JWT_SECRET` (â‰¥64 chars).\n\n**Behavior of optional env in dev:**\n- Stripe unset â†’ new users are created `planStatus: 'active'` and skip checkout.\n- `REDIS_URL` unset â†’ in-memory queue.\n- `ANTHROPIC_API_KEY` unset â†’ AI features return a fallback.\n- `RESEND_API_KEY` / `FROM_EMAIL` unset â†’ email is logged, not sent.\n- Pilot flags (`ENABLE_*`) default **on** when `NODE_ENV !== 'production'` (`pilotControls.js:6`).\n\n**Production-only required env** (`validateEnv.js:18-34`): `ENCRYPTION_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, the 4 `STRIPE_*_PRICE_ID` values, `RESEND_API_KEY`, `FRONTEND_URL`, `INTERNAL_API_KEY`, `ADMIN_JWT_SECRET`. `STORAGE_ROOT` should also be set (a Railway volume); it defaults to the repo root.\n\n**Seed data** (`server/prisma/seed.js`): three accounts `basic@` / `pro@` / `enterprise@venulo.com`, password `test1234`.\n- `pro@` gets 2 locations: one real report parsed from `sample-data/sample-pos-export.csv` (about 3,800 rows, March 2026, with planted anomalies) plus 50 injected synthetic comp rows, and 5â€“6 months of synthetic history.\n\n**Gotchas**\n1. **Both `.env.example` files fail boot as shipped.** Each has `DATABASE_URL=file:./prisma/dev.db`, which `validateEnv.js:13` rejects. `server/.env.example` also has a 37-char `JWT_SECRET` placeholder, which fails the â‰¥64 check. README step 3 (`migrate dev --name init`) is also wrong for a repo that already has migrations.\n2. **The seed wipes every user, location, upload and report** (`seed.js:17-24`) through a raw `new PrismaClient()`, bypassing the soft-delete middleware. Never point it at a shared DB.\n3. **The seed does not use the production parse path.** It calls legacy `toastParser.parseCSV` directly, not `safeParser` â†’ `genericAdapter`. It creates no VenueProfile and no UploadJob. So seeded reports are not proof that the real pipeline works.\n4. **Seeded and test-account metrics feed the live peer benchmark.** `reports.js:576-583` reads `LocationMetric` with no `isTestAccount` filter.\n\n---\n\n## 4. End-to-end flow: onboarding â†’ POS import â†’ revenue-leak report\n\n### Trace\n\n| # | Step | Code | Status |\n|---|---|---|---|\n| 1 | Register (consent, breach check, honeypot) | `routes/auth.js:217` | âœ… Creates the user and a **default location** \"<First>'s Location\". |\n| 2a | *Stripe off:* straight to `/venue-setup?first=1` | `Register.jsx:115` | âœ… |\n| 2b | *Stripe on (prod):* user is `planStatus: 'pending'` and redirected to the onboarding-fee Checkout | `auth.js:272,296` â†’ `stripeService.js:154` | âš ï¸ See G1 and G3. |\n| 3 | Checkout success â†’ webhook `checkout.session.completed` â†’ `createSubscription` â†’ `planStatus: 'active'` | `webhooks.js:46-83`, `stripeService.js:212-255` | âš ï¸ See G2. |\n| 4 | Land on `/dashboard?onboarding=success` â†’ OnboardingWizard modal â†’ `/upload` | `stripeService.js:181`, `OnboardingWizard.jsx:85` | âš ï¸ Venue setup is skipped on this path (G3). |\n| 5 | Upload â†’ `POST /uploads/preview` (signature, threat scan, `validateCSV`, isolated preview, stage) | `uploads.js:109` | âœ… Errors lose specificity (G4). |\n| 6 | Confirm â†’ `POST /uploads/confirm` (active sub, per-user limit, ownership, **28-day report cooldown**, one active job) â†’ Upload + UploadJob â†’ enqueue â†’ 202 | `uploads.js:172` | âœ… / âš ï¸ Cooldown blocks backfilling history (G6). |\n| 7 | Client polls `/uploads/:id/status` | `Upload.jsx:675` | âœ… |\n| 8 | Worker: validate â†’ isolated parse â†’ replace Transactions â†’ `analyzeLeaks` + upsells â†’ scorecards/forecast (by plan) â†’ PDF â†’ upsert Report + LocationMetric â†’ spike check â†’ report-ready email â†’ cache invalidate â†’ `complete` | `uploadWorker.js:86-472` | âœ… Idempotent on retry. âš ï¸ See G4, G8, G9. |\n| 9 | ReportView: `GET /reports/:id` (findings + feedback + locked algos + recovered revenue + peer benchmark + calibration + context notes) | `reports.js:525` | âœ… / âš ï¸ See G5 and G10. |\n\n**Verdict:** the flow works end to end when Stripe is off (dev) and on the happy path in prod. The core, CSV â†’ findings â†’ report, is the most mature part of the codebase. The weak points are at the edges: the paid-signup handoff, error messaging, and whether the report tells the truth about how it was calibrated. There are no stubs in the critical path.\n\n### Named gaps (most important first)\n\n- **G1 â€” A pending signup has no clear way forward.** A user who abandons or cancels Checkout keeps `planStatus: 'pending'`. `cancel_url` goes to `/register?cancelled=true`, but they are already logged in, so `PublicRoute` bounces them to `/dashboard` (`main.jsx:142`). No client code handles `pending` (only `past_due`: `Dashboard.jsx:576`, `Billing.jsx:341`). Upload confirm then fails with 402 \"Your subscription is inactive\". Recovery exists (Billing â†’ pick a plan â†’ `/stripe/create-checkout`), but nothing points the user there.\n\n- **G2 â€” The Stripe webhook likely contends for the user row, and swallows all errors.** **(unverified)**\n  - Inside `prisma.$transaction`, `tx.user.update` locks the user row (`webhooks.js:59`).\n  - `createSubscription` then runs `prisma.user.update` on the same row through the **global** client (`stripeService.js:252`). That update blocks until the interactive transaction times out (Prisma default is 5 s) and rolls back.\n  - Likely result: the Stripe subscription is created and `planStatus` becomes `active`, but `onboardingPaid`/`plan` and the `ProcessedWebhookEvent` idempotency row are lost.\n  - Separately, confirmed from code: the handler returns **200 on any processing error** (`webhooks.js:172-176`), so Stripe never retries a genuinely failed event.\n  - Verify with Stripe test mode and a local Postgres.\n\n- **G3 â€” Paid signups skip venue setup.** The no-Stripe path goes to `/venue-setup?first=1`, but `success_url` goes to `/dashboard` and the wizard pushes to `/upload`. The first report therefore runs on \"generic defaults\", which is the exact failure the code comment at `Register.jsx:113-114` warns about. In production, every real customer takes this path.\n\n- **G4 â€” Parser error messages never reach the user.**\n  - `genericAdapter` builds specific messages, e.g. \"Could not find a Date columnâ€¦ Detected columns: â€¦\" (`genericAdapter.js:212-224`). `parserIsolateChild.js:20` sends only `error.code`, and `safeParser.js:45` replaces the text with a generic one.\n  - As a result, both `/preview` (`uploads.js:164`) and the worker (`uploadWorker.js:436`) show \"could not be processed / check the file format\".\n  - The client never maps codes such as `MISSING_COLUMNS` (no matches in `client/src`).\n  - The worker also throws plain `Error`s for `validateCSV` failures (`uploadWorker.js:139-140`), with no `userMessage`, so those are generic too.\n  - For a first-time user with an odd POS export, this is the most likely place the flow dead-ends.\n\n- **G5 â€” The report's calibration note can misstate what the report was calibrated on.** `GET /reports/:id` recomputes the note from the location's *current* VenueProfile (`reports.js:641-658`). Neither the venue type nor the calibration used at analysis time is stored on Report. Combined with G3, a user who sets their venue type *after* the first report sees that report labeled \"Analyzed as Casual Dining\", even though it was computed on defaults. The PDF, meanwhile, embeds the true calibration (`uploadWorker.js:265`), so web and PDF disagree.\n\n- **G6 â€” The 28-day cooldown blocks history backfill during onboarding.** One successful report per location per 28 days (`uploads.js:241-259`). A new customer cannot load the last 3â€“6 months, so MoM trend, AOV drop, recurring issues, forecasts and \"recovered revenue\" all stay empty for months. There is no admin or first-week exemption.\n\n- **G7 â€” POS sync and CSV use inconsistent dedupe rules.** POS sync skips a location if *any* Upload row is less than 25 days old (`posSyncService.js:102-116`), including failed uploads. The CSV path was deliberately fixed to key off successful Reports (`uploads.js:234-240`). A failed CSV attempt therefore silently suppresses POS sync for 25 days.\n\n- **G8 â€” Job status says \"failed\" while a retry is still pending, and the failure email can go out twice.**\n  - With Redis, a transient failure sets `status: 'failed'` (`uploadWorker.js:436`) before BullMQ's retry, so the UI tells the user to re-upload while the job is still retrying. The `activeJob` guard (`uploads.js:263`) also stops blocking at that point.\n  - The failure email condition `!job.attemptsMade || job.attemptsMade >= 2` (`uploadWorker.js:439`) fires on attempt 1 as well as the last attempt.\n\n- **G9 â€” Large files may crash the analysis.** **(unverified)** `Math.max(...txnDates)` / `Math.min(...)` spreads every transaction into one call (`leakEngine.js:2437`; the same pattern is at `posSyncService.js:131-132`). V8 throws `RangeError` somewhere past ~10âµ arguments. The 50 MB upload limit allows files with more rows than that, depending on whether the 256 MB parser heap gives out first. The parser-isolation work does not cover this: the spread runs in the worker, not in the isolated child.\n\n- **G10 â€” A stale report list after upload.** **(unverified)** `/api/reports` is mounted with `Cache-Control: private, max-age=600` (`index.js:217`). The service worker is `NetworkOnly` for `/api`, but the browser HTTP cache still applies, so a Dashboard that fetched `/reports` in the last 10 minutes may not show the new report. `/api/locations` had caching removed for this exact reason (`index.js:218-219`).\n\n- **G11 â€” Peer benchmark data is polluted.** Test accounts and seed history count toward the \"n â‰¥ 10 locations\" cohort (`reports.js:576`; no `isTestAccount` filter).\n\n**Minor issues noticed in passing:**\n- The upload threat scan rejects any CSV with a line ending in `--` or containing `DELETE FROM` / `exec(` (`uploads.js:24-29`), which invites false positives on free-text item names.\n- `.stage.json.claimed` marker files are never cleaned up (`stagedUploads.js:18`).\n\n---\n\n## 5. Follow-up briefs (ordered by leverage)\n\n1. **Fix the paid-signup handoff (G1 + G3).** Send Checkout `success_url` to `/venue-setup?first=1`, add a `pending` banner/CTA on Dashboard and Upload that resumes checkout, and make `cancel_url` land somewhere reachable for a logged-in user. **Owner: claude-code**\n2. **Make the Stripe webhook safe (G2).** Pass the transaction client into `createSubscription` (or move the Stripe calls outside the tx and write status after commit), return 500 on processing failure so Stripe retries, and add an integration test against real Postgres. **Owner: claude-code**\n3. **Surface actionable upload errors (G4 + G8).** Pass `userMessage` through the parser IPC, attach it to `validateCSV` failures in the worker, map error codes in `Upload.jsx`, and only set `failed` (and send the email) on the final attempt. **Owner: codex**\n4. **Persist report calibration and allow onboarding backfill (G5 + G6).** Add `venueType`/`calibration` columns to Report (via a migration), read them in `GET /reports/:id`, and allow multiple historical uploads (distinct past periods) during a location's first 14 days. **Owner: claude-code**\n5. **Unblock local dev and fix stale docs.** Fix both `.env.example` files (postgres URL, 64-char secret), rewrite README setup (`migrate deploy`, Resend, Railway single-service), update CLAUDE.md (React 19 / Vite 6 / 24 models), add a non-destructive `seed:dev` guard (refuse if non-localhost or `NODE_ENV=production`), and filter `isTestAccount` from benchmarks (G11). **Owner: codex**\n\n*Next in line after the five above:* G7 (align POS-sync dedupe with CSV), G9 (replace the spread min/max with a loop), G10 (remove the private cache on `/api/reports` list and detail), and decide whether the weekly digest is a paid feature or marketing, plus the missing Twilio/SMS Enterprise feature.\n"}}],"terminal_reason":"completed","fast_mode_state":"off","fast_mode_disabled_reason":"sdk_opt_in_required","subagent_stats":{"spawned":0,"requested":{"background":0,"foreground":0,"unset":0},"started_in_background":0,"max_depth":0,"spawned_by_subagents":0,"completed":0,"failed":0,"killed":{"parent":0,"user":0,"system":0},"refused":{"depth_limit":0,"concurrency_limit":0,"budget":0},"by_type":{}},"is_error":false,"num_turns":79,"subtype":"success","api_error_status":null,"result":"The audit is done, but the report file is not written. Writing `results/2026-09-29-venulo-repo-audit.md` was denied, and I couldn't find the swarm repo: `$WORK_REPO` wasn't readable, and I have no access outside this worktree. The only place I could have written it is this worktree, `C:\\Users\\Cruzz\\venulo-swarm-workrepo`, which is the app repo on the audit branch.\n\nTo finish, I need two things from you:\n1. **Where the report goes:** the swarm repo's path, or confirmation that `results/` in this worktree is right.\n2. **Write permission** for that path.\n\nOnce I have those, I'll write the full report; the content is ready. I haven't committed anything and no application code was changed. I didn't run the tests either: there's no `node_modules` here, and installing felt out of scope for a report-only brief.\n\n**What the audit found**\n\n- **Overall:** onboarding â†’ upload â†’ leak report works end to end in dev (Stripe off) and on the happy path in prod. Nothing on that path is a stub. The CSV â†’ findings â†’ report core is the most mature part of the code; the problems are at the edges.\n- **Local setup is broken as shipped:**\n  - Both `.env.example` files use `DATABASE_URL=file:...`, which `server/utils/validateEnv.js:13` rejects.\n  - `server/.env.example` also has a `JWT_SECRET` placeholder that's too short (the check needs 64+ characters).\n  - `npm run seed` deletes every user, location and report before seeding.\n- **The docs are out of date.** CLAUDE.md says React 18 and 20 database models; the code has React 19 and 24 models. The README describes SMTP email and a Vercel frontend; the code uses Resend and a single Railway service. The SMS/WhatsApp feature advertised for Enterprise has no code at all.\n\n**Gaps in the main flow**\n\n- **G1 â€“ stuck signups:** a user who abandons Stripe checkout stays `pending` with no on-screen way forward, and uploads fail with a 402.\n- **G2 â€“ Stripe webhook (not verified at runtime):** it probably blocks itself on the user row, losing `onboardingPaid` and the duplicate-event record. Confirmed from the code: it returns 200 even when processing fails, so Stripe never retries.\n- **G3 â€“ paying customers skip venue setup:** after checkout they land on the dashboard, so their first report runs on generic defaults.\n- **G4 â€“ vague upload errors:** the isolated parser drops the specific messages (e.g. \"missing Date column\"), so users only see \"could not be processed\".\n- **G5 â€“ misleading calibration note:** the report page rebuilds it from the *current* venue profile, so the web report and the PDF can disagree.\n- **G6 â€“ no history backfill:** the 28-day upload limit means a new customer can't load past months, so trend features stay empty.\n- **Smaller issues:**\n  - POS sync is blocked for 25 days by any earlier upload, even a failed one.\n  - A job shows \"failed\" while a retry is still pending, and the failure email can go out twice.\n  - A very large file may crash the analysis (not verified).\n  - The report list may stay stale for up to 10 minutes after an upload (not verified).\n  - Test accounts count toward the peer benchmark.\n\n**Five follow-up briefs, highest leverage first**\n\n1. Fix the paid-signup handoff: send checkout success to venue setup and show resume-checkout for `pending` users (G1, G3). **claude-code**\n2. Make the Stripe webhook safe: no lock contention, and return a failure status so Stripe retries (G2). **claude-code**\n3. Show actionable upload errors, and mark a job failed only after its last retry (G4). **codex**\n4. Store the calibration on each report, and allow a history backfill window when a location is new (G5, G6). **claude-code**\n5. Fix both `.env.example` files, the README and CLAUDE.md; guard the seed against non-local databases; and filter test accounts out of benchmarks. **codex**","ttft_ms":2587,"type":"result","duration_ms":287903,"uuid":"67ee52c3-e626-4340-8e30-15ab24323c4f","ttft_stream_ms":848,"time_to_request_ms":202,"first_content_frame_ms":848,"queued_turn_count":0,"result_index":0}
+
+
+
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw package.json,server/package.json,client/package.json; Get-Content -Raw server/utils/validateEnv.js; Get-ChildItem -Force -Name; Get-Command node,npm,psql,postgres,pg_ctl,docker -ErrorAction SilentlyContinue | Select-Object Name,Source; Get-Service -Name '*postgres*','*docker*' -ErrorAction SilentlyContinue | Select-Object Name,Status; Test-Path server/node_modules; Test-Path client/node_modules; rg --files -g AGENTS.md -g '*env*example*' -g '*lock*' -g '*compose*' -g '*postgres*'" in C:\Users\Cruzz\venulo-swarm-workrepo
+ exited 1 in 1679ms:
+Get-Content : Cannot find path 'C:\Users\Cruzz\venulo-swarm-workrepo\package.json' because it does not exist.
+At line:2 char:1
++ Get-Content -Raw package.json,server/package.json,client/package.json ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\Cruzz\...po\package.json:String) [Get-Content], ItemNotFoundEx 
+   ception
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+{
+  "name": "venulo-server",
+  "version": "1.0.0",
+  "description": "Venulo backend - Restaurant Revenue Intelligence",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node tests/run-all.js",
+    "dev": "nodemon index.js",
+    "prod": "NODE_ENV=production SERVE_CLIENT=true node index.js",
+    "build": "cd ../client && npm run build",
+    "deploy": "npm run build && npm run prod",
+    "test-accounts": "node scripts/ensureTestAccounts.js",
+    "migrate": "npx prisma migrate dev",
+    "generate": "npx prisma generate",
+    "seed": "node prisma/seed.js",
+    "studio": "npx prisma studio",
+    "security-check": "node scripts/security-check.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.91.1",
+    "@bull-board/api": "6.21.3",
+    "@bull-board/express": "6.21.3",
+    "@prisma/client": "^5.10.0",
+    "@react-email/components": "1.0.12",
+    "@react-email/render": "2.1.0",
+    "@sentry/node": "^10.46.0",
+    "bcrypt": "6.0.0",
+    "bullmq": "5.81.0",
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
+    "ioredis": "5.10.1",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "2.3.0",
+    "node-cron": "^4.2.1",
+    "papaparse": "^5.4.1",
+    "pdfkit": "^0.15.0",
+    "pino": "10.3.1",
+    "pino-http": "11.0.0",
+    "pino-pretty": "13.1.3",
+    "posthog-node": "5.46.1",
+    "qrcode": "^1.5.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "resend": "6.12.4",
+    "simple-statistics": "7.10.2",
+    "speakeasy": "^2.0.0",
+    "stripe": "^20.4.1",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "fast-check": "4.9.0",
+    "nodemon": "^3.1.0",
+    "prisma": "^5.10.0"
+  },
+  "overrides": {
+    "qs": "^6.16.0"
+  }
+}
+
+{
+  "name": "venulo-client",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "e2e": "playwright test",
+    "e2e:headed": "playwright test --headed",
+    "e2e:report": "playwright show-report"
+  },
+  "dependencies": {
+    "@astryxdesign/core": "0.1.8",
+    "@astryxdesign/theme-neutral": "0.1.8",
+    "@headlessui/react": "2.2.10",
+    "@radix-ui/react-avatar": "1.1.11",
+    "@radix-ui/react-checkbox": "1.3.3",
+    "@radix-ui/react-collapsible": "1.1.12",
+    "@radix-ui/react-dialog": "1.1.15",
+    "@radix-ui/react-dropdown-menu": "2.1.16",
+    "@radix-ui/react-label": "2.1.8",
+    "@radix-ui/react-progress": "1.1.8",
+    "@radix-ui/react-scroll-area": "1.2.10",
+    "@radix-ui/react-select": "2.2.6",
+    "@radix-ui/react-separator": "1.1.8",
+    "@radix-ui/react-slot": "1.2.4",
+    "@radix-ui/react-switch": "1.2.6",
+    "@radix-ui/react-tabs": "1.1.13",
+    "@radix-ui/react-tooltip": "1.2.8",
+    "@sentry/react": "^10.46.0",
+    "@stripe/stripe-js": "^9.0.0",
+    "@tanstack/react-table": "9.1.2",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.18",
+    "axios": "^1.6.7",
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "cmdk": "1.1.1",
+    "lucide-react": "1.14.0",
+    "postcss": "^8.4.35",
+    "posthog-js": "1.407.2",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-dropzone": "^14.2.3",
+    "react-hot-toast": "^2.4.1",
+    "react-router-dom": "7.18.3",
+    "recharts": "^2.12.2",
+    "tailwind-merge": "3.5.0",
+    "tailwindcss": "^3.4.1",
+    "tailwindcss-animate": "1.0.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "@types/react": "19.2.17",
+    "vite": "6.4.3",
+    "vite-plugin-pwa": "1.3.0"
+  }
+}
+
+'use strict';
+
+const { logger } = require('./logger');
+
+/**
+ * Validates all required and optional environment variables on server boot.
+ * Call this as the very first thing in server/index.js.
+ */
+function validateEnv() {
+  const required = {
+    // The Prisma schema/provider is PostgreSQL â€” a file: (SQLite) URL will make
+    // every Prisma call throw at runtime even though the server boots.
+    DATABASE_URL: { validate: (v) => v.startsWith('postgresql://') || v.startsWith('postgres://'), error: 'Must be a PostgreSQL connection string. The schema provider is postgresql â€” SQLite file: URLs no longer work; point dev at a local or Railway Postgres.' },
+    JWT_SECRET: { validate: (v) => v.length >= 64, error: 'Must be at least 64 characters' },
+  };
+
+  // Production-only required variables
+  const productionRequired = {
+    ENCRYPTION_KEY: { validate: (v) => /^[0-9a-f]{64}$/i.test(v), error: 'Must be exactly 64 hex characters' },
+    STRIPE_SECRET_KEY: { validate: (v) => v.startsWith('sk_'), error: 'Must start with sk_' },
+    STRIPE_WEBHOOK_SECRET: { validate: (v) => v.startsWith('whsec_'), error: 'Must start with whsec_' },
+    STRIPE_BASIC_PRICE_ID: { validate: (v) => v.startsWith('price_'), error: 'Must start with price_' },
+    STRIPE_PRO_PRICE_ID: { validate: (v) => v.startsWith('price_'), error: 'Must start with price_' },
+    STRIPE_ENTERPRISE_PRICE_ID: { validate: (v) => v.startsWith('price_'), error: 'Must start with price_' },
+    STRIPE_ONBOARDING_PRICE_ID: { validate: (v) => v.startsWith('price_'), error: 'Must start with price_' },
+    RESEND_API_KEY: { validate: (v) => v.startsWith('re_'), error: 'Must start with re_' },
+    FRONTEND_URL: { validate: (v) => v.startsWith('http'), error: 'Must be a valid URL' },
+    INTERNAL_API_KEY: { validate: (v) => v.length >= 32, error: 'Must be at least 32 characters' },
+    // Admin tokens are minted as jwt.sign({ role: 'admin' }, ADMIN_JWT_SECRET).
+    // A guessable value here means anyone can forge an admin session, so this is
+    // length-checked like JWT_SECRET. (Found in the wild set to a 9-character
+    // dictionary word + digits, with nothing validating it.)
+    ADMIN_JWT_SECRET: { validate: (v) => v.length >= 32, error: 'Must be at least 32 characters â€” it signs admin sessions' },
+  };
+
+  const optional = {
+    ENABLE_MARKETING_EMAILS: { warn: 'Automated marketing is disabled by default in production during the pilot.' },
+    ENABLE_FREE_REPORTS: { warn: 'Anonymous free-report processing is disabled by default in production during the pilot.' },
+    ENABLE_POS_INTEGRATIONS: { warn: 'POS connections and automatic sync are disabled by default in production during the pilot.' },
+    STORAGE_ROOT: { warn: 'Persistent file storage is not configured. Mount a Railway volume and set STORAGE_ROOT to its absolute mount path before accepting customer uploads.' },
+    REDIS_URL: { warn: 'Redis not configured â€” job queue will use in-memory fallback. Not recommended for production.' },
+    SENTRY_DSN: { warn: 'Sentry not configured â€” errors will not be tracked.' },
+    ANTHROPIC_API_KEY: { warn: 'Anthropic API key not configured â€” AI insights will be disabled.' },
+    DIRECT_DATABASE_URL: { warn: 'Direct database URL not configured â€” migrations must use the main DATABASE_URL.' },
+    GOOGLE_CLIENT_ID: { warn: 'Google OAuth not configured â€” "Sign in with Google" will be hidden.' },
+    POSTHOG_API_KEY: { warn: 'PostHog not configured â€” server-side product analytics disabled (no-op).' },
+    // Both are needed together; one alone silently does nothing, which is the
+    // failure mode worth warning about since it bills pilots at full price.
+    PILOT_ACCESS_CODE: { warn: 'Pilot access code not set â€” the pilot discount cannot be claimed at signup.' },
+    STRIPE_PILOT_COUPON_ID: { warn: 'Pilot coupon not set â€” the pilot discount cannot be applied.' },
+    HEALTH_DETAIL_TOKEN: { warn: 'Health detail token not set â€” /health returns a bare status to everyone (safe default). Set it to read the detailed checks via the x-health-token header.' },
+  };
+
+  const errors = [];
+  const warnings = [];
+  const isProd = process.env.NODE_ENV === 'production';
+  for (const name of ['ENABLE_MARKETING_EMAILS', 'ENABLE_FREE_REPORTS', 'ENABLE_POS_INTEGRATIONS']) {
+    if (process.env[name] !== undefined && !['true', 'false'].includes(process.env[name])) errors.push(`  - ${name}: Must be true or false`);
+  }
+  if (process.env.STORAGE_ROOT && !require('path').isAbsolute(process.env.STORAGE_ROOT)) errors.push('  - STORAGE_ROOT must be an absolute path');
+
+  // Check required vars
+  for (const [key, config] of Object.entries(required)) {
+    const val = process.env[key];
+    if (!val) {
+      errors.push(`  - ${key}: Missing (${config.error})`);
+    } else if (!config.validate(val)) {
+      errors.push(`  - ${key}: ${config.error}`);
+    }
+  }
+
+  // Check production-only required vars
+  if (isProd) {
+    for (const [key, config] of Object.entries(productionRequired)) {
+      const val = process.env[key];
+      if (!val) {
+        errors.push(`  - ${key}: Missing (${config.error})`);
+      } else if (!config.validate(val)) {
+        errors.push(`  - ${key}: ${config.error}`);
+      }
+    }
+  }
+
+  // Check optional vars
+  for (const [key, config] of Object.entries(optional)) {
+    if (!process.env[key]) {
+      warnings.push(`  - ${key}: ${config.warn}`);
+    }
+  }
+
+  // Production-mode sanity warnings â€” things that boot fine but break customers
+  if (isProd) {
+    if (!process.env.FROM_EMAIL) {
+      warnings.push('  - FROM_EMAIL: Not set â€” emails will send from Resend\'s sandbox address (onboarding@resend.dev), which can ONLY deliver to the Resend account owner. Customer emails WILL fail. Verify a domain at resend.com/domains and set FROM_EMAIL.');
+    }
+    // Half-configured pilots are worse than none: a pilot types the code, the
+    // signup succeeds, and they are billed the full rate with no error anywhere.
+    const hasPilotCode = Boolean(process.env.PILOT_ACCESS_CODE);
+    const hasPilotCoupon = Boolean(process.env.STRIPE_PILOT_COUPON_ID);
+    if (hasPilotCode !== hasPilotCoupon) {
+      warnings.push(`  - PILOT DISCOUNT HALF-CONFIGURED: ${hasPilotCode ? 'PILOT_ACCESS_CODE is set but STRIPE_PILOT_COUPON_ID is not' : 'STRIPE_PILOT_COUPON_ID is set but PILOT_ACCESS_CODE is not'}. Pilots will be charged FULL PRICE with no error shown. Set both or neither.`);
+    }
+    if (process.env.STRIPE_SECRET_KEY?.startsWith('sk_test_')) {
+      warnings.push('  - STRIPE_SECRET_KEY: Using a TEST-mode key in production â€” checkouts will be sandbox transactions, no real charges. Switch to sk_live_ keys, live price IDs, and a live webhook endpoint secret when going live.');
+    }
+  }
+
+  // Log warnings
+  if (warnings.length > 0) {
+    logger.warn('Environment warnings:');
+    warnings.forEach(w => logger.warn(w));
+  }
+
+  // Fatal on errors
+  if (errors.length > 0) {
+    logger.fatal('FATAL: Environment configuration errors:');
+    errors.forEach(e => logger.fatal(e));
+    logger.fatal('Server cannot start. Fix these environment variables and restart.');
+    process.exit(1);
+  }
+}
+
+module.exports = { validateEnv };
+
+.claude
+.github
+.vite
+client
+docs
+reports
+sample-data
+scripts
+server
+uploads
+.env.example
+.git
+.gitignore
+AGENTS.md
+check-db-exposure.js
+CLAUDE.md
+COMPLIANCE.md
+DEPLOYMENT-REPORT.md
+nixpacks.toml
+PILOT_READINESS.md
+PILOT_SECURITY_NOTICE.md
+railway.json
+README.md
+SECURITY-TESTING.md
+SECURITY.md
+stop-profitpulse.bat
+
+Name     Source                          
+----     ------                          
+node.exe C:\Program Files\nodejs\node.exe
+npm.ps1  C:\Program Files\nodejs\npm.ps1 
+True
+True
+
+
+rg : The term 'rg' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the 
+spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:2 char:417
++ ... t-Path server/node_modules; Test-Path client/node_modules; rg --files ...
++                                                                ~~
+    + CategoryInfo          : ObjectNotFound: (rg:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw AGENTS.md; node --version; npm.cmd --version; git rev-parse HEAD; Get-ChildItem server,client -Force -Filter '.env*' | Select-Object FullName; Get-ChildItem 'C:\\Program Files' -Directory | Where-Object Name -Match 'Postgre|Docker'; Get-ChildItem server/node_modules -Name | Select-Object -First 8; Get-ChildItem client/node_modules -Name | Select-Object -First 8; node -e \"for (const m of ['express','@prisma/client','dotenv']) {try {console.log(m,require.resolve(m,{paths:['./server']}))}catch(e){console.log(m,e.code)}} const net=require('net'); for(const port of [5432,3001,5173]) {const s=net.connect({host:'127.0.0.1',port});s.setTimeout(1500);s.on('connect',()=>{console.log(port,'listening');s.destroy()});s.on('error',e=>console.log(port,e.code));s.on('timeout',()=>{console.log(port,'timeout');s.destroy()})}\"" in C:\Users\Cruzz\venulo-swarm-workrepo
+ succeeded in 751ms:
+# Venulo â€” Project Documentation
+
+## Architecture
+
+**Monorepo** with two directories:
+- `client/` â€” React 18 + Vite 5 + TailwindCSS 3.4 + shadcn/ui
+- `server/` â€” Express 4 + Prisma ORM + PostgreSQL
+
+**Production deployment:** Single Express server serves both the API (`/api/*`) and the built Vite client (static files from `client/dist/`). Deployed on Railway.
+
+**Database:** PostgreSQL (Railway). Prisma ORM with soft-delete middleware.
+
+**Auth:** JWT in httpOnly cookies with refresh token rotation. CSRF double-submit cookies. Account lockout after 10 failed attempts. Optional TOTP 2FA.
+
+**Key services:** BullMQ job queue (Redis), Stripe subscriptions, Anthropic Claude API (AI insights, optional), nodemailer (SMTP email), PDFKit (report generation).
+
+## Directory Structure
+
+```
+server/
+  index.js              Main Express app
+  lib/prisma.js          Single shared Prisma client
+  middleware/             Auth, CSRF, rate limiting, validation, ownership checks
+  routes/                API endpoints (auth, uploads, reports, locations, etc.)
+  services/              Business logic (leak engine, scorecards, email, Stripe, AI)
+  workers/               BullMQ upload worker
+  queues/                Job queue configuration
+  prisma/schema.prisma   Database schema
+  utils/                 Logger, env validation, audit logging
+client/
+  src/main.jsx           App entry point with routing
+  src/hooks/             useAuth, useCache, useDashboardWidgets
+  src/pages/             All page components (lazy-loaded)
+  src/components/        Shared UI components (shadcn/ui, Skeleton, etc.)
+```
+
+## Access Control Matrix
+
+| Role | Can Access |
+|------|-----------|
+| **Unauthenticated** | Landing page, login, register, forgot/reset password, verify email, legal pages (terms, privacy, do-not-sell), shared reports (via token), demo page, health check |
+| **Authenticated (any plan)** | Dashboard, upload, reports, locations, settings, billing, notifications, changelog, help |
+| **Pro/Enterprise** | Analytics, scorecards, employee detail, forecasts, operations, drilldown, upsell playbook, compare, venue setup |
+| **Enterprise only** | Forecast engine, spike detection alerts |
+| **Location owner** | Only their own locations, uploads, reports, and employee data (enforced by `userId` filter on every query + ownership middleware) |
+| **Admin** | Admin dashboard (separate auth), all user data, system stats, MRR, churn risk, error logs, audit logs |
+
+## Expected User Behavior
+
+### Normal Usage
+- Login: 1-3 times per day
+- Uploads: 1-10 per month per location (monthly POS export cycle)
+- Report views: 5-20 per day
+- API calls from dashboard: 10-50 per session
+- Session length: 15 min - 2 hours
+- Locations: 1-5 per account
+
+### Power User
+- Daily logins, multiple locations
+- Frequent report sharing (share links)
+- Uses analytics, scorecards, and forecasts
+- May upload weekly instead of monthly
+
+### Suspicious Behavior (rate limited / blocked)
+- >10 login attempts in 15 minutes â†’ account lockout (30 min)
+- >20 failed logins from same IP targeting 3+ accounts â†’ IP block (1 hour)
+- >5 uploads in 1 hour â†’ rate limited
+- >500 API calls in 15 minutes from one IP â†’ global rate limit
+- Accessing report IDs sequentially â†’ ownership check blocks (403)
+- Honeypot field filled on registration â†’ silent fake success (201)
+- Requests to non-existent admin endpoints â†’ 404 JSON response
+
+## Security Rules for AI Coding Assistants
+
+**NEVER:**
+- Remove authentication middleware (`authenticate`) from any route
+- Remove ownership checks (`verifyLocationOwnership`, `userId` filters)
+- Remove rate limiting from any endpoint
+- Expose raw database queries or Prisma errors to the client
+- Store secrets in client-side code or VITE_ environment variables
+- Log passwords, tokens, full API keys, or 2FA secrets
+- Use `dangerouslySetInnerHTML` with user-provided content
+- Use `$executeRawUnsafe` with user-provided strings in the query template
+- Return `passwordHash`, `refreshTokenHash`, `twoFactorSecret`, or `twoFactorBackup` in API responses
+- Create new `PrismaClient()` instances â€” always import from `server/lib/prisma.js`
+
+**ALWAYS:**
+- Add rate limiting to new endpoints (use `apiLimiter` at minimum)
+- Add input validation (express-validator) to routes accepting user input
+- Check ownership before returning user-specific data (`where: { userId: req.userId }`)
+- Add new environment variables to `server/utils/validateEnv.js`
+- Use `select` in Prisma queries to fetch only needed fields
+- Use `sanitizeUser()` before returning user objects
+- Use the structured pino logger (`server/utils/logger.js`), never `console.log`
+- Handle errors with try/catch and return JSON error responses
+- Use parameterized queries (`$1`, `$2`) in any raw SQL
+
+## Destructive Operations Against Production
+
+Written after 2026-09-14, when an authorized instruction to "delete every
+account except one" silently also destroyed 10 locations, 4 uploads, 4 reports
+and 15,576 transactions. The deletion was legitimate. The failure was that the
+cascade was never counted or disclosed, so the result looked like an
+unexplained wipe and cost hours of incident investigation.
+
+**Before ANY destructive operation on production data:**
+
+1. **Count the dependent rows first and state them.** The schema declares 30
+   `onDelete: Cascade` relations. `User` cascades to `Location`, which cascades
+   onward to `Upload`, `Report`, `Transaction` and others, and `Upload` and
+   `Report` cascade further still. Deleting N users is never "deleting N rows."
+2. **Say the full blast radius before running it**, not after. "This removes 9
+   users, 9 locations, 4 uploads, 4 reports and 15,576 transactions" â€” then act.
+3. **Take a verified backup first** (`node scripts/backup-encrypted.js`) and do
+   not prune or delete existing backups as part of the operation.
+4. **Report what actually happened**, including dependent rows removed.
+
+**NEVER run against production:**
+- `prisma migrate reset` â€” drops and recreates the schema
+- `prisma db push --force-reset`
+- `prisma db seed` â€” `server/prisma/seed.js` begins by wiping every table
+- Any bare `deleteMany` whose cascade you have not counted
+
+`prisma migrate deploy` is the only Prisma command that is safe on production;
+it is what the deploy pipeline runs.
+
+**Do not reseed production to make row counts look healthier.** An empty
+production database is a fact, not a bug to paper over.
+
+**One named operator at a time.** Two agents working the same repo have already
+collided three times: duplicated encrypted-backup implementations, a clobbered
+`scripts/backup-crypto.js`, and simultaneous edits to the same incident
+document. Before touching shared infrastructure, check whether it already
+exists and who owns it.
+
+**Current ownership:** Codex owns backup, encryption and recovery scripts
+(`scripts/backup-crypto.js`, `backup-encrypted.js`, `restore-encrypted-backup.js`,
+`verify-local-backup.js`, `verify-restore.js`). Do not edit those without
+coordinating.
+
+## Rate Limiting Configuration
+
+| Endpoint Group | IP Limit | User Limit |
+|---------------|----------|------------|
+| Auth (login/register) | 10/15min | N/A |
+| Forgot password | 3/hour | N/A |
+| Upload | 10/hour | 3/hour |
+| General API | 100/15min | N/A |
+| Admin | 3/15min | N/A |
+| Webhooks | 100/min | N/A |
+| AI insights | N/A | 20/hour |
+| Share tokens | N/A | 15/day |
+| Global catch-all | 500/15min | N/A |
+
+## Database
+
+- **Provider:** PostgreSQL on Railway
+- **ORM:** Prisma with soft-delete middleware on: Location, Report, Upload, Goal, ShareToken, BusinessContextNote, PromotionScenario
+  (authoritative list: `SOFT_DELETE_MODELS` in `server/middleware/softDelete.js`)
+- **Single client:** `server/lib/prisma.js` â€” never create `new PrismaClient()` elsewhere
+- **Migrations:** `npx prisma migrate deploy` (runs at deploy time, not build time)
+- **Models (25):** User, Location, VenueProfile, Upload, Transaction, Report, NotificationLog, CancellationReason, LocationMetric, AuditLog, SecurityLog, EmailLog, ShareToken, Goal, ProcessedWebhookEvent, DataRetentionLog, Forecast, EmployeeScorecard, PosConnection, UploadJob, TeamMember, FindingFeedback, BusinessContextNote, ItemCost, PromotionScenario
+
+## Third-Party Services
+
+| Service | Server-side only? | Rate limited? |
+|---------|-------------------|---------------|
+| Stripe | Yes (sk_ key in server only) | Webhook: 100/min |
+| Anthropic Claude | Yes (ANTHROPIC_API_KEY in server) | 20 AI calls/hour per user |
+| SMTP email | Yes (nodemailer in server) | Via API rate limiter |
+| Sentry | Yes (server DSN) + client (VITE_SENTRY_DSN, public) | N/A |
+
+## Coding Standards
+
+- **Backend:** CommonJS (`require`), Express routes, Prisma ORM, pino logger
+- **Frontend:** ESM (`import`), React 18, Vite, TailwindCSS, shadcn/ui, Recharts
+- **Styling:** Tailwind utility classes, `cn()` helper (clsx + tailwind-merge)
+- **State:** React hooks (useState, useEffect), no Redux/Zustand
+- **Icons:** Lucide React
+- **Toasts:** react-hot-toast
+- **Forms:** Controlled components with express-validator on backend
+
+v24.14.0
+11.9.0
+4b057f4a11aa1fa3ac1eda0d1afacbf5a22f0aa7
+
+express C:\Users\Cruzz\venulo-swarm-workrepo\server\node_modules\express\index.js
+@prisma/client C:\Users\Cruzz\venulo-swarm-workrepo\server\node_modules\@prisma\client\default.js
+dotenv C:\Users\Cruzz\venulo-swarm-workrepo\server\node_modules\dotenv\lib\main.js
+5432 ECONNREFUSED
+3001 ECONNREFUSED
+5173 ECONNREFUSED
+FullName                                                
+--------                                                
+C:\Users\Cruzz\venulo-swarm-workrepo\server\.env.example
+.bin
+.cache
+.prisma
+@anthropic-ai
+@apm-js-collab
+@babel
+@bull-board
+@ioredis
+.bin
+@alloc
+@apideck
+@astryxdesign
+@babel
+@esbuild
+@floating-ui
+@formatjs
+
+
+
+codex
+The required branch is checked out and dependencies are present. No local PostgreSQL service or executable was found, and port 5432 refuses connections. I’ll check migration startup with a fake localhost configuration; if that fails, I’ll document the blocker and stop as requested.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$env:NODE_ENV='"'development'; "'$env:DATABASE_URL='"'postgresql://venulo_qa:fake_local_only@127.0.0.1:5432/venulo_qa?schema=public&connect_timeout=3'; "'$env:DIRECT_DATABASE_URL=$env:DATABASE_URL; $env:JWT_SECRET=('"'qa-local-only-' * 8); "'$env:ENABLE_MARKETING_EMAILS='"'false'; "'$env:ENABLE_POS_INTEGRATIONS='"'false'; "'$env:RESEND_API_KEY='"''; "'$env:STRIPE_SECRET_KEY='"''; node node_modules/prisma/build/index.js migrate deploy" in C:\Users\Cruzz\venulo-swarm-workrepo\server
+ exited 1 in 3529ms:
+Prisma schema loaded from prisma\schema.prisma
+Datasource "db": PostgreSQL database "venulo_qa", schema "public" at "127.0.0.1:5432"
+
+Error: P1001: Can't reach database server at `127.0.0.1:5432`
+
+Please make sure your database server is running at `127.0.0.1:5432`.
+
+codex
+Prisma failed with `P1001: Can't reach database server at 127.0.0.1:5432`. I’m stopping runtime QA per your constraint and writing the report with the exact blocker, untested flows, and G1–G6 clearly marked as prior audit findings—not verified bugs.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "@'
+# Venulo QA pass — blocked before runtime testing
+
+Requested report date: 2026-09-29. Attempt performed: 2026-09-30.
+
+**Status: needs-human. No end-to-end flow was verified.** Local PostgreSQL is unavailable; migration startup failed. Per the brief, testing stopped instead of inferring runtime results. This report is not pilot sign-off.
+
+## Scope and evidence
+
+- Worktree: "'`C:'"\\Users\\Cruzz\\venulo-swarm-workrepo"'`.
+- Branch: `swarm/2026-09-29-venulo-qa-pass`; HEAD: `4b057f4a11aa1fa3ac1eda0d1afacbf5a22f0aa7`.
+- Read `results/2026-09-29-venulo-repo-audit/agent-raw.json`, including its `result` field. That field contains the audit summary; the fuller flow map/run notes are embedded in the same JSON'"'s denied Write payload. Both were read. Prior static findings below are attributed to that audit, not presented as newly observed failures.
+- Application code, tracked configuration, and lockfiles were not modified. No commits, merges, deployment, email, paid service calls, seed operations, or real-data submissions occurred.
+
+## Severity-ordered observed blockers
+
+### QA-ENV-01 — P0 local QA blocker: required PostgreSQL unavailable
+
+**Classification:** Environment prerequisite failure, not a demonstrated product defect or production outage.
+
+**Repro:**
+1. In the required worktree, check "'`Get-Command psql,postgres,pg_ctl,docker -ErrorAction SilentlyContinue` and PostgreSQL/Docker services. Neither executable discovery nor service discovery returns a match. No PostgreSQL/Docker directory was found immediately under `C:'"\\Program Files"'`.
+2. Connect by TCP to `127.0.0.1:5432`; the result is `ECONNREFUSED`.
+3. From `server`, set a process-local fake database URL, then run the installed Prisma CLI:
+
+```powershell
+$env:NODE_ENV='"'development'
+"'$env:DATABASE_URL='"'postgresql://venulo_qa:fake_local_only@127.0.0.1:5432/venulo_qa?schema=public&connect_timeout=3'
+"'$env:DIRECT_DATABASE_URL=$env:DATABASE_URL
+$env:JWT_SECRET=('"'qa-local-only-' * 8)
+"'$env:ENABLE_MARKETING_EMAILS='"'false'
+"'$env:ENABLE_POS_INTEGRATIONS='"'false'
+"'$env:RESEND_API_KEY='"''
+"'$env:STRIPE_SECRET_KEY='"''
+node node_modules/prisma/build/index.js migrate deploy
+"'```
+
+**Expected:** A disposable local PostgreSQL database accepts connections and the checked-in schema migrations apply, allowing the application to run against fake data.
+
+**Actual:** Exit code 1. Prisma loads `prisma/schema.prisma`, identifies database `venulo_qa` at `127.0.0.1:5432`, then reports:
+
+```text
+Error: P1001: Can'"'t reach database server at "'`127.0.0.1:5432`
+Please make sure your database server is running at `127.0.0.1:5432`.
+```
+
+**Impact:** Signup, authenticated flows, upload jobs, reports, and settings cannot be meaningfully exercised. No application servers were started. A running frontend alone would not establish end-to-end correctness.
+
+**Unblock:** Supply a reachable, disposable local PostgreSQL instance and local-only credentials, then rerun migrations and QA. No production or shared database should be substituted. No database installation or provisioning was attempted after confirming the blocker, following the explicit stop instruction.
+
+## Audit G1–G6 verification queue
+
+All entries below remain **not runtime verified**. Severity is provisional triage carried forward from the audit'"'s described impact. Repro steps are future checks, not actions performed in this pass. G2's proposed lock contention remains a hypothesis.
+
+| Priority | Gap and future repro | Expected | Audit-described actual |
+|---|---|---|---|
+| P0 | **G2: paid activation webhook.** With local Postgres and isolated fake Stripe responses, process checkout completion, inspect user/event writes, and inject a processing failure. Do not make paid calls. | Activation and idempotency state persist consistently; recoverable processing failures permit retry. | Audit suspects a transaction/global-client row-lock conflict; separately reports handler returning HTTP 200 on processing errors. Runtime contention and resulting state are unverified. |
+| P1 | **G1: cancelled paid signup.** Create a fake pending signup, simulate checkout cancellation, follow the redirect, then attempt upload confirmation. | A clear resume-checkout action explains and resolves pending status. | Audit reports redirect to dashboard without pending guidance, followed by upload HTTP 402. Recovery through Billing reportedly exists. |
+| P1 | **G3: venue setup skipped.** Simulate paid-checkout success and follow the dashboard wizard to upload. | Venue setup precedes the first analysis, or defaults are explicitly accepted. | Audit reports success returning to dashboard and wizard routing to upload, bypassing venue setup. |
+| P1 | **G5: historical calibration changes.** Generate a fake report before venue setup, retain its PDF, change venue type, and reopen the same report. | Web and PDF retain the calibration actually used for that analysis. | Audit reports the web note reading the current profile while the PDF preserves the original calibration. |
+| P1 | **G6: history backfill rejected.** Complete one fake monthly upload, then upload a different older month for the same location. | Distinct historical periods can populate trend features during onboarding. | Audit reports a 28-day cooldown based on report creation, preventing historical backfill. Confirm intended product policy when triaging. |
+| P2 | **G4: non-actionable parser failure.** Submit a fake POS CSV missing a required Date column and inspect preview/worker feedback. | Feedback identifies the missing column and how to correct the export. | Audit reports specific parser text discarded across IPC and generic errors shown to the user. |
+
+No new math, layout, dead-button, loading-state, or crash findings are claimed. The audit's additional G7–G11 risks (POS dedupe, retry status/email, large-file spread limits, HTTP report caching, and benchmark contamination) also remain unverified and should remain on the resumed QA agenda.
+
+## Flows tested versus blocked or missing
+
+| Flow | This pass | Existing audit context / remaining coverage |
+|---|---|---|
+| Local prerequisites and schema startup | Tested; blocked | Reproduced P1001 above. |
+| Landing, demo, legal pages, public navigation | Not tested | Audit maps existing public routes; desktop/mobile layout and links remain unchecked. |
+| Signup, login, password recovery, email verification, 2FA, Google OAuth | Not tested | Existing routes per audit. Email delivery must remain disabled; use local fixtures for token-dependent steps. |
+| Restaurant onboarding, locations, venue profile | Not tested | Existing per audit; G1/G3 require verification. |
+| CSV/XLSX preview, upload confirmation, processing and retry | Not tested | Existing per audit; G4/G6 and boundary files remain unchecked. |
+| Direct POS connection/import | Not tested | Square/Clover partial and flag-gated per audit; Toast/Lightspeed direct sync reported absent. CSV import is distinct from direct sync. |
+| Report generation, detail, PDF/XLSX, sharing, findings feedback | Not tested | Existing per audit; G5, totals, ownership, export agreement and share expiry remain unchecked. |
+| Dashboard, notifications and spike alerts | Not tested | Existing per audit; empty/loading/error states and refreshed report visibility unchecked. |
+| Analytics, operations, scorecards, employee detail, forecasts, compare, upsell playbook, menu economics | Not tested | Audit maps these features; plan gates and numerical agreement unchecked. |
+| Settings, billing, help and changelog | Not tested | Existing per audit; persistence, validation and checkout recovery unchecked. |
+| Team invitation/acceptance/login/portal and admin UI | Not tested | Separate auth surfaces per audit; no invitations or email sent. |
+| SMS/WhatsApp daily summaries | Reported missing by prior audit | No runtime verification; audit says advertised Enterprise feature has no implementation. |
+| Weekly digest, nurture and anonymous free report | Not tested; not classified as missing | Audit describes implemented, flag-gated flows. Marketing disabled for the attempted local setup. |
+
+## Local run notes
+
+- Node "'`v24.14.0`, npm `11.9.0`; audit documents Node 20 as the deployment pin. No compatibility conclusion can be drawn from this attempt.
+- Both `server/node_modules` and `client/node_modules` exist; Express, Prisma client and dotenv resolve from the server directory. Unlike the earlier audit, dependency directories are present. Completeness was not established by an install or build.
+- No `server/.env` or `client/.env` was found by the top-level `.env*` inventory; only `server/.env.example` was listed there. Root `.env.example` exists.
+- Used process-local overrides rather than editing the examples: PostgreSQL URL and a development-only JWT value longer than 64 characters. Thus the known example-file defects were bypassed without changing tracked files.
+- Local ports 5432, 3001 and 5173 all returned `ECONNREFUSED` before the migration attempt.
+- Redis was not required for this prerequisite check; the audit documents an in-memory fallback.
+- No tests, browser walkthrough, seed, fixture inserts, or application startup followed the failed migration. No fake restaurant data was submitted because the local database prerequisite never passed.
+- `rg` is unavailable in this shell; PowerShell file/command discovery was used instead.
+- Working-tree status was clean before testing. Final tracked/untracked status is checked after writing this report; the report is outside the application worktree.
+
+## Definition of done per flow (all pending)
+
+- [ ] **Local run:** Disposable local Postgres accepts migrations; server/client start; health checks succeed; external email, telemetry, paid AI and payments remain disabled or locally simulated.
+- [ ] **Landing/public:** Navigation, signup CTAs, demo and legal links work; mobile and desktop layouts have no clipping or dead controls; invalid routes show a useful 404.
+- [ ] **Auth/signup:** Fake accounts can register/login/logout; invalid inputs, duplicate accounts and locked sessions receive useful feedback; reset/verification/2FA use local fixtures without sending email.
+- [ ] **Onboarding/locations:** Venue setup saves and reloads; pending checkout has a clear recovery path; paid and free paths both establish accurate venue context; ownership isolation holds.
+- [ ] **Upload/import:** Valid fake CSV/XLSX previews match source rows and totals; invalid files produce actionable feedback; processing finishes with a report; retry states are truthful; historical periods can be handled according to explicit policy.
+- [ ] **Direct POS:** Supported provider connection, cancellation, sync and dedupe work with local simulations; unavailable providers and disabled features are clearly identified.
+- [ ] **Reports:** Known synthetic anomalies produce defensible amounts and periods; no double-counting; web/PDF/XLSX agree; calibration is historical; sharing, feedback and ownership work.
+- [ ] **Dashboards/alerts:** New reports appear promptly; totals reconcile; empty/loading/error states work; alert thresholds and plan gates behave correctly without sending messages.
+- [ ] **Advanced analysis:** Analytics, operations, scorecards, employees, forecasts, compare, upsell and menu economics show consistent data and units; insufficient history is explicit; access gates hold.
+- [ ] **Settings/billing:** Edits validate and persist; security controls work; cancellation/pending/payment failures are recoverable using local simulations; no purchase occurs.
+- [ ] **Team/admin:** Local invitation fixtures, separate sessions and role/location boundaries work; unauthorized access is denied; no real invitation is sent.
+- [ ] **Help/changelog/notifications:** Links and actions work; read/unread state persists; empty/error states are usable.
+- [ ] **Digest/free report/missing channels:** Feature flags are honored, anonymous abuse/error paths are handled, and advertised SMS/WhatsApp capabilities are implemented and locally verified or removed from promises.
+'"'@ | Set-Content -LiteralPath 'C:\\Users\\Cruzz\\venulo-swarm\\results\\2026-09-29-venulo-qa-pass.md' -Encoding UTF8
+ git status --short
+ git diff --stat
+ git branch --show-current
+ Get-Item 'C:\\Users\\Cruzz\\venulo-swarm\\results\\2026-09-29-venulo-qa-pass.md' | Select-Object FullName,Length" in C:\Users\Cruzz\venulo-swarm-workrepo
+ succeeded in 308ms:
+warning: unable to access 'C:\Users\Cruzz/.config/git/ignore': Permission denied
+warning: unable to access 'C:\Users\Cruzz/.config/git/ignore': Permission denied
+swarm/2026-09-29-venulo-qa-pass
+
+FullName                                                         Length
+--------                                                         ------
+C:\Users\Cruzz\venulo-swarm\results\2026-09-29-venulo-qa-pass.md  12031
+
+
+
+codex
+Wrote the [QA blocker report](C:/Users/Cruzz/venulo-swarm/results/2026-09-29-venulo-qa-pass.md).
+
+Local PostgreSQL is unavailable; Prisma migration failed with `P1001`. Stopped as instructed. The report includes untested flows, provisional G1–G6 triage, run notes, and per-flow completion checklists.
+
+Application code remains unchanged on the required branch.
+
+SWARM_STATUS: needs-human: Provide a disposable local PostgreSQL instance so end-to-end QA can proceed.
+tokens used
+38,608
