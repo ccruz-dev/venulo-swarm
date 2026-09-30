@@ -10,3 +10,4 @@
 {"ts": "2026-09-30T01:44:03.700293+00:00", "brief": "2026-09-29-report-calibration-backfill", "owner": "claude-code", "exit": 0, "input_tokens": 36, "output_tokens": 8865, "model": null}
 {"ts": "2026-09-30T01:45:09.774120+00:00", "brief": "2026-09-29-stripe-webhook-safety", "owner": "claude-code", "exit": 0, "input_tokens": 18, "output_tokens": 5760, "model": null}
 {"ts": "2026-09-30T01:45:44.750040+00:00", "brief": "2026-09-29-venulo-qa-pass", "owner": "claude-code", "exit": 0, "input_tokens": 16, "output_tokens": 1963, "model": null}
+{"ts": "2026-09-30T04:05:49.738973+00:00", "brief": "2026-09-29-fix-dev-setup-docs", "owner": "claude-code", "exit": 0, "input_tokens": 104, "output_tokens": 31653, "model": null}

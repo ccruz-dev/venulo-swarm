@@ -1,31 +1,35 @@
-I couldn't change anything: writing files in this worktree requires your permission, and both of my write attempts (`server/utils/localDatabase.js` and `server/prisma/seed.js`) were blocked. I haven't used the shell to get around that. Nothing is committed and the branch is still clean. **Marking this `needs-human`:** allow file writes for `C:\Users\Cruzz\venulo-swarm-workrepo` and I'll carry out the plan below. I read the code first, so here is what I found and what I'll change.
+I've made all five fixes in the worktree, but none of it is tested or committed. Running `node`/`npm` and `git add`/`git commit` both needed approval I didn't have, so the changes are uncommitted on `swarm/2026-09-29-fix-dev-setup-docs`.
 
-## Where the audit doesn't match the code
-- **There is no `client/.env.example`.** The two example files are the root `.env.example` (which the README tells you to copy) and `server/.env.example`.
-- **The schema has 25 models, not 24.** The five that CLAUDE.md doesn't list are TeamMember, FindingFeedback, BusinessContextNote, ItemCost and PromotionScenario.
-- **CLAUDE.md is wrong on more than the audit says.** It says "Vite 5", but the code uses Vite 6.4.3. It also says "SMTP email / nodemailer", but the code only uses Resend.
-- **Only the `server/.env.example` secret is too short.** Its `JWT_SECRET` is 37 characters. The root one is 78, which passes the 64-character check.
-- **Both `DATABASE_URL` values are wrong.** Both are SQLite `file:./prisma/dev.db` URLs. The startup check rejects those because the schema is PostgreSQL only.
+**Changes:**
+1. **`.env.example` files:**
+   - Both now have a local Postgres URL (`postgresql://postgres:postgres@localhost:5432/venulo`) with comments on what to replace and a reminder to create the database first.
+   - The root `JWT_SECRET` placeholder was already 78 characters, so it only got a comment. The server one was 37 characters and is now 77.
+   - Email settings now use Resend instead of SMTP.
+   - Two things in the server example would have broken local setup, so I commented them out:
+     - A literal `sk_test_...` turns Stripe on, and new local signups then stay stuck in `pending`.
+     - A Vercel `FRONTEND_URL`, which in dev would send verification-email links to that site.
+2. **Seed guard:** `npm run seed` now stops at the top of `server/prisma/seed.js`, before any database connection, unless the database host is local (`localhost`, `127.x`, or `::1`). `npm run seed -- --force` overrides it. The seed now also reads `server/.env` so it checks the same URL the server uses. The check lives in a new `server/prisma/seedGuard.js`.
+3. **Benchmarks:** the peer benchmark query in `server/routes/reports.js:576` now skips `isTestAccount` users. Test accounts no longer skew the medians or count toward the 10-location minimum.
+4. **Docs:**
+   - **README:** Resend instead of SMTP, a single Railway service instead of Vercel, Node 20+ (React Router 7 needs it), `migrate deploy` instead of `migrate dev --name init`, and the seed step is now documented. I removed every mention of Twilio, SMS and WhatsApp because none of it exists in the code.
+   - **CLAUDE.md and AGENTS.md:** React 19, Vite 6, Resend. CLAUDE.md also gets the full 25-model list, the complete soft-delete model list, and a note on seeding.
+5. **Tests:** two new test files, both added to `run-all.js`:
+   - `server/tests/benchmarkTestAccounts.test.js` calls the real report route with 12 real and 5 test-account locations. It checks that only 12 count, and that 8 real plus 5 test accounts still shows no benchmark.
+   - `server/tests/seedGuard.test.js` runs the real `seed.js` against a dummy remote URL and checks that it exits before deleting anything.
 
-## Planned changes
-1. **Seed guard:** a new `server/utils/localDatabase.js` checks whether `DATABASE_URL` points at this machine (localhost, 127.0.0.1 or ::1). A missing or unreadable URL counts as not local. The top of `seed.js` will:
-   - load `server/.env` (right now it never loads it itself);
-   - exit with an error before touching the database unless the URL is local or `--force` is passed.
-2. **Env examples:** both files get a local Postgres URL shaped like `postgresql://postgres:postgres@localhost:5432/venulo` and a `JWT_SECRET` placeholder of 64+ characters, with comments on what to fill in. I'll also:
-   - replace the SMTP `EMAIL_*` entries with `RESEND_API_KEY`;
-   - remove the `vercel.app` `FRONTEND_URL`;
-   - note that `VITE_*` variables go in `client/.env`, since Vite doesn't read `server/.env`.
-3. **Peer benchmarks:** the query at `server/routes/reports.js:576` currently includes every location. I'll add `where: { location: { user: { isTestAccount: false } } }`, move that logic into a small service so it can be tested, and add a test to `run-all.js`.
-4. **Doc fixes, only where wrong:**
-   - **CLAUDE.md:** React 19, Vite 6, 25 models, Resend.
-   - **README:** Resend instead of Nodemailer; a single Railway service with no Vercel section; how to generate a 64-character `JWT_SECRET` (it currently suggests `openssl rand -hex 32`, which gives 64 characters, but the text says "any string"); the seed command and `--force`.
-   - **Twilio:** the README describes it, but there's no Twilio code in `server/`. I'll remove those sections and flag it for you to check.
-   - **Migrations:** the README runs `migrate dev --name init` against migrations that already exist. I'll replace it with `npx prisma migrate dev`.
+**Where the audit didn't match the code:**
+- The schema has **25** models, not 24. AGENTS.md already said 25.
+- The root `.env.example` `JWT_SECRET` placeholder was already long enough; only the server one was short.
+- The docs also said Vite 5 (it's 6) and Node 18+ (it needs 20+), and listed Twilio features that don't exist.
 
-## Other issues I noticed (not fixing, out of scope)
-- **Admin MRR query:** the raw SQL at `server/routes/admin/data.js:49-55` and `:302` is SQLite syntax (`isTestAccount = 0`, `active = 1`, table names without quotes). It will probably fail on Postgres, which means the admin MRR figures may be broken.
-- **Committed SQLite file:** `server/prisma/dev.db` is tracked in git but no longer used.
-- **Seed client:** `seed.js` creates its own `new PrismaClient()`, which breaks the project's rule to import the shared client from `server/lib/prisma.js`.
+**Not changed:**
+- The Terms page says the onboarding fee is $249, but the README says $199. The real amount is set in Stripe, so I didn't pick one.
+- The README's "9 automated detectors" doesn't match the 17/35/47 algorithms on the landing page. I left that marketing copy alone.
+- `client/vercel.json` is still in the repo, probably left over.
 
-## Acceptance criteria I can't meet in this environment
-There's no Postgres or Docker on this machine, so I can't show the app starting from the README steps. I can test that the seed guard refuses a dummy remote URL without connecting to anything, and I can unit-test the benchmark exclusion. A person will need to do a full local setup run against Postgres.
+**To finish:**
+1. Run `npm test` in `server/`, or just the two new test files.
+2. Commit on this branch.
+3. Do one fresh local setup by following the README to confirm there are no missing steps.
+
+SWARM_STATUS: needs-human: changes made but couldn't run tests or commit (node/npm and git commit need approval); please run `npm test` in server/ and commit

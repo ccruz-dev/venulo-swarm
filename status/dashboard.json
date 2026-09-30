@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T04:00:48.622802+00:00",
+  "updated": "2026-09-30T04:05:52.263116+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -56,7 +56,7 @@
       "id": "2026-09-29-fix-dev-setup-docs",
       "title": "Fix dev setup and docs (env examples, README, seed guard, benchmarks)",
       "owner": "claude-code",
-      "status": "open",
+      "status": "needs-human",
       "budget": "standard",
       "priority": "normal"
     },
@@ -117,17 +117,17 @@
       "unknown": 4
     },
     "claude-code": {
-      "input": 228,
-      "output": 49820,
-      "runs": 8,
+      "input": 332,
+      "output": 81473,
+      "runs": 9,
       "unknown": 1
     }
   },
   "stats": {
     "done_total": 1,
-    "open": 10,
+    "open": 9,
     "claimed": 0,
-    "needs_human": 0,
+    "needs_human": 1,
     "xp": 100
   }
 }
