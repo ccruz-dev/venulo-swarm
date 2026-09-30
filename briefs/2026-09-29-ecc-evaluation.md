@@ -1,7 +1,7 @@
 ---
 id: 2026-09-29-ecc-evaluation
 title: Evaluate Everything Claude Code for swarm integration
-owner: claude-code
+owner: codex
 status: open
 repo: venulo
 branch: swarm/2026-09-29-ecc-evaluation

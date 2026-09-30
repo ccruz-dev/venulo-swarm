@@ -35,8 +35,10 @@ XP_PER_BRIEF=100
 # nothing: the agents were refused write access, said so, and exited 0.
 # Edits are granted; the shell is limited to reading and running tests.
 # Pushing, merging, deploying and network access stay denied by design.
-# Comma-separated. Verify the patterns with a dry run before relying on them.
-CLAUDE_ALLOWED_TOOLS="${CLAUDE_ALLOWED_TOOLS:-Read,Edit,Write,Glob,Grep,Bash(npm test:*),Bash(npm run test:*),Bash(npm run build:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*)}"
+# Comma-separated. The test patterns match how agents actually ran tests in the
+# 2026-09-29 dry run (node tests/X.test.js, cd server && …, npm --prefix server …);
+# the first version only allowed `npm test` and every test attempt was denied.
+CLAUDE_ALLOWED_TOOLS="${CLAUDE_ALLOWED_TOOLS:-Read,Edit,Write,Glob,Grep,Bash(npm test:*),Bash(npm run test:*),Bash(npm run build:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(cd:*),Bash(ls:*),Bash(node tests/:*),Bash(node server/tests/:*),Bash(npm --prefix server run test:*),Bash(npm --prefix server test:*),Bash(npm --prefix client run build:*)}"
 CLAUDE_DISALLOWED_TOOLS="${CLAUDE_DISALLOWED_TOOLS:-Bash(git push:*),Bash(git merge:*),Bash(railway:*),Bash(curl:*),Bash(npx prisma migrate deploy:*),WebFetch,WebSearch}"
 
 # Appended to every brief. Exit code 0 only means the CLI did not crash; it says
@@ -126,6 +128,9 @@ run_agent() {
                --allowedTools "$CLAUDE_ALLOWED_TOOLS"
                --disallowedTools "$CLAUDE_DISALLOWED_TOOLS"
                --add-dir "$SWARM_REPO/results")
+  # Codex exec defaults to a read-only sandbox, so a codex-owned brief could
+  # neither edit code nor write its report. workspace-write keeps network off.
+  local codex_perms=(--sandbox workspace-write --add-dir "$SWARM_REPO/results")
   (
     cd "$workdir"
     case "$owner" in
@@ -138,9 +143,9 @@ run_agent() {
         ;;
       codex)
         if [ -n "$CODEX_MODEL" ]; then
-          codex exec --model "$CODEX_MODEL" "$prompt" > "$outdir/agent-output.txt" 2> "$outdir/agent-stderr.txt" || rc=$?
+          codex exec --model "$CODEX_MODEL" "${codex_perms[@]}" "$prompt" > "$outdir/agent-output.txt" 2> "$outdir/agent-stderr.txt" || rc=$?
         else
-          codex exec "$prompt" > "$outdir/agent-output.txt" 2> "$outdir/agent-stderr.txt" || rc=$?
+          codex exec "${codex_perms[@]}" "$prompt" > "$outdir/agent-output.txt" 2> "$outdir/agent-stderr.txt" || rc=$?
         fi
         ;;
       *) log "unknown owner: $owner"; rc=1 ;;
