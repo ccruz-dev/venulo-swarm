@@ -12,3 +12,4 @@
 {"ts": "2026-09-30T01:45:44.750040+00:00", "brief": "2026-09-29-venulo-qa-pass", "owner": "claude-code", "exit": 0, "input_tokens": 16, "output_tokens": 1963, "model": null}
 {"ts": "2026-09-30T04:05:49.738973+00:00", "brief": "2026-09-29-fix-dev-setup-docs", "owner": "claude-code", "exit": 0, "input_tokens": 104, "output_tokens": 31653, "model": null}
 {"ts": "2026-09-30T05:01:07.401056+00:00", "brief": "2026-09-29-actionable-upload-errors", "owner": "codex", "exit": 0, "input_tokens": null, "output_tokens": null, "model": null}
+{"ts": "2026-09-30T05:02:48.361221+00:00", "brief": "2026-09-29-ecc-evaluation", "owner": "codex", "exit": 0, "input_tokens": null, "output_tokens": null, "model": null}
