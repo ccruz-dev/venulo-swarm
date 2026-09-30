@@ -1,0 +1,16 @@
+I've hit a verification blocker. To evaluate ECC properly, I need either:
+
+1. **A direct link to the canonical repo** (e.g., GitHub URL), or
+2. **Web search permission** to locate Afaan Mustafa's hackathon-winning ECC project
+
+Without verifying the canonical repository first, I cannot proceed with the inventory and analysis—per your constraints, I'd have to mark this `needs-human` and stop.
+
+**Can you provide the GitHub link to the ECC repo?** Once I have it, I can:
+- Inventory subagents, skills, commands, and shell-executing hooks
+- Test headless CLI compatibility
+- Analyze token-optimization claims
+- Identify swarm protocol conflicts
+- Produce the ordered install plan
+
+Sources:
+- (No sources retrieved — awaiting repo link or web search permission)
