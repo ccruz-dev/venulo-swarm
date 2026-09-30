@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T01:44:04.123641+00:00",
+  "updated": "2026-09-30T01:45:10.253417+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -80,7 +80,7 @@
       "id": "2026-09-29-stripe-webhook-safety",
       "title": "Make the Stripe webhook safe (G2)",
       "owner": "claude-code",
-      "status": "open",
+      "status": "done",
       "budget": "standard",
       "priority": "high"
     },
@@ -109,17 +109,17 @@
       "unknown": 4
     },
     "claude-code": {
-      "input": 194,
-      "output": 42097,
-      "runs": 6,
+      "input": 212,
+      "output": 47857,
+      "runs": 7,
       "unknown": 1
     }
   },
   "stats": {
-    "done_total": 6,
-    "open": 4,
+    "done_total": 7,
+    "open": 3,
     "claimed": 0,
     "needs_human": 0,
-    "xp": 600
+    "xp": 700
   }
 }

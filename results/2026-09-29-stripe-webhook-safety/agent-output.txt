@@ -1,0 +1,24 @@
+I didn't change any code: permission to edit `server/routes/webhooks.js` was denied, so this is **`needs-human`**. Nothing was modified or committed, and no tests were run. The code does show both problems the audit (G2) describes, and the fix is ready to apply once you allow the write.
+
+## What the code shows
+- **The handler locks itself out (confirmed from the code).** Inside the transaction (`webhooks.js:38-169`), the handler first updates the user row with `tx.user.update`, which locks that row. It then calls `createSubscription`, which ends with `prisma.user.update` on the same row but through the shared client, outside the transaction (`stripeService.js:252`). That update waits for the lock, and the transaction waits for the update to finish. Prisma's transaction timeout ends the wait and rolls back `onboardingPaid`, `plan`, `stripeCustomerId` and the duplicate-event record. Meanwhile the Stripe subscription has already been created, so Stripe charges but our database doesn't show the account as paid.
+- **A related bug the audit didn't mention.** Because `createSubscription` runs outside the transaction, it reads the user before the new `plan` and `stripeCustomerId` are saved. It can therefore pick the wrong price, or fail with "No Stripe customer ID found".
+- **Failures return 200 (confirmed).** Line 172 logs the error, then line 176 still returns `res.json({ received: true })`, so Stripe never retries.
+- **One difference from the audit:** the duplicate-event record is already written in the same transaction as the state change. It gets lost only because the whole transaction rolls back, not because it's written separately.
+
+## The fix (three edits, all in `server/routes/webhooks.js`)
+1. **Run `createSubscription` after the commit.** Inside the transaction, save its arguments to a `pendingSubscription` variable instead of calling it. Call it once the commit succeeds. This removes the lock conflict, and `onboardingPaid` commits together with the event record. If it fails, log the error as the code does now, rather than failing the delivery: the event is already recorded, so a retry would be skipped as a duplicate and wouldn't help.
+2. **In the outer `catch`**, if the error is `P2002` (a concurrent delivery of the same event committed first), return `200 { duplicate: true }`. Every other error returns `500`, so Stripe retries. Nothing was committed in that case, so a retry is safe.
+3. **Leave the final `res.json({ received: true })`** for events that were actually handled.
+
+The existing checks in `billing.test.js` (the duplicate lookup, the event record written in the same transaction, the `if (userId)` guard, signature checked first) all still match the new code.
+
+## Still to do once edits are allowed
+- Apply the edits and add a test that stubs Prisma, like `retentionGuard.test.js` does. It should confirm three things: a failed transaction returns 500; sending the same event twice produces one state change and one record, and a `P2002` returns 200; `onboardingPaid` is set and `createSubscription` runs after the commit.
+- Run `npm test`, then commit on `swarm/2026-09-29-stripe-webhook-safety`.
+
+## Two follow-ups I left out to keep the diff small
+- The welcome and payment-failed emails are queued with `setImmediate` inside the transaction. They can go out even if the transaction rolls back, and could be sent twice now that failed deliveries get retried.
+- If `createSubscription` fails after the commit, the customer is marked paid but has no subscription, and the only trace is a log line. The code already behaves this way today; it needs a reconciliation job or an alert.
+
+To continue, allow writes to `server/routes/webhooks.js` and add the new test file to the allow list too.
