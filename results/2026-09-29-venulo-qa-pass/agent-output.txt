@@ -1,0 +1,12 @@
+I haven't started the QA pass yet because I can't reach the swarm repo.
+
+- **The audit file isn't in reach.** This session can only read and write inside `C:\Users\Cruzz\venulo-swarm-workrepo`, which is the Venulo app repo on branch `swarm/2026-09-29-venulo-qa-pass`. `results/2026-09-29-venulo-repo-audit/agent-raw.json` isn't anywhere in it. When I tried to search `C:\Users\Cruzz` for it, access was blocked.
+- **I couldn't read `$WORK_REPO` or `$SWARM_REPO`.** The command to print them needed approval that wasn't given, so I can't confirm where the swarm repo is.
+- **I couldn't save the report either.** It's meant to go in the swarm repo's `results/` folder, which is outside the allowed directory.
+
+I didn't want to guess at G1–G6 or redo the audit from scratch, since the brief says to build on it. Either of these gets me going:
+
+1. Give me the swarm repo's path and allow access to it, for example with `/add-dir <path>`. I'll then read the audit, get the app running from this repo with local-only env fixes, walk every flow with fake data, and write the report to `results/2026-09-29-venulo-qa-pass.md`.
+2. Or paste the audit's `result` field here and tell me where to write the report.
+
+Nothing has been changed, committed or run so far.

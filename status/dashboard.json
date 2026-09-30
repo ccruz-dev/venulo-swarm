@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T01:45:10.253417+00:00",
+  "updated": "2026-09-30T01:45:45.304228+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -88,7 +88,7 @@
       "id": "2026-09-29-venulo-qa-pass",
       "title": "End-to-end QA pass on Venulo \u00e2\u20ac\u201d find logic and UI bugs",
       "owner": "claude-code",
-      "status": "open",
+      "status": "done",
       "budget": "standard",
       "priority": "high"
     },
@@ -109,17 +109,17 @@
       "unknown": 4
     },
     "claude-code": {
-      "input": 212,
-      "output": 47857,
-      "runs": 7,
+      "input": 228,
+      "output": 49820,
+      "runs": 8,
       "unknown": 1
     }
   },
   "stats": {
-    "done_total": 7,
-    "open": 3,
+    "done_total": 8,
+    "open": 2,
     "claimed": 0,
     "needs_human": 0,
-    "xp": 700
+    "xp": 800
   }
 }
