@@ -1,6 +1,6 @@
 {
   "agent": "runner",
-  "ts": "2026-09-30T01:45:17Z",
-  "state": "working",
-  "detail": "2026-09-29-venulo-qa-pass"
+  "ts": "2026-09-30T01:45:48Z",
+  "state": "polling",
+  "detail": "idle"
 }
