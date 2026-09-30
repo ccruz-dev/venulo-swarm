@@ -340,7 +340,8 @@ EOF
 
 # ---------------- main ----------------
 [ -d "$SWARM_REPO/.git" ] || { log "ERROR: swarm repo not found at $SWARM_REPO"; exit 1; }
-[ -d "$WORK_REPO/.git" ] || { log "ERROR: work repo not found at $WORK_REPO"; exit 1; }
+git -C "$WORK_REPO" rev-parse --is-inside-work-tree >/dev/null 2>&1 || { log "ERROR: work repo not found at $WORK_REPO"; exit 1; }
+[ -z "$(git -C "$WORK_REPO" status --porcelain)" ] || { log "ERROR: work repo has uncommitted changes; refusing to start"; exit 1; }
 command -v claude >/dev/null || log "WARN: 'claude' CLI not found on PATH"
 command -v codex >/dev/null || log "WARN: 'codex' CLI not found on PATH"
 if [ -z "$PYTHON_BIN" ]; then
