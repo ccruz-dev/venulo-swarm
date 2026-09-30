@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T00:29:37.051005+00:00",
+  "updated": "2026-09-30T00:39:50.447249+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -61,7 +61,14 @@
       "priority": "high"
     }
   ],
-  "tokens_today": {},
+  "tokens_today": {
+    "codex": {
+      "input": 0,
+      "output": 0,
+      "runs": 1,
+      "unknown": 1
+    }
+  },
   "stats": {
     "done_total": 0,
     "open": 5,
