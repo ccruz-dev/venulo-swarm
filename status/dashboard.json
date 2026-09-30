@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T06:22:42.054877+00:00",
+  "updated": "2026-09-30T06:27:17.974416+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -72,7 +72,7 @@
       "id": "2026-09-29-report-calibration-backfill",
       "title": "Snapshot report calibration; allow history backfill for new locations (G5, G6)",
       "owner": "claude-code",
-      "status": "open",
+      "status": "needs-human",
       "budget": "standard",
       "priority": "normal"
     },
@@ -117,17 +117,17 @@
       "unknown": 9
     },
     "claude-code": {
-      "input": 434,
-      "output": 104491,
-      "runs": 16,
+      "input": 512,
+      "output": 124453,
+      "runs": 17,
       "unknown": 1
     }
   },
   "stats": {
     "done_total": 2,
-    "open": 4,
+    "open": 3,
     "claimed": 0,
-    "needs_human": 5,
+    "needs_human": 6,
     "xp": 200
   }
 }

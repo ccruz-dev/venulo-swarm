@@ -1,0 +1,2295 @@
+
+> venulo-server@1.0.0 test
+> node tests/run-all.js
+
+
+═══ pilotControls ═══
+15 passed, 0 failed
+
+═══ pilotEmail ═══
+10 passed, 0 failed
+
+═══ queueShutdown ═══
+2 passed, 0 failed
+
+═══ uploadPollingLimit ═══
+27 passed, 0 failed
+
+═══ algorithms ═══
+═══════════════════════════════════════════════════
+  Venulo Algorithm Tests — 3 New Pro Algorithms
+═══════════════════════════════════════════════════
+
+Loading sample CSV: C:\Users\Cruzz\venulo-swarm-workrepo\sample-data\sample-pos-export.csv
+  ✓ Parsed 3894 transactions
+
+
+── Testing module shape: Menu Profitability Gap ──
+  ✓ id is "menu-profitability"
+  ✓ name is "Menu Profitability Gap"
+  ✓ planRequired is "pro"
+  ✓ detect is a function
+
+── Testing detect(): Menu Profitability Gap ──
+  ✓ detect() did not throw
+  ✓ returns an array
+  → Found 2 finding(s)
+  ✓ finding "menu-profit-001" has field "id"
+  ✓ finding "menu-profit-001" has field "type"
+  ✓ finding "menu-profit-001" has field "title"
+  ✓ finding "menu-profit-001" has field "severity"
+  ✓ finding "menu-profit-001" has field "estimatedLoss"
+  ✓ finding "menu-profit-001" has field "description"
+  ✓ finding "menu-profit-001" has field "actionPlan"
+  ✓ finding "menu-profit-001" severity "low" is valid
+  ✓ finding "menu-profit-001" estimatedLoss is a non-negative number
+  ✓ finding "menu-profit-001" details is an object or undefined
+  ✓ finding "menu-profit-002" has field "id"
+  ✓ finding "menu-profit-002" has field "type"
+  ✓ finding "menu-profit-002" has field "title"
+  ✓ finding "menu-profit-002" has field "severity"
+  ✓ finding "menu-profit-002" has field "estimatedLoss"
+  ✓ finding "menu-profit-002" has field "description"
+  ✓ finding "menu-profit-002" has field "actionPlan"
+  ✓ finding "menu-profit-002" severity "low" is valid
+  ✓ finding "menu-profit-002" estimatedLoss is a non-negative number
+  ✓ finding "menu-profit-002" details is an object or undefined
+
+── Testing graceful degradation: Menu Profitability Gap ──
+  ✓ empty input returns empty array
+  ✓ minimal data returns array (not throw)
+  ✓ null fields returns array (not throw)
+
+── Testing module shape: Peak Hour Labor Mismatch ──
+  ✓ id is "peak-hour-staffing"
+  ✓ name is "Peak Hour Labor Mismatch"
+  ✓ planRequired is "pro"
+  ✓ detect is a function
+
+── Testing detect(): Peak Hour Labor Mismatch ──
+  ✓ detect() did not throw
+  ✓ returns an array
+  → Found 1 finding(s)
+  ✓ finding "peak-staffing-002" has field "id"
+  ✓ finding "peak-staffing-002" has field "type"
+  ✓ finding "peak-staffing-002" has field "title"
+  ✓ finding "peak-staffing-002" has field "severity"
+  ✓ finding "peak-staffing-002" has field "estimatedLoss"
+  ✓ finding "peak-staffing-002" has field "description"
+  ✓ finding "peak-staffing-002" has field "actionPlan"
+  ✓ finding "peak-staffing-002" severity "medium" is valid
+  ✓ finding "peak-staffing-002" estimatedLoss is a non-negative number
+  ✓ finding "peak-staffing-002" details is an object or undefined
+
+── Testing graceful degradation: Peak Hour Labor Mismatch ──
+  ✓ empty input returns empty array
+  ✓ minimal data returns array (not throw)
+  ✓ null fields returns array (not throw)
+
+── Testing module shape: Customer Retention Leak ──
+  ✓ id is "customer-retention"
+  ✓ name is "Customer Retention Leak"
+  ✓ planRequired is "pro"
+  ✓ detect is a function
+
+── Testing detect(): Customer Retention Leak ──
+  ✓ detect() did not throw
+  ✓ returns an array
+  → Found 0 finding(s)
+
+── Testing graceful degradation: Customer Retention Leak ──
+  ✓ empty input returns empty array
+  ✓ minimal data returns array (not throw)
+  ✓ null fields returns array (not throw)
+
+── Testing registry integration ──
+  ✓ menu-profitability in Pro catalog
+  ✓ peak-hour-staffing in Pro catalog
+  ✓ customer-retention in Pro catalog
+  ✓ runAlgorithms returns findings array
+  ✓ runAlgorithms returns lockedAlgorithms array
+  → Pro plan: 8 total findings, 5 locked
+  ✓ menu-profitability locked for Basic
+  ✓ peak-hour-staffing locked for Basic
+  ✓ customer-retention locked for Basic
+  ✓ menu-profitability in Basic locked list
+  ✓ peak-hour-staffing in Basic locked list
+  ✓ customer-retention in Basic locked list
+
+══════════════════════════════════════════════════
+  Results: 70 passed, 0 failed
+══════════════════════════════════════════════════
+
+═══ stats ═══
+— Small samples stop looking like evidence —
+  ✓ both describe a 62.5% observed rate
+  ✓ the large sample is defensible
+  ✓ the small sample is heavily discounted
+  ✓ sample size, not the rate, drives the difference
+  ✓ an empty denominator is zero, not NaN
+  ✓ never returns a negative rate
+  ✓ stays below the observed rate
+— Spread is measured robustly —
+  ✓ standard deviation is distorted by the outlier
+  ✓ MAD barely moves
+— Sensitivity adapts to the spread actually present —
+  ✓ flags a departure from tightly grouped peers
+  ✓ ignores the same value among widely spread peers
+  ✓ identical peers produce no outlier for an equal value
+  ✓ two peers is enough to score an outlier
+  ✓ a single peer yields no score
+  ✓ no peers yields no score
+— Baselines exclude the entry being judged —
+  ✓ a contaminated average is dragged toward the offender
+  ✓ and so the offender is under twice that average, escaping the old rule
+  ✓ leave-one-out still catches it
+  ✓ reports the peer median, not the contaminated average
+— Thin data is excluded before it can distort a report —
+  ✓ a six-order register is not flagged as abuse
+  ✓ the same rate at real volume is flagged
+— Clean data produces no findings —
+  ✓ no outliers among ordinary variation
+— Running many detectors demands stronger evidence —
+  ✓ a single test uses the base threshold
+  ✓ more comparisons raise the bar
+  ✓ but it stays usable rather than unreachable
+— Utilities behave on empty input —
+  ✓ no helper throws on empty input
+  ✓ quantile works on real input
+
+27 passed, 0 failed
+
+═══ compAbuse ═══
+— A high-volume offender cannot hide inside the average —
+  ✓ the location average is contaminated by the offender
+  ✓ so the offender is under twice that average
+  ✓ it is still flagged
+  ✓ and it is the offending register
+  ✓ the innocent registers are not flagged
+— A tiny register is not accused on six orders —
+  ✓ the six-order register is not reported
+— The same behaviour at real volume is reported —
+  ✓ a finding is produced
+  ✓ naming the right register
+  ✓ the estimate is a positive dollar figure
+  ✓ the loss is bounded by what that register actually discounted
+  ✓ the peer baseline is reported, not the contaminated average
+— Ordinary variation produces nothing —
+  ✓ a clean location yields no finding
+— Statistically odd but operationally trivial is ignored —
+  ✓ a 2% rate is not reported as abuse
+— Degenerate input is handled —
+  ✓ never throws
+  ✓ no gross sales yields no findings
+
+15 passed, 0 failed
+
+═══ cashComp ═══
+— Payment labels are classified across POS dialects —
+  ✓ "Cash" is cash
+  ✓ "CASH" is cash
+  ✓ "cash payment" is cash
+  ✓ "Currency" is cash
+  ✓ "Credit Card" is traceable
+  ✓ "Debit Card" is traceable
+  ✓ "Mobile Pay" is traceable
+  ✓ "VISA" is traceable
+  ✓ "Apple Pay" is traceable
+  ✓ "Amex" is traceable
+  ✓ "Gift Card" is traceable
+  ✓ an unknown label is neither
+  ✓ a missing label is neither
+— A real disparity is reported —
+  ✓ a finding is produced
+  ✓ classified as a leak
+  ✓ the estimate is positive
+  ✓ the estimate cannot exceed the cash comps actually given
+  ✓ both rates are reported
+  ✓ the driving register is identified
+  ✓ the innocent explanation is stated first in the action plan
+— Refuses to flag without evidence —
+  ✓ no finding when both sides match
+  ✓ no finding when cash is the cleaner side
+  ✓ no finding without cash volume
+  ✓ no finding without card volume
+— Thin samples do not manufacture a finding —
+  ✓ twelve cash orders are not enough
+  ✓ three hundred cash orders are
+— Trivial gaps are ignored —
+  ✓ a sub-3% cash rate is not reported
+— Voids count as removed value, not just discounts —
+  ✓ voided cash orders drive a finding
+— Degenerate input is handled —
+  ✓ never throws
+  ✓ empty input yields nothing
+
+30 passed, 0 failed
+
+═══ voidOutlier ═══
+— A till out of step is caught even when the venue total looks fine —
+  ✓ the venue-wide rate is inside the 3% benchmark
+  ✓ the outlier register is reported
+  ✓ it names the right register
+  ✓ it reports the peer baseline
+  ✓ the estimate is a positive figure
+  ✓ the description explains why a store-wide number would miss it
+— Even variation across tills reports nothing —
+  ✓ no outlier finding
+— Not duplicated when the threshold rule already fires —
+  ✓ the venue-wide void finding fires
+  ✓ the outlier finding does not also fire
+— A thin till is not accused —
+  ✓ an eight-order till is not reported
+— The venue-wide finding now shows peer context —
+  ✓ the venue finding fires
+  ✓ and carries the peer outlier detail
+  ✓ identifying the worst till
+
+13 passed, 0 failed
+
+═══ drinkAttach ═══
+— Alcohol counts as a drink —
+  ✓ a bar selling only alcohol produces no drink-attach finding
+— A genuine QSR miss is still caught —
+  ✓ low drink attach at a burger shop still fires
+  ✓ the estimate is a positive number
+  ✓ it does not claim to have found more misses than there were orders
+— Healthy attach produces nothing —
+  ✓ every order having a drink produces no finding
+— POS category is trusted over the item name —
+  ✓ a category of "Cocktails" is enough to classify a drink
+— Sample-size floor still holds —
+  ✓ too few orders produce nothing
+  ✓ an empty upload does not throw
+
+8 passed, 0 failed
+
+═══ venueVocab ═══
+— Real dishes are not modifiers —
+  ✓ "Jalapeno Poppers" is not a modifier
+  ✓ "Cappuccino Grande" is not a modifier
+  ✓ "Americano Iced" is not a modifier
+  ✓ "Pancakes with Syrup" is not a modifier
+  ✓ "Nachos Supreme" is not a modifier
+  ✓ "Classic Burger" is not a modifier
+  ✓ "Fish and Chips" is not a modifier
+  ✓ "Avocado Toast" is not a modifier
+— Genuine modifiers still match —
+  ✓ "ADD Bacon" is a modifier
+  ✓ "Extra Cheese" is a modifier
+  ✓ "NO Onion" is a modifier
+  ✓ "SUB Fries" is a modifier
+  ✓ "+ Avocado" is a modifier
+  ✓ "Without Ice" is a modifier
+  ✓ "Hold the mayo" is a modifier
+  ✓ "MOD: light sauce" is a modifier
+— The modifier column beats name guessing —
+  ✓ a row with a modifier value is a modifier regardless of name
+  ✓ a row with an empty modifier value falls back to the name
+  ✓ a bare string still works for older callers
+— A dish named like a modifier no longer inflates the rate —
+  ✓ 60 zero-priced dishes produce no modifier-abuse finding
+— Ingredient removals cannot generate missed add-on revenue —
+  ✓ "NO Onion" removals do not create an uncaptured-revenue finding
+— Delivery channel is read from orderSource —
+  ✓ orderSource "Delivery" is delivery
+  ✓ orderSource "DoorDash" is delivery
+  ✓ orderSource "Uber Eats" is delivery
+  ✓ orderSource "Dine-In" is not delivery
+  ✓ orderSource "Takeout" is not delivery
+  ✓ an explicit dine-in channel overrides a register named "Online"
+  ✓ register still identifies delivery when orderSource is absent
+  ✓ a plain order with nothing set is not delivery
+— "Oatmeal" is not a meal deal —
+  ✓ "Oatmeal" is not a bundle
+  ✓ "Cornmeal" is not a bundle
+  ✓ "Oatmeal Raisin Cookie" is not a bundle
+  ✓ "Soup Special" is not a bundle
+  ✓ "Daily Special" is not a bundle
+  ✓ "Value Fries" is not a bundle
+  ✓ "Table #4" is not a bundle
+  ✓ "Classic Burger" is not a bundle
+  ✓ "Combo #1" is a bundle
+  ✓ "Kids Combo" is a bundle
+  ✓ "Breakfast Bundle" is a bundle
+  ✓ "Family Meal Deal" is a bundle
+  ✓ "Value Meal" is a bundle
+  ✓ "Meal 2" is a bundle
+  ✓ "Party Package" is a bundle
+
+44 passed, 0 failed
+
+═══ venuePairingAlgorithms ═══
+Venue pairing algorithms: passed
+
+═══ discountDaypartReview ═══
+Discount daypart review: passed
+
+═══ periodNormalization ═══
+— The registry scales by the monthly factor —
+  ✓ an algorithm fires on this data at all
+  ✓ a factor of 2 doubles the estimate
+  ✓ a factor of 1 changes nothing
+— Severity is re-derived from the scaled figure —
+  ✓ a scaled-up estimate does not keep the smaller severity
+— Same behaviour, different upload window, same monthly answer —
+  ✓ 30-day upload detects a 30-day period
+  ✓ 15-day upload detects a 15-day period
+  ✓ 90-day upload detects a 90-day period
+  ✓ the registry finding is present in every window
+  ✓ 15-day and 30-day uploads agree on the monthly figure within 10%
+  ✓ 90-day and 30-day uploads agree on the monthly figure within 10%
+  ✓ the 90-day upload is not reporting a quarterly total as monthly
+— EVERY finding type is period-stable —
+  ✓ the sweep compared a meaningful number of finding types
+  ✓ every finding type reports the same monthly figure at 14, 30 and 90 days
+— Guards —
+  ✓ a zero factor is treated as 1 rather than zeroing every finding
+  ✓ a NaN factor is treated as 1
+  ✓ omitting the factor entirely still works
+
+16 passed, 0 failed
+
+═══ algorithmInvariants ═══
+Registry: 23 algorithms
+
+— Module shape —
+  ✓ barFoodPairing.js exports id/name/planRequired/detect
+  ✓ bundleUnderpricing.js exports id/name/planRequired/detect
+  ✓ cafePastryPairing.js exports id/name/planRequired/detect
+  ✓ cashCompDisparity.js exports id/name/planRequired/detect
+  ✓ compAbuse.js exports id/name/planRequired/detect
+  ✓ customerRetention.js exports id/name/planRequired/detect
+  ✓ daypartMismatch.js exports id/name/planRequired/detect
+  ✓ deletedKitchenItems.js exports id/name/planRequired/detect
+  ✓ deliveryMargin.js exports id/name/planRequired/detect
+  ✓ discountDaypartReview.js exports id/name/planRequired/detect
+  ✓ drinkAttachRate.js exports id/name/planRequired/detect
+  ✓ laborEfficiency.js exports id/name/planRequired/detect
+  ✓ menuPriceAdvisor.js exports id/name/planRequired/detect
+  ✓ menuProfitability.js exports id/name/planRequired/detect
+  ✓ modifierAbuse.js exports id/name/planRequired/detect
+  ✓ noSaleDrawer.js exports id/name/planRequired/detect
+  ✓ overstaffingCost.js exports id/name/planRequired/detect
+  ✓ overtimeClustering.js exports id/name/planRequired/detect
+  ✓ peakHourStaffing.js exports id/name/planRequired/detect
+  ✓ priceOverrides.js exports id/name/planRequired/detect
+  ✓ refundByItem.js exports id/name/planRequired/detect
+  ✓ sizeSkew.js exports id/name/planRequired/detect
+  ✓ wasteMarginItems.js exports id/name/planRequired/detect
+
+— Never throws on hostile input —
+  ✓ barFoodPairing.js survives all 11 hostile inputs
+  ✓ bundleUnderpricing.js survives all 11 hostile inputs
+  ✓ cafePastryPairing.js survives all 11 hostile inputs
+  ✓ cashCompDisparity.js survives all 11 hostile inputs
+  ✓ compAbuse.js survives all 11 hostile inputs
+  ✓ customerRetention.js survives all 11 hostile inputs
+  ✓ daypartMismatch.js survives all 11 hostile inputs
+  ✓ deletedKitchenItems.js survives all 11 hostile inputs
+  ✓ deliveryMargin.js survives all 11 hostile inputs
+  ✓ discountDaypartReview.js survives all 11 hostile inputs
+  ✓ drinkAttachRate.js survives all 11 hostile inputs
+  ✓ laborEfficiency.js survives all 11 hostile inputs
+  ✓ menuPriceAdvisor.js survives all 11 hostile inputs
+  ✓ menuProfitability.js survives all 11 hostile inputs
+  ✓ modifierAbuse.js survives all 11 hostile inputs
+  ✓ noSaleDrawer.js survives all 11 hostile inputs
+  ✓ overstaffingCost.js survives all 11 hostile inputs
+  ✓ overtimeClustering.js survives all 11 hostile inputs
+  ✓ peakHourStaffing.js survives all 11 hostile inputs
+  ✓ priceOverrides.js survives all 11 hostile inputs
+  ✓ refundByItem.js survives all 11 hostile inputs
+  ✓ sizeSkew.js survives all 11 hostile inputs
+  ✓ wasteMarginItems.js survives all 11 hostile inputs
+
+— Silent on a clean month —
+  ✓ barFoodPairing.js finds nothing wrong with a healthy month
+  ✓ bundleUnderpricing.js finds nothing wrong with a healthy month
+  ✓ cafePastryPairing.js finds nothing wrong with a healthy month
+  ✓ cashCompDisparity.js finds nothing wrong with a healthy month
+  ✓ compAbuse.js finds nothing wrong with a healthy month
+  ✓ customerRetention.js finds nothing wrong with a healthy month
+  ✓ daypartMismatch.js finds nothing wrong with a healthy month
+  ✓ deletedKitchenItems.js finds nothing wrong with a healthy month
+  ✓ deliveryMargin.js finds nothing wrong with a healthy month
+  ✓ discountDaypartReview.js finds nothing wrong with a healthy month
+  ✓ drinkAttachRate.js finds nothing wrong with a healthy month
+  ✓ laborEfficiency.js finds nothing wrong with a healthy month
+  ✓ menuPriceAdvisor.js finds nothing wrong with a healthy month
+  ✓ menuProfitability.js finds nothing wrong with a healthy month
+  ✓ modifierAbuse.js finds nothing wrong with a healthy month
+  ✓ noSaleDrawer.js finds nothing wrong with a healthy month
+  ✓ overstaffingCost.js finds nothing wrong with a healthy month
+  ✓ overtimeClustering.js finds nothing wrong with a healthy month
+  ✓ peakHourStaffing.js finds nothing wrong with a healthy month
+  ✓ priceOverrides.js finds nothing wrong with a healthy month
+  ✓ refundByItem.js finds nothing wrong with a healthy month
+  ✓ sizeSkew.js finds nothing wrong with a healthy month
+  ✓ wasteMarginItems.js finds nothing wrong with a healthy month
+
+— Silent on a handful of rows —
+  ✓ barFoodPairing.js does not draw conclusions from 5 rows
+  ✓ bundleUnderpricing.js does not draw conclusions from 5 rows
+  ✓ cafePastryPairing.js does not draw conclusions from 5 rows
+  ✓ cashCompDisparity.js does not draw conclusions from 5 rows
+  ✓ compAbuse.js does not draw conclusions from 5 rows
+  ✓ customerRetention.js does not draw conclusions from 5 rows
+  ✓ daypartMismatch.js does not draw conclusions from 5 rows
+  ✓ deletedKitchenItems.js does not draw conclusions from 5 rows
+  ✓ deliveryMargin.js does not draw conclusions from 5 rows
+  ✓ discountDaypartReview.js does not draw conclusions from 5 rows
+  ✓ drinkAttachRate.js does not draw conclusions from 5 rows
+  ✓ laborEfficiency.js does not draw conclusions from 5 rows
+  ✓ menuPriceAdvisor.js does not draw conclusions from 5 rows
+  ✓ menuProfitability.js does not draw conclusions from 5 rows
+  ✓ modifierAbuse.js does not draw conclusions from 5 rows
+  ✓ noSaleDrawer.js does not draw conclusions from 5 rows
+  ✓ overstaffingCost.js does not draw conclusions from 5 rows
+  ✓ overtimeClustering.js does not draw conclusions from 5 rows
+  ✓ peakHourStaffing.js does not draw conclusions from 5 rows
+  ✓ priceOverrides.js does not draw conclusions from 5 rows
+  ✓ refundByItem.js does not draw conclusions from 5 rows
+  ✓ sizeSkew.js does not draw conclusions from 5 rows
+  ✓ wasteMarginItems.js does not draw conclusions from 5 rows
+
+— Findings are well formed and finite —
+  ✓ deletedKitchenItems.js emits well-formed findings
+  ✓ menuPriceAdvisor.js emits well-formed findings
+  ✓ refundByItem.js emits well-formed findings
+  ✓ wasteMarginItems.js emits well-formed findings
+  ✓ the messy month actually exercised several algorithms
+
+— No single finding exceeds the revenue it came from —
+  ✓ barFoodPairing.js never claims a leak larger than total net sales
+  ✓ bundleUnderpricing.js never claims a leak larger than total net sales
+  ✓ cafePastryPairing.js never claims a leak larger than total net sales
+  ✓ cashCompDisparity.js never claims a leak larger than total net sales
+  ✓ compAbuse.js never claims a leak larger than total net sales
+  ✓ customerRetention.js never claims a leak larger than total net sales
+  ✓ daypartMismatch.js never claims a leak larger than total net sales
+  ✓ deletedKitchenItems.js never claims a leak larger than total net sales
+  ✓ deliveryMargin.js never claims a leak larger than total net sales
+  ✓ discountDaypartReview.js never claims a leak larger than total net sales
+  ✓ drinkAttachRate.js never claims a leak larger than total net sales
+  ✓ laborEfficiency.js never claims a leak larger than total net sales
+  ✓ menuPriceAdvisor.js never claims a leak larger than total net sales
+  ✓ menuProfitability.js never claims a leak larger than total net sales
+  ✓ modifierAbuse.js never claims a leak larger than total net sales
+  ✓ noSaleDrawer.js never claims a leak larger than total net sales
+  ✓ overstaffingCost.js never claims a leak larger than total net sales
+  ✓ overtimeClustering.js never claims a leak larger than total net sales
+  ✓ peakHourStaffing.js never claims a leak larger than total net sales
+  ✓ priceOverrides.js never claims a leak larger than total net sales
+  ✓ refundByItem.js never claims a leak larger than total net sales
+  ✓ sizeSkew.js never claims a leak larger than total net sales
+  ✓ wasteMarginItems.js never claims a leak larger than total net sales
+
+— Deterministic —
+  ✓ barFoodPairing.js returns the same result twice
+  ✓ bundleUnderpricing.js returns the same result twice
+  ✓ cafePastryPairing.js returns the same result twice
+  ✓ cashCompDisparity.js returns the same result twice
+  ✓ compAbuse.js returns the same result twice
+  ✓ customerRetention.js returns the same result twice
+  ✓ daypartMismatch.js returns the same result twice
+  ✓ deletedKitchenItems.js returns the same result twice
+  ✓ deliveryMargin.js returns the same result twice
+  ✓ discountDaypartReview.js returns the same result twice
+  ✓ drinkAttachRate.js returns the same result twice
+  ✓ laborEfficiency.js returns the same result twice
+  ✓ menuPriceAdvisor.js returns the same result twice
+  ✓ menuProfitability.js returns the same result twice
+  ✓ modifierAbuse.js returns the same result twice
+  ✓ noSaleDrawer.js returns the same result twice
+  ✓ overstaffingCost.js returns the same result twice
+  ✓ overtimeClustering.js returns the same result twice
+  ✓ peakHourStaffing.js returns the same result twice
+  ✓ priceOverrides.js returns the same result twice
+  ✓ refundByItem.js returns the same result twice
+  ✓ sizeSkew.js returns the same result twice
+  ✓ wasteMarginItems.js returns the same result twice
+
+cleanMonth revenue: $10350 across 1800 rows
+143 passed, 0 failed
+
+═══ basicAlgorithms ═══
+— deletedKitchenItems: voids concentrated on one dish —
+  ✓ fires on a dish with a 30% void rate
+  ✓ the estimate equals the voided value, not the order count
+  ✓ names the offending dish
+  ✓ reports the real void rate
+— deletedKitchenItems: a dish voided once is not a pattern —
+  ✓ a single void does not produce a finding
+— refundByItem: the rate and the money must agree —
+  ✓ fires on a dish refunded 20% by value
+  ✓ the estimate equals the refunded value
+  ✓ reports refunds as a share of that item's sales, not of all sales
+  ✓ the refund count matches the rows that carried a refund
+— refundByItem: two refunds is below the floor —
+  ✓ two refunds do not make a pattern
+— priceOverrides: undercharges only —
+  ✓ fires on three undercharges
+  ✓ the loss is 3 x $6, ignoring the overcharges
+  ✓ the override count excludes the overcharges
+— priceOverrides: quantity multiplies the loss —
+  ✓ a discounted line of five loses five times the gap
+— priceOverrides: a second menu price is not an override —
+  ✓ a 50/50 two-price split is treated as menu structure
+— priceOverrides: sporadic discounting still fires —
+  ✓ 4 cheap pints out of 40 is still flagged
+  ✓ the loss is 4 x $4
+— All three stay silent when the item is priced consistently —
+  ✓ deletedKitchenItems silent
+  ✓ refundByItem silent
+  ✓ priceOverrides silent
+
+20 passed, 0 failed
+
+═══ pathTraversal ═══
+— Traversal payloads are rejected on every platform —
+  ✓ "../../server/.env" is rejected
+  ✓ "../../../etc/passwd" is rejected
+  ✓ "..\..\server\.env" is rejected
+  ✓ "/etc/passwd" is rejected
+  ✓ "C:\Windows\System32\config\SAM" is rejected
+  ✓ "../../.git/config" is rejected
+  ✓ "subdir/../../escape.csv" is rejected
+  ✓ "....//....//server/.env" is rejected
+  ✓ "." is rejected
+  ✓ ".." is rejected
+— Legitimate multer-style filenames still resolve normally —
+  ✓ "a1b2c3d4-5678.csv" resolves to uploads/a1b2c3d4-5678.csv
+  ✓ "upload_1712000000.xlsx" resolves to uploads/upload_1712000000.xlsx
+  ✓ "labor-file.csv" resolves to uploads/labor-file.csv
+— Both call sites require a stored filename —
+  ✓ route validates req.body.filePath
+  ✓ worker validates filePath before the join
+  ✓ worker validates laborFilePath before the join
+
+16 passed, 0 failed
+
+═══ itemGrouping ═══
+— Formatting variants merge —
+  ✓ "Chicken Tacos" == "chicken tacos"
+  ✓ "Chicken Tacos" == "Chicken Tacos "
+  ✓ "Chicken Tacos" == " Chicken Tacos"
+  ✓ "Chicken Tacos" == "Chicken  Tacos"
+  ✓ "CHICKEN TACOS" == "chicken tacos"
+  ✓ "Latte" == "LATTE"
+  ✓ "Fish & Chips" == "fish & chips"
+— Genuinely different items stay separate (the dangerous case) —
+  ✓ "Small Coke" != "Large Coke"
+  ✓ "Small Coke" != "Medium Coke"
+  ✓ "Coffee" != "Iced Coffee"
+  ✓ "Chicken Tacos 3pc" != "Chicken Tacos 6pc"
+  ✓ "Wings 6" != "Wings 12"
+  ✓ "1/2 Chicken" != "Whole Chicken"
+  ✓ "Burger" != "Cheeseburger"
+  ✓ "Kids Meal" != "Family Meal"
+  ✓ "Red Wine" != "White Wine"
+  ✓ "12oz Ribeye" != "16oz Ribeye"
+  ✓ "Side Salad" != "Caesar Salad"
+  ✓ "Coke" != "Diet Coke"
+— Missing/empty names collapse to one bucket, not many —
+  ✓ null and undefined share a key
+  ✓ empty string joins them
+  ✓ the shared key is "unknown"
+— groupByItemName merges and labels with the common spelling —
+  ✓ three tacos rows collapse to one group
+  ✓ the label is the most common original spelling
+  ✓ the different item is its own group
+  ✓ exactly two groups total
+— End to end: split spellings no longer hide a void pattern —
+  ✓ the two spellings are treated as one dish
+  ✓ the void total is the full $240, not a split $120
+  ✓ the void rate is computed over all 20 orders (30%)
+
+29 passed, 0 failed
+
+═══ uploadGate ═══
+— The gate accepts what the parser accepts —
+  ✓ a Toast-style export with Receipt # and derivable net is accepted
+— Item Price alone counts as a sales column —
+  ✓ Item Price satisfies the sales requirement
+— Genuinely unusable files are still rejected —
+  ✓ a file with no sales column is rejected
+  ✓ the error is MISSING_COLUMNS
+  ✓ a file with no date column is rejected
+— A quoted comma in the header does not split the column —
+  ✓ a quoted-comma header parses without crashing
+— The cooldown keys off successful reports, not upload attempts —
+  ✓ cooldown queries the last report, not the last upload
+  ✓ cooldown no longer keys off upload.uploadedAt
+  ✓ a still-processing job blocks a duplicate with 409
+  ✓ the dead allowReupload=false flag is gone
+
+10 passed, 0 failed
+
+═══ uploadSafety ═══
+— Upload content signatures —
+  ✓ text CSV is accepted
+  ✓ binary file renamed to CSV is rejected
+  ✓ ZIP signature is accepted for xlsx
+  ✓ text renamed to xlsx is rejected
+  ✓ OLE signature is accepted for xls
+  ✓ ZIP renamed to legacy xls is rejected
+  ✓ empty uploads are rejected
+— Rejected upload cleanup —
+  ✓ file and staged ownership metadata are removed together
+
+8 passed, 0 failed
+
+═══ parserIsolation ═══
+— Resource-limited parser process —
+  ✓ isolated parser returns normalized transactions
+  ✓ advanced IPC preserves Date values
+  ✓ preview also runs through the isolated boundary
+  ✓ parent terminates parsing that exceeds its deadline
+  ✓ child heap is capped at 256 MB
+  ✓ parser child does not inherit application secrets
+
+6 passed, 0 failed
+
+═══ moneyDates ═══
+— Money: accounting parentheses and strict parsing —
+  ✓ "(5.00)" parses to -5, not 0
+  ✓ "($5.00)" parses to -5
+  ✓ "-5.00" parses to -5
+  ✓ "1,234.50" parses to 1234.5
+  ✓ a plain "5.00" still parses to 5
+  ✓ "12abc" is NOT silently truncated to 12
+  ✓ "12abc" is flagged as a failure
+  ✓ blank money is not counted as a failure
+— Deduction columns store magnitude regardless of sign —
+  ✓ parseAmount("(5.00)") === 5
+  ✓ parseAmount("-5.00") === 5
+  ✓ parseAmount("5.00") === 5
+— A single corrupted money column trips the per-column check —
+  ✓ aggregate failure stays under 30% (dilution)
+  ✓ a fully-broken Refunds column throws NUMBER_FORMAT_ERROR
+— Dates: blanks are counted, impossible dates rejected —
+  ✓ a blank date returns null
+  ✓ a blank date is counted (not silently dropped)
+  ✓ "02/30/2026" is rejected, not rolled to March 2
+  ✓ "13/01/2026" (bad month, US) is rejected
+  ✓ a valid "03/15/2026" parses
+  ✓ the valid date has the right day
+  ✓ ISO "2026-03-01" parses
+  ✓ a datetime "2026-03-01T12:00:00Z" still parses
+— Row accounting surfaces excluded rows —
+  ✓ coverage reports rows read
+  ✓ coverage reports 7 accepted
+  ✓ coverage reports 3 excluded
+  ✓ an exclusion warning is surfaced
+
+25 passed, 0 failed
+
+═══ posCompatibility ═══
+— Toast ItemSelectionDetails (documented format), full path —
+  ✓ all 8 item rows parse
+  ✓ gross totals $121.50
+  ✓ discounts total $4.00
+  ✓ voids total $14.00 from the boolean Void? flag
+  ✓ net sales total $103.50
+  ✓ the Void? interpretation is disclosed
+  ✓ period spans Mar 1–4
+— Other providers: documented formats, full path —
+  ✓ square: 6 rows
+  ✓ square: gross $48.5
+  ✓ square: refunds $14
+  ✓ square: discounts $1
+  ✓ clover: 5 rows
+  ✓ clover: gross $45.5
+  ✓ clover: refunds $14
+  ✓ clover: discounts $1
+  ✓ lightspeed: 4 rows
+  ✓ lightspeed: gross $30.5
+  ✓ lightspeed: refunds $0
+  ✓ lightspeed: discounts $1
+— Compatibility: available vs unavailable analyses —
+  ✓ void-leakage is available
+  ✓ discount-comps is available
+  ✓ register-outliers is available
+  ✓ daypart-staffing is available
+  ✓ category-analysis is available
+  ✓ delivery-margin is available
+  ✓ refund-leakage is correctly unavailable
+  ✓ payment-mix is correctly unavailable
+  ✓ modifier-capture is correctly unavailable
+  ✓ unavailable analyses explain WHY (missing column, not zero activity)
+  ✓ the import summary reports rows, net, and coverage
+— Invariant (property): reordering columns cannot change revenue —
+  ✓ revenue is invariant under column reordering
+— Invariant (property): invalid money is never silently zeroed-as-success —
+  ✓ garbage money is flagged, never a silent successful zero
+
+32 passed, 0 failed
+
+═══ messyFiles ═══
+— BOM header + trailing totals row —
+  ✓ the BOM does not corrupt the Date header (rows parse)
+  ✓ the first item is Burger, not a mangled header
+  ✓ the totals row is excluded (bad date), not counted
+  ✓ coverage reports the excluded totals row
+— Quoted fields with commas —
+  ✓ a quoted comma stays inside the field
+  ✓ the category with a comma is intact
+  ✓ money after a quoted field is still correct
+— Multi-sheet workbook reads the transaction data —
+  ✓ the transaction sheet is read
+  ✓ totals from the transaction sheet are correct
+— A second-sheet-only workbook does not silently read the wrong sheet —
+  ✓ a summary-first workbook is rejected or reads nothing wrong (no invented rows)
+
+10 passed, 0 failed
+
+═══ explainFinding ═══
+— Discount rate: exact breakdown, reconciles —
+  ✓ available and measured
+  ✓ discounts given = $8,000
+  ✓ gross = $100,000
+  ✓ discount rate = 8.00%
+  ✓ benchmark = 5.00%
+  ✓ allowed at benchmark = $5,000
+  ✓ excess = $3,000
+  ✓ reconciles with the $3,000 estimate
+— Monthly scaling is applied and shown —
+  ✓ scaling step shows ×2 → $6,000
+  ✓ reconciles with the scaled $6,000
+— Combined refund + discount excess —
+  ✓ refund excess step present ($1,000)
+  ✓ reconciles with combined $4,000
+  ✓ note explains the combination
+— The 25% cap reconciles against the uncapped figure —
+  ✓ reconciles via the uncapped $9,000
+  ✓ the cap is disclosed in a step
+— Honest about missing evidence —
+  ✓ unsupported type is not available
+  ✓ it says a breakdown is not available
+  ✓ it still surfaces the evidence it has
+  ✓ refund-abuse without evidence does not fabricate a breakdown
+— Review-only findings carry no dollar breakdown —
+  ✓ review finding is not available
+  ✓ review finding is flagged not-measured
+  ✓ review note says no calculation
+
+22 passed, 0 failed
+
+═══ reportTrust ═══
+— Finding feedback: save, edit idempotently —
+  ✓ A can save feedback on its own finding
+  ✓ exactly one feedback row exists
+  ✓ editing returns 200
+  ✓ still exactly one row (idempotent upsert)
+  ✓ verdict updated
+  ✓ reviewedExpected persisted
+  ✓ partial edit did not wipe reviewedReason
+  ✓ partial edit keeps reviewedExpected
+— Invalid input is rejected —
+  ✓ an invalid verdict is 400
+  ✓ an over-long explanation is 400
+  ✓ feedback on a finding not in the report is 404
+— Finding-occurrence identity is per report —
+  ✓ same findingType in a different report is a separate occurrence
+— Tenant isolation —
+  ✓ A cannot feedback on B's report (403/404)
+  ✓ no feedback row created for repB
+  ✓ A cannot explain B's finding (403/404)
+— Report totals are preserved (feedback is advisory) —
+  ✓ totalLeakEstimate unchanged by feedback
+  ✓ the finding estimate is untouched
+— Explain over HTTP is deterministic —
+  ✓ explain returns a reconciling breakdown
+— Business notes: overlap, isolation, edit, soft-delete —
+  ✓ the overlapping March note is attached
+  ✓ the non-overlapping May note is NOT attached
+  ✓ B's note never appears on A's report
+  ✓ notes are labelled owner-provided
+  ✓ freshness separates coverage from generatedAt
+  ✓ A can add a note to its own location
+  ✓ A cannot add a note to B's location (403)
+  ✓ endDate before startDate is 400
+  ✓ an empty note is 400
+  ✓ A cannot edit B's note (404)
+  ✓ A cannot delete B's note (404)
+  ✓ B's note still present
+— Public shared report exposes NO private feedback or notes —
+  ✓ the shared report is public (200)
+  ✓ no feedback verdict leaks into the shared report
+  ✓ no reviewed-expected reason leaks
+  ✓ no contextNotes leak into the shared report
+  ✓ no reviewedExpected flag is attached to shared findings
+  ✓ no userId in the shared report
+  ✓ no uploadId in the shared report
+  ✓ no pdfPath in the shared report
+  ✓ shared responses cannot be cached past revocation
+  ✓ deleted report cannot be read through an existing share
+  ✓ deleted location cannot be read through an existing share
+— Regression: no AI service was invoked by any of the above —
+  ✓ aiInsights / insightGenerator never called
+
+42 passed, 0 failed
+
+═══ reportCalibrationBackfill ═══
+— Web calibration note comes from the generation-time snapshot —
+  ✓ web note equals the snapshot
+  ✓ venueProfileSet comes from the snapshot
+  ✓ changing the venue type does not change the web note
+  ✓ …and does not mention the new venue type
+  ✓ removing the profile does not change the web note
+  ✓ removing the profile does not flip venueProfileSet
+— Pre-snapshot reports never fall back to the live profile —
+  ✓ a report without a snapshot shows no calibration note
+  ✓ a report without a snapshot is not claimed as calibrated
+— Web and PDF share one snapshot —
+  ✓ the PDF is rendered from leakResults.calibration
+  ✓ the report row snapshots the same leakResults.calibration
+  ✓ the report row snapshots venueProfileSet
+  ✓ the report routes never re-render a PDF (the stored file is served as generated)
+  ✓ the calibration note is read from the report row
+  ✓ Report model has calibration + venueProfileSet columns
+— New-location history backfill window —
+{"level":30,"time":"2026-09-30T06:26:23.232Z","pid":2144,"hostname":"Campbell-Russo-Laptop","msg":"Using in-memory upload queue (no Redis)"}
+  ✓ window is documented as 30 days / 12 reports
+  ✓ a location created today may backfill
+  ✓ a 29-day-old location may still backfill
+  ✓ a 30-day-old location is past the window
+  ✓ an established location is not in the window
+  ✓ the cap stops backfill after 12 reports
+  ✓ a missing createdAt fails closed
+  ✓ /confirm waives the cooldown only via the backfill window
+  ✓ the 28-day cooldown still applies outside the window
+
+23 passed, 0 failed
+
+═══ workerRecovery ═══
+{"level":30,"time":"2026-09-30T06:26:23.435Z","pid":19504,"hostname":"Campbell-Russo-Laptop","msg":"Using in-memory upload queue (no Redis)"}
+— A clean run persists once and deletes the file —
+  ✓ one report row exists
+  ✓ 30 transactions inserted
+  ✓ one location metric
+  ✓ the source file was deleted on success
+— Re-processing the same upload is idempotent (repeated job / retry after report creation) —
+  ✓ one report after first processing
+  ✓ re-processing does not throw a unique-constraint error
+  ✓ still exactly one report (upsert, not duplicated)
+  ✓ the report row is the same one (updated in place)
+  ✓ still exactly one location metric
+  ✓ still exactly 30 transactions (cleared before re-insert, not stacked)
+— A transient failure with retries left RETAINS the source file —
+  ✓ a transient failure re-throws for BullMQ to retry
+  ✓ the source file is retained for the retry
+  ✓ after the final attempt the file is gone
+
+13 passed, 0 failed
+{"level":30,"time":"2026-09-30T06:26:23.436Z","pid":19504,"hostname":"Campbell-Russo-Laptop","msg":"Using in-memory upload worker (no Redis)"}
+{"level":30,"time":"2026-09-30T06:26:23.437Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","source":"csv","msg":"Starting processing job"}
+{"level":30,"time":"2026-09-30T06:26:23.437Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","msg":"CSV validated"}
+{"level":30,"time":"2026-09-30T06:26:23.438Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","findingsCount":0,"msg":"Algorithms complete"}
+{"level":30,"time":"2026-09-30T06:26:23.454Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","duration":17,"reportId":"report-1","findingsCount":0,"msg":"Upload job completed successfully"}
+{"level":30,"time":"2026-09-30T06:26:23.456Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","source":"csv","msg":"Starting processing job"}
+{"level":30,"time":"2026-09-30T06:26:23.456Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","msg":"CSV validated"}
+{"level":30,"time":"2026-09-30T06:26:23.456Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","findingsCount":0,"msg":"Algorithms complete"}
+{"level":30,"time":"2026-09-30T06:26:23.456Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","duration":0,"reportId":"report-1","findingsCount":0,"msg":"Upload job completed successfully"}
+{"level":30,"time":"2026-09-30T06:26:23.457Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","source":"csv","msg":"Starting processing job"}
+{"level":30,"time":"2026-09-30T06:26:23.457Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","msg":"CSV validated"}
+{"level":30,"time":"2026-09-30T06:26:23.458Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","findingsCount":0,"msg":"Algorithms complete"}
+{"level":30,"time":"2026-09-30T06:26:23.458Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","duration":1,"reportId":"report-1","findingsCount":0,"msg":"Upload job completed successfully"}
+{"level":30,"time":"2026-09-30T06:26:23.458Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","source":"csv","msg":"Starting processing job"}
+{"level":30,"time":"2026-09-30T06:26:23.459Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","msg":"CSV validated"}
+{"level":50,"time":"2026-09-30T06:26:23.459Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","err":{"type":"Error","message":"injected transient parse failure","stack":"Error: injected transient parse failure\n    at require.cache.<computed>.exports.parseFileSafely (C:\\Users\\Cruzz\\venulo-swarm-workrepo\\server\\tests\\workerRecovery.test.js:147:78)\n    at processUploadJob (C:\\Users\\Cruzz\\venulo-swarm-workrepo\\server\\workers\\uploadWorker.js:151:22)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async C:\\Users\\Cruzz\\venulo-swarm-workrepo\\server\\tests\\workerRecovery.test.js:150:11"},"duration":1,"msg":"Upload job failed"}
+{"level":40,"time":"2026-09-30T06:26:23.459Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","attemptsMade":1,"maxAttempts":3,"msg":"Retaining upload file for retry"}
+{"level":30,"time":"2026-09-30T06:26:23.459Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","source":"csv","msg":"Starting processing job"}
+{"level":30,"time":"2026-09-30T06:26:23.459Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","msg":"CSV validated"}
+{"level":30,"time":"2026-09-30T06:26:23.459Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","findingsCount":0,"msg":"Algorithms complete"}
+{"level":30,"time":"2026-09-30T06:26:23.459Z","pid":19504,"hostname":"Campbell-Russo-Laptop","uploadId":"up1","userId":"u1","locationId":"loc1","jobId":"job1","duration":0,"reportId":"report-1","findingsCount":0,"msg":"Upload job completed successfully"}
+
+═══ menuEconomics ═══
+— Menu contribution: the $12 / $4 / $0.50 example —
+  ✓ realized unit price is $12
+  ✓ variable cost is $4.50
+  ✓ contribution per unit is $7.50
+  ✓ total contribution is $3,000
+  ✓ a $0.40 lower food cost models +$160 contribution
+— Missing costs stay unknown, never silently zero —
+  ✓ no food cost → contribution unknown
+  ✓ the realized price is still shown
+  ✓ food entered but packaging neither entered nor confirmed → unknown
+  ✓ explicitly confirming $0 packaging makes it known
+  ✓ confirmed-zero packaging contributes $8/unit
+— Promotion break-even: the 20% / $15 / $6 example —
+  ✓ promo price is $12
+  ✓ regular contribution is $9
+  ✓ promo contribution is $6
+  ✓ required volume ratio is 1.5
+  ✓ that is 50% more units
+  ✓ for a baseline of 100, 150 promo units preserve contribution
+  ✓ additional units is 50
+— Fixed dollar discount —
+  ✓ $3 off gives a $12 promo price
+  ✓ same 1.5 ratio as the 20% case
+— A price INCREASE needs FEWER units (ratio < 1) —
+  ✓ a -$3 discount (a $3 increase) → $18 promo price
+  ✓ ratio is below 1
+  ✓ fewer units are required
+— Impossible / not-meaningful break-even —
+  ✓ promo contribution 0 → not feasible
+  ✓ baseline contribution 0 → not meaningful
+  ✓ invalid input returns a stated invalid result, not NaN
+— Bundle break-even, comparable basket —
+  ✓ baseline revenue is $21 (same basket, individual prices)
+  ✓ component cost is $8
+  ✓ baseline contribution is $13
+  ✓ bundle contribution is $10
+  ✓ ratio is 1.3
+  ✓ 100 baseline bundles → 130 required
+  ✓ the bundle discount vs individual is $3
+— Fractional quantities are not truncated —
+  ✓ fractional units are kept
+  ✓ realized unit price is $10
+  ✓ total contribution is $10 × ... = $15
+— Rounding: total reconciles with per-unit —
+  ✓ total is computed from unrounded revenue, not repeated rounding
+— resolveVariableCost guards —
+  ✓ negative food cost is unknown
+  ✓ confirmed-zero + valid food is known
+  ✓ entered packaging adds in
+
+39 passed, 0 failed
+
+═══ menuContribution ═══
+— The $12 / $4 / $0.50 example, through the service —
+  ✓ realized unit price is $12
+  ✓ entered menu price stays separate from the measured sale
+  ✓ contribution per unit is $7.50
+  ✓ units sold is 400
+  ✓ total contribution is $3,000
+— Eligibility: voids, refunds, modifiers, zero-qty excluded —
+  ✓ only eligible rows aggregate
+  ✓ one voided row excluded
+  ✓ one refunded row excluded
+  ✓ one modifier row excluded
+  ✓ one zero-quantity row excluded
+  ✓ excluded total is 4
+  ✓ the modifier line is NOT a separate item
+— Missing cost stays unknown; coverage denominator is eligible sales —
+  ✓ an item with no cost is marked unknown, not zero
+  ✓ its realized price is still shown
+  ✓ coverage denominator is total eligible sales ($160)
+  ✓ covered sales is the costed item ($120)
+  ✓ coverage is 75%
+— More entered data reveals cost-based reviews without invented profit —
+  ✓ measured sale below entered variable cost is reviewable
+  ✓ listed price at or below entered variable cost is reviewable
+  ✓ these are not labelled net profit
+  ✓ missing costs yield no cost-based review
+— Distinct sizes stay distinct —
+  ✓ Small and Large Coke are separate items
+— Zero eligible sales: coverage is honest, no divide-by-zero —
+  ✓ denominator flagged, percent is null
+— The contract note states this is not net profit —
+  ✓ contract note excludes labor/rent
+
+24 passed, 0 failed
+
+═══ menuEconomicsRoutes ═══
+— Plan gating —
+  ✓ a basic-plan user is blocked (402/403)
+— Contribution from an owned report —
+  ✓ 200 for the owner
+  ✓ 400 units aggregated
+  ✓ cost unknown until entered
+  ✓ source period + freshness present
+  ✓ another tenant cannot read the report (403/404)
+— Cost history: retain, no overlap —
+  ✓ first cost saved
+  ✓ listed menu price is stored
+  ✓ one open cost record
+  ✓ POS realized price and entered menu price are distinct
+  ✓ negative listed price is rejected
+  ✓ missing food cost is rejected instead of becoming zero
+  ✓ second cost saved
+  ✓ omitted menu price is retained on cost update
+  ✓ history retained (2 records)
+  ✓ exactly one is current (effectiveTo null)
+  ✓ the old record is closed at the new effectiveFrom (no overlap)
+  ✓ same-day edit does not add a history row
+  ✓ the current record was updated in place
+— Missing packaging stays unknown, confirmed-zero is explicit —
+  ✓ packaging is null (unknown), not 0
+— Saved scenario freezes assumptions across a later cost edit —
+  ✓ scenario saved (201)
+  ✓ the reopened scenario keeps its frozen variableCost ($6)
+  ✓ the frozen discount is unchanged
+— Tenant isolation on costs & scenarios —
+  ✓ A cannot set a cost on B's location (403)
+  ✓ A cannot list B's costs (403)
+  ✓ A cannot save a scenario on B's location (403)
+— Promotion compute endpoint is deterministic —
+  ✓ 20% promo → 150 required units
+— No AI service was invoked —
+  ✓ aiInsights / insightGenerator never called
+
+28 passed, 0 failed
+
+═══ proAlgorithms ═══
+— sizeSkew: the premium comes from the venue's own prices —
+  ✓ fires when 80% of sized orders are small
+  ✓ uses the measured $2 gap, not a hardcoded $0.75
+  ✓ reports the measured premium in the details
+— sizeSkew: a menu with no larger size is not an upsell miss —
+  ✓ a single-size menu produces no upsizing finding
+— sizeSkew: no finding when the larger size is not dearer —
+  ✓ an upsize worth nothing is not revenue
+— sizeSkew: a healthy size mix is silent —
+  ✓ 30% small is within target
+— noSaleDrawer: combo components are not drawer opens —
+  ✓ a $0 line inside a paid order is not counted
+— noSaleDrawer: genuine zero-value orders still count —
+  ✓ standalone zero-value orders are surfaced
+  ✓ the offending till is named
+  ✓ it carries no fabricated dollar amount
+  ✓ it is marked review-only
+  ✓ the wording implies no theft
+  ✓ it names the legitimate causes
+  ✓ no-sale-drawer is review-only and excluded from the total
+  ✓ split-tender is review-only and excluded from the total
+— wasteMarginItems: cannot lose more than the item grossed —
+  ✓ fires on an item that is almost entirely waste
+  ✓ the loss is capped at what the item grossed
+— wasteMarginItems: a clean item is silent —
+  ✓ no voids or refunds means no waste finding
+— daypartMismatch and overtimeClustering need real hours —
+  ✓ daypartMismatch is silent on an even trading pattern
+  ✓ overtimeClustering is silent when every hour earns the same
+  ✓ overstaffingCost is silent on an even trading pattern
+— overtimeClustering: a dead late tail is caught —
+  ✓ an unproductive late tail produces a finding
+  ✓ the estimate is positive and finite
+
+23 passed, 0 failed
+
+═══ correctness ═══
+— Known-answer: void rate, 30-day upload (mf = 1) —
+  ✓ void finding fires at 4% vs 3% threshold
+  ✓ void monthly estimate is exactly $300 (not $9,000)
+  ✓ periodDays detected as 30
+— Known-answer: same data over 15 days (mf = 2) —
+  ✓ 15-day upload normalizes to $600/mo
+— Known-answer: refunds, 30 days —
+  ✓ refund excess is exactly $300/mo
+— Venue calibration changes the same data —
+  ✓ 4% voids flag fast_food
+  ✓ 4% voids pass bar (4.5% norm)
+— An unset venue profile is reported as generic, not calibrated —
+  ✓ venueProfileSet is false when no profile is supplied
+  ✓ venueProfileSet is true when a profile is supplied
+  ✓ unset calibration says generic defaults
+  ✓ unset calibration does not claim calibration for a venue type
+  ✓ set calibration still claims calibration
+  ✓ both still analyze identically (fallback thresholds unchanged)
+  ✓ empty-transaction result also reports venueProfileSet false
+— Price tier separates two rooms of the same venue type —
+  ✓ 4% voids flag a budget sit-down
+  ✓ 4% voids pass a premium sit-down
+  ✓ budget is stricter than premium
+  ✓ 'mid' tier is identical to no tier at all
+  ✓ an unknown tier falls back to mid rather than throwing
+  ✓ priceTier is echoed back
+— Seat count yields revenue per seat —
+  ✓ seatCount is echoed back
+  ✓ revenuePerSeat is monthly revenue / seats
+  ✓ revenuePerSeat is null without seats
+  ✓ a zero seat count does not divide by zero
+  ✓ seats do not change the findings
+— Totals: leaks and opportunities are separated and deduped —
+  ✓ totalLeakEstimate equals sum of counted leak findings
+  ✓ totalOpportunityEstimate equals sum of opportunity findings
+  ✓ repeat-refund (overlap) excluded from leak total
+  ✓ every finding has a kind
+  ✓ no NaN or negative estimates
+— Health score: revenue-relative, not count-based —
+  ✓ clean data scores ≥ 80
+  ✓ 1%-of-revenue leak scores in the 75–95 band
+  ✓ heavy leakage scores below mild
+  ✓ score floor holds (≥ 5)
+— Estimate ceilings stay believable vs revenue —
+  ✓ no single finding exceeds 25% of monthly revenue
+  ✓ opportunity total capped at 20% of revenue
+  ✓ an unrealistic $200 check target does not produce an absurd estimate
+— A review-only finding never counts toward the leak total —
+  ✓ totalLeakEstimate equals only the counted (non-review) leaks
+  ✓ no review-kind finding is ever counted in the total
+
+39 passed, 0 failed
+
+═══ parsers ═══
+— Toast format —
+  ✓ toast: 30 rows parsed
+  ✓ toast: gross extracts to $3,000
+  ✓ toast: voids extract to exactly $15
+  ✓ toast: refunds extract to exactly $10
+  ✓ toast: discounts extract to exactly $2
+  ✓ toast: item name mapped
+  ✓ toast: order id mapped
+  ✓ toast: dates parsed
+— Square format —
+  ✓ square: 30 rows parsed
+  ✓ square: gross extracts to $3,000
+  ✓ square: voids extract to exactly $15
+  ✓ square: refunds extract to exactly $10
+  ✓ square: discounts extract to exactly $2
+  ✓ square: item name mapped
+  ✓ square: order id mapped
+  ✓ square: dates parsed
+  ✓ square: currency symbols ($100.00) parse correctly
+— Clover format —
+  ✓ clover: 30 rows parsed
+  ✓ clover: gross extracts to $3,000
+  ✓ clover: voids extract to exactly $15
+  ✓ clover: refunds extract to exactly $10
+  ✓ clover: discounts extract to exactly $2
+  ✓ clover: item name mapped
+  ✓ clover: order id mapped
+  ✓ clover: dates parsed
+  ✓ clover: 'Total' maps to gross sales
+— Generic format (odd headers, commas in numbers) —
+  ✓ generic: receipt # maps to order id
+  ✓ generic: void amount maps to voids
+  ✓ generic: return amount maps to refunds
+— Net fallback computation —
+  ✓ generic: net computed from components when absent
+— Sanity invariants —
+  ✓ a boolean void column is interpreted, not rejected
+  ✓ the interpretation is disclosed as a warning
+  ✓ voids ≈ 100% of gross rejected with VOIDS_IMPLAUSIBLE
+  ✓ healthy file passes invariants
+— Preview mapping transparency —
+  ✓ preview includes columnMapping
+  ✓ "Receipt #" shown as recognized → Order ID
+  ✓ unknown column shown as unrecognized
+— Unfamiliar vendor headers still parse —
+  ✓ an export with vendor-specific headers is accepted
+  ✓ "Menu Item" maps to the item name
+  ✓ "Qty Sold" maps to quantity
+  ✓ "Item Total" maps to gross sales
+  ✓ "Net Amount" maps to net sales
+  ✓ "Terminal" maps to the register
+  ✓ "Menu Group" maps to the category
+  ✓ "Check #" maps to the order id
+— Binary XLSX —
+  ✓ xlsx: 30 rows parsed from binary Excel
+  ✓ xlsx: gross extracts to $3,000
+  ✓ xlsx: voids extract to exactly $15
+
+48 passed, 0 failed
+
+═══ validation ═══
+— Valid transactions pass and normalize —
+  ✓ both valid rows kept
+  ✓ no invalid rows
+  ✓ date coerced to Date
+  ✓ numeric string coerced to number
+— String numbers from a CSV-ish source are coerced, not rejected —
+  ✓ numeric-string row kept
+  ✓ itemPrice coerced from string
+  ✓ quantity coerced from string
+— The corruption a real POS API can emit is dropped —
+  ✓ only the 1 good row survives
+  ✓ 4 corrupt rows flagged
+  ✓ NaN money is caught
+  ✓ Infinity money is caught
+  ✓ bad/missing date is caught
+— Lenient where safe: missing item name defaults, net can be negative —
+  ✓ missing item name defaults to "Unknown Item"
+  ✓ negative net (post-refund) is allowed
+— Never throws on garbage input —
+  ✓ non-array input handled without throwing
+
+15 passed, 0 failed
+
+═══ emailNormalization ═══
+— A plus-address survives every email validator —
+  ✓ validateRegister keeps the +tag
+  ✓ validateLogin keeps the +tag
+  ✓ validateForgotPassword keeps the +tag
+  ✓ validateProfileUpdate keeps the +tag
+— The exact regression: not collapsed to the bare address —
+  ✓ foo+tag@gmail.com is not rewritten to foo@gmail.com
+  ✓ the tag is preserved verbatim
+  ✓ googlemail.com keeps the +tag too
+— Registration and login agree, so an account stays reachable —
+  ✓ login resolves to the same address registration stored
+  ✓ password reset resolves to it as well
+— Case is still normalised —
+  ✓ the address is lowercased
+  ✓ and still carries the tag
+— Non-Gmail providers keep their addresses intact —
+  ✓ owner+venulo@outlook.com is left alone apart from case
+  ✓ owner+venulo@venulo.net is left alone apart from case
+  ✓ first.last@outlook.com is left alone apart from case
+— Documented: Gmail dots are still removed —
+  ✓ dots are stripped for gmail
+  ✓ dots go, the tag stays
+— Odd input does not throw —
+  ✓ validators tolerate missing or malformed email
+
+17 passed, 0 failed
+
+═══ analytics ═══
+— Order-level metrics count orders, not line items —
+  ✓ 8 line items across 4 orders
+  ✓ orderCount is distinct orders, not rows
+  ✓ avgOrderValue is revenue / orders
+  ✓ avgOrderValue is not zero when orders exist
+— Dropping orderId is what produced $0.00 —
+  ✓ without orderId, avgOrderValue collapses to 0
+  ✓ without orderId, orderCount falls back to line items
+  ✓ this differs from the correct result, so the field is required
+— register drives comp tracking by employee —
+  ✓ employees are identified, not all "Unknown"
+  ✓ without register, everyone collapses to "Unknown"
+— The route selects every field the analyzer reads —
+  ✓ found the transaction query
+  ✓ analyzer reads a meaningful set of fields
+  ✓ orderId is selected
+  ✓ register is selected
+  ✓ no field the analyzer reads is missing from the select
+
+14 passed, 0 failed
+
+═══ forecast ═══
+═══════════════════════════════════════════════════
+  Venulo Forecast Engine Tests
+═══════════════════════════════════════════════════
+
+Loading sample CSV: C:\Users\Cruzz\venulo-swarm-workrepo\sample-data\sample-pos-export.csv
+  ✓ Parsed 3894 transactions
+
+
+── Testing generateForecast() ──
+  ✓ generateForecast() did not throw
+  ✓ returns a result object
+  ✓ result.predictions is an array
+  ✓ result.generatedAt is a Date
+  ✓ minimum 3 predictions (got 15)
+  → Generated 15 prediction(s)
+
+── Validating prediction fields ──
+  ✓ prediction "46669faf" has field "forecastId"
+  ✓ prediction "46669faf" has field "category"
+  ✓ prediction "46669faf" has field "prediction"
+  ✓ prediction "46669faf" has field "estimatedImpact"
+  ✓ prediction "46669faf" has field "confidence"
+  ✓ prediction "46669faf" has field "triggerPattern"
+  ✓ prediction "46669faf" has field "recommendation"
+  ✓ prediction "46669faf" confidence "high" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "aa81cfeb" has field "forecastId"
+  ✓ prediction "aa81cfeb" has field "category"
+  ✓ prediction "aa81cfeb" has field "prediction"
+  ✓ prediction "aa81cfeb" has field "estimatedImpact"
+  ✓ prediction "aa81cfeb" has field "confidence"
+  ✓ prediction "aa81cfeb" has field "triggerPattern"
+  ✓ prediction "aa81cfeb" has field "recommendation"
+  ✓ prediction "aa81cfeb" confidence "high" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "e8787a85" has field "forecastId"
+  ✓ prediction "e8787a85" has field "category"
+  ✓ prediction "e8787a85" has field "prediction"
+  ✓ prediction "e8787a85" has field "estimatedImpact"
+  ✓ prediction "e8787a85" has field "confidence"
+  ✓ prediction "e8787a85" has field "triggerPattern"
+  ✓ prediction "e8787a85" has field "recommendation"
+  ✓ prediction "e8787a85" confidence "high" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "69ce25d6" has field "forecastId"
+  ✓ prediction "69ce25d6" has field "category"
+  ✓ prediction "69ce25d6" has field "prediction"
+  ✓ prediction "69ce25d6" has field "estimatedImpact"
+  ✓ prediction "69ce25d6" has field "confidence"
+  ✓ prediction "69ce25d6" has field "triggerPattern"
+  ✓ prediction "69ce25d6" has field "recommendation"
+  ✓ prediction "69ce25d6" confidence "high" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "4924d119" has field "forecastId"
+  ✓ prediction "4924d119" has field "category"
+  ✓ prediction "4924d119" has field "prediction"
+  ✓ prediction "4924d119" has field "estimatedImpact"
+  ✓ prediction "4924d119" has field "confidence"
+  ✓ prediction "4924d119" has field "triggerPattern"
+  ✓ prediction "4924d119" has field "recommendation"
+  ✓ prediction "4924d119" confidence "high" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "9bd27736" has field "forecastId"
+  ✓ prediction "9bd27736" has field "category"
+  ✓ prediction "9bd27736" has field "prediction"
+  ✓ prediction "9bd27736" has field "estimatedImpact"
+  ✓ prediction "9bd27736" has field "confidence"
+  ✓ prediction "9bd27736" has field "triggerPattern"
+  ✓ prediction "9bd27736" has field "recommendation"
+  ✓ prediction "9bd27736" confidence "high" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "8e8eed3e" has field "forecastId"
+  ✓ prediction "8e8eed3e" has field "category"
+  ✓ prediction "8e8eed3e" has field "prediction"
+  ✓ prediction "8e8eed3e" has field "estimatedImpact"
+  ✓ prediction "8e8eed3e" has field "confidence"
+  ✓ prediction "8e8eed3e" has field "triggerPattern"
+  ✓ prediction "8e8eed3e" has field "recommendation"
+  ✓ prediction "8e8eed3e" confidence "medium" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "a98504cb" has field "forecastId"
+  ✓ prediction "a98504cb" has field "category"
+  ✓ prediction "a98504cb" has field "prediction"
+  ✓ prediction "a98504cb" has field "estimatedImpact"
+  ✓ prediction "a98504cb" has field "confidence"
+  ✓ prediction "a98504cb" has field "triggerPattern"
+  ✓ prediction "a98504cb" has field "recommendation"
+  ✓ prediction "a98504cb" confidence "medium" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "c06fa554" has field "forecastId"
+  ✓ prediction "c06fa554" has field "category"
+  ✓ prediction "c06fa554" has field "prediction"
+  ✓ prediction "c06fa554" has field "estimatedImpact"
+  ✓ prediction "c06fa554" has field "confidence"
+  ✓ prediction "c06fa554" has field "triggerPattern"
+  ✓ prediction "c06fa554" has field "recommendation"
+  ✓ prediction "c06fa554" confidence "medium" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "a0361d0a" has field "forecastId"
+  ✓ prediction "a0361d0a" has field "category"
+  ✓ prediction "a0361d0a" has field "prediction"
+  ✓ prediction "a0361d0a" has field "estimatedImpact"
+  ✓ prediction "a0361d0a" has field "confidence"
+  ✓ prediction "a0361d0a" has field "triggerPattern"
+  ✓ prediction "a0361d0a" has field "recommendation"
+  ✓ prediction "a0361d0a" confidence "medium" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "e64a05c7" has field "forecastId"
+  ✓ prediction "e64a05c7" has field "category"
+  ✓ prediction "e64a05c7" has field "prediction"
+  ✓ prediction "e64a05c7" has field "estimatedImpact"
+  ✓ prediction "e64a05c7" has field "confidence"
+  ✓ prediction "e64a05c7" has field "triggerPattern"
+  ✓ prediction "e64a05c7" has field "recommendation"
+  ✓ prediction "e64a05c7" confidence "high" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "355a467d" has field "forecastId"
+  ✓ prediction "355a467d" has field "category"
+  ✓ prediction "355a467d" has field "prediction"
+  ✓ prediction "355a467d" has field "estimatedImpact"
+  ✓ prediction "355a467d" has field "confidence"
+  ✓ prediction "355a467d" has field "triggerPattern"
+  ✓ prediction "355a467d" has field "recommendation"
+  ✓ prediction "355a467d" confidence "high" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "27205718" has field "forecastId"
+  ✓ prediction "27205718" has field "category"
+  ✓ prediction "27205718" has field "prediction"
+  ✓ prediction "27205718" has field "estimatedImpact"
+  ✓ prediction "27205718" has field "confidence"
+  ✓ prediction "27205718" has field "triggerPattern"
+  ✓ prediction "27205718" has field "recommendation"
+  ✓ prediction "27205718" confidence "high" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "7fdbd546" has field "forecastId"
+  ✓ prediction "7fdbd546" has field "category"
+  ✓ prediction "7fdbd546" has field "prediction"
+  ✓ prediction "7fdbd546" has field "estimatedImpact"
+  ✓ prediction "7fdbd546" has field "confidence"
+  ✓ prediction "7fdbd546" has field "triggerPattern"
+  ✓ prediction "7fdbd546" has field "recommendation"
+  ✓ prediction "7fdbd546" confidence "medium" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+  ✓ prediction "f9ae7b9a" has field "forecastId"
+  ✓ prediction "f9ae7b9a" has field "category"
+  ✓ prediction "f9ae7b9a" has field "prediction"
+  ✓ prediction "f9ae7b9a" has field "estimatedImpact"
+  ✓ prediction "f9ae7b9a" has field "confidence"
+  ✓ prediction "f9ae7b9a" has field "triggerPattern"
+  ✓ prediction "f9ae7b9a" has field "recommendation"
+  ✓ prediction "f9ae7b9a" confidence "high" is valid
+  ✓ prediction has estimatedImpact object
+  ✓ estimatedImpact.low is a number
+  ✓ estimatedImpact.high is a number
+  ✓ low <= high
+  ✓ prediction text is non-empty
+  ✓ recommendation is non-empty
+
+── Predictions Summary ──
+  [HIGH  ] traffic_decline: $1400-$2600
+         Customer traffic is dropping by ~102 orders/week. At $5 AOV, that's $2,000/mo in projected lost reve...
+  [HIGH  ] revenue_decline: $1284-$2384
+         Net revenue is declining by ~$427/week over the past 5 weeks. If this trend continues, expect $1,834...
+  [HIGH  ] void_rate: $263-$355
+         The lunch rush (11am-2pm) window has a 4.7% void rate — expect ~$309 in voids next month during this...
+  [HIGH  ] void_rate: $247-$334
+         Register "Register 2" voids at 9.8% — more than 2x your 4.7% average. Expect ~$290/mo in excess void...
+  [HIGH  ] void_rate: $219-$297
+         The dinner rush (5pm-9pm) window has a 5.4% void rate — expect ~$258 in voids next month during this...
+  [HIGH  ] void_rate: $139-$188
+         Your Monday shifts consistently show elevated void rates (6.3%), averaging $38 in voids per week....
+  [MEDIUM] void_rate: $120-$162
+         Your Saturday shifts consistently show elevated void rates (5.1%), averaging $33 in voids per week....
+  [MEDIUM] void_rate: $119-$161
+         Your Friday shifts consistently show elevated void rates (5.1%), averaging $33 in voids per week....
+  [MEDIUM] refund_abuse: $113-$153
+         Fridays have a refund rate of 4.8%, averaging $31/week — expect continued refund pressure next month...
+  [MEDIUM] refund_abuse: $113-$152
+         Saturdays have a refund rate of 4.8%, averaging $31/week — expect continued refund pressure next mon...
+  [HIGH  ] void_rate: $110-$148
+         Your Tuesday shifts consistently show elevated void rates (4.8%), averaging $30 in voids per week....
+  [HIGH  ] void_rate: $108-$146
+         The morning (6am-11am) window has a 4.7% void rate — expect ~$127 in voids next month during this wi...
+  [HIGH  ] void_rate: $107-$145
+         "Cheeseburger Deluxe" has a 6.1% void rate across 230 orders — expect ~$126/mo in voids on this item...
+  [MEDIUM] void_rate: $105-$142
+         Your Wednesday shifts consistently show elevated void rates (4.7%), averaging $29 in voids per week....
+  [HIGH  ] void_rate: $92-$124
+         "Classic Burger" has a 5.3% void rate across 262 orders — expect ~$108/mo in voids on this item to c...
+
+── Testing graceful degradation ──
+  ✓ empty input returns predictions array
+  ✓ empty input returns 0 predictions
+  ✓ minimal data returns predictions array
+
+── Testing scoreForecastAccuracy() ──
+  ✓ scoring returns a result
+  ✓ scoring has accuracyNotes
+  ✓ scoring has details array
+  → Accuracy: 0% — 0 hit(s), 0 near-miss(es), 2 miss(es) out of 2 scored prediction(s).
+  ✓ empty predictions returns null score
+
+══════════════════════════════════════════════════
+  Results: 223 passed, 0 failed
+══════════════════════════════════════════════════
+
+═══ pos-sync ═══
+— Square line-item mapping (money in cents → dollars) —
+  ✓ orderId mapped
+  ✓ item name mapped
+  ✓ cents→dollars: itemPrice $9.99
+  ✓ cents→dollars: gross $19.98
+  ✓ cents→dollars: discounts $1.00
+  ✓ cents→dollars: net $18.98
+  ✓ quantity parsed
+  ✓ modifiers joined into modifier field
+  ✓ date parsed to Date
+  ✓ time derived HH:MM:SS
+— Channel derivation from Square fulfillments/source —
+  ✓ DELIVERY fulfillment → delivery
+  ✓ PICKUP fulfillment → takeout
+  ✓ no fulfillment → dine-in
+  ✓ DoorDash source name → delivery
+— End-to-end: synced Square data unlocks channel + modifier algorithms —
+  ✓ mapping produced transactions
+  ✓ some transactions carry delivery channel
+  ✓ some transactions carry a modifier
+  ✓ at least one delivery/channel algorithm fired on synced data
+  ✓ engine produced a defensible leak total (not NaN)
+— Clover line-item mapping —
+  ✓ clover: orderId mapped
+  ✓ clover: cents→dollars price $12.00
+  ✓ clover: unitQty thousandths → qty 2
+  ✓ clover: gross = price × qty = $24.00
+  ✓ clover: discount $1.00
+  ✓ clover: modifiers joined
+  ✓ clover: category mapped
+  ✓ clover: Delivery orderType → delivery channel
+— Clover channel derivation —
+  ✓ "To Go" → takeout
+  ✓ "Dine In" → dine-in
+  ✓ "Delivery" → delivery
+  ✓ missing orderType → dine-in default
+
+31 passed, 0 failed
+
+═══ authorization ═══
+— Cross-tenant reads: User A reaching User B by ID —
+  ✓ A cannot read B's forecast (403/404)
+  ✓ B's forecast predictions not leaked in body
+  ✓ A cannot read B's forecast history (403/404)
+  ✓ A can read its OWN forecast (200)
+  ✓ A cannot read B's report by ID (403/404)
+  ✓ A can read its OWN report (200)
+  ✓ A cannot download B's report PDF (403/404)
+— Cross-tenant writes: User A mutating User B by ID —
+  ✓ A cannot delete B's goal (403/404)
+  ✓ B's goal still exists after attempt
+  ✓ A cannot disconnect B's POS connection (403/404)
+  ✓ A cannot toggle B's POS sync (403/404)
+  ✓ B's connection sync state unchanged
+— Admin endpoints reject non-admin + unauthenticated —
+  ✓ user token cannot reach admin leads (401/403)
+  ✓ user token cannot reach admin overview (401/403)
+  ✓ no token cannot reach admin (401)
+  ✓ JWT_SECRET-signed "admin" token rejected (needs ADMIN_JWT_SECRET)
+— Unauthenticated access is blocked —
+  ✓ no token → forecast 401
+  ✓ no token → report 401
+
+18 passed, 0 failed
+
+═══ email-stripe ═══
+— Email type normalization (opt-out must apply) —
+  ✓ 'weekly_digest' recognized as marketing
+  ✓ 'spike_alert' recognized as marketing
+  ✓ 'trial_expiring' recognized as marketing
+  ✓ 'weekly-digest' recognized as marketing
+  ✓ 'team_invite' is NOT marketing (transactional)
+  ✓ 'general' is NOT marketing
+— Schema contract (fields the code writes must exist) —
+  ✓ model EmailLog exists
+  ✓ EmailLog: all 9 written fields exist
+  ✓ model NotificationLog exists
+  ✓ NotificationLog: all 6 written fields exist
+  ✓ model User exists
+  ✓ User: all 10 written fields exist
+  ✓ model TeamMember exists
+  ✓ TeamMember: all 10 written fields exist
+  ✓ model ProcessedWebhookEvent exists
+  ✓ ProcessedWebhookEvent: all 1 written fields exist
+— Stripe webhook signature verification —
+  ✓ valid signature verifies and parses the event
+  ✓ event metadata survives round-trip
+  ✓ wrong secret is rejected
+  ✓ tampered payload is rejected
+— Live checks (gated on env keys) —
+  · RESEND_API_KEY not set — skipping live email check
+  · STRIPE_SECRET_KEY not set/placeholder — skipping live Stripe check
+
+20 passed, 0 failed
+
+═══ billing ═══
+— Onboarding checkout must save the card —
+  ✓ onboarding checkout is one-time payment mode
+  ✓ checkout sets setup_future_usage so the card is retained
+  ✓ setup_future_usage is nested under payment_intent_data
+— createSubscription bills an explicit payment method —
+  ✓ resolves a default payment method before subscribing
+  ✓ passes default_payment_method to subscriptions.create
+  ✓ fails loudly when no card is on file
+— ensureDefaultPaymentMethod behaviour —
+  ✓ reuses an existing default payment method
+  ✓ does not re-list cards when a default exists
+  ✓ does not overwrite the customer default
+  ✓ handles an expanded default payment method object
+  ✓ promotes the saved card when no default is set
+  ✓ writes it back as the invoice default
+  ✓ returns null when the customer has no card
+— Billed location count survives login (not just page reload) —
+  ✓ login looks the user up by normalized email
+  ✓ login includes active locations, matching GET /me
+  ✓ GET /me still includes active locations
+  ✓ sanitizeUser always returns a locations array
+— Webhook still activates the account after onboarding —
+  ✓ onboarding branch creates the subscription
+  ✓ subscription failure is logged, not silently ignored
+— Pilot discount reaches BOTH charges —
+  ✓ a matching code resolves the coupon
+  ✓ surrounding whitespace is tolerated
+  ✓ a wrong code resolves to null
+  ✓ a prefix of the code does not match
+  ✓ case must match exactly
+  ✓ an empty code resolves to null
+  ✓ a missing code resolves to null
+  ✓ a non-string code does not throw
+  ✓ programme reports available when both vars are set
+  ✓ no coupon configured means no discount even with a valid code
+  ✓ programme reports unavailable when half-configured
+  ✓ no access code configured means no discount
+  ✓ checkout applies the coupon as a discount
+  ✓ checkout puts the coupon in metadata for the webhook
+  ✓ subscription applies the coupon as a discount
+  ✓ subscription re-validates the coupon rather than trusting metadata
+  ✓ webhook forwards the coupon from session metadata to the subscription
+— Webhook idempotency & ordering (regression) —
+  ✓ a duplicate webhook event is detected and skipped
+  ✓ event recording and processing share one transaction
+  ✓ handlers guard on required entities (out-of-order tolerance)
+  ✓ signature is verified before processing
+
+40 passed, 0 failed
+
+═══ excel ═══
+— Produces a real, readable workbook —
+  ✓ returns a Buffer
+  ✓ has the xlsx zip signature
+  ✓ opens with the spreadsheet library
+  ✓ has Summary, Findings and Transactions sheets
+— Summary carries the headline figures —
+  ✓ location is included
+  ✓ health score is included
+  ✓ leak estimate is rounded to cents
+  ✓ average order value keeps cents
+  ✓ order count is present
+— Findings are ranked by dollar impact —
+  ✓ header names the impact column
+  ✓ all findings exported
+  ✓ highest impact first
+  ✓ lowest impact last
+  ✓ impact descends
+  ✓ recommendation column is populated
+— Transactions sheet ships the underlying rows —
+  ✓ one row per transaction plus a header
+  ✓ order id is present
+  ✓ register is present, so comps can be traced
+  ✓ net is numeric, not a formatted string
+— Degrades gracefully when rows have been pruned —
+  ✓ Transactions sheet omitted rather than empty
+  ✓ Summary and Findings still present
+  ✓ findings sheet keeps its header when empty
+
+22 passed, 0 failed
+
+═══ ask ═══
+— Interpreting questions —
+  ✓ picks the voids metric
+  ✓ picks the day dimension
+  ✓ defaults to descending
+  ✓ "who" maps to register
+  ✓ "discounts" maps to the discounts metric
+  ✓ "lowest" flips the ordering
+  ✓ "items" maps to the item dimension
+  ✓ "hour" maps to the hour dimension
+  ✓ nonsense is flagged as unmatched
+  ✓ nonsense still returns a usable default
+— Voids by day are exact —
+  ✓ total voids sum correctly
+  ✓ Monday voids = 3
+  ✓ Tuesday voids = 17
+  ✓ headline names Tuesday
+  ✓ headline states the amount
+  ✓ share of total is computed
+— Discounts by employee are exact —
+  ✓ dimension resolved to register
+  ✓ Bob leads
+  ✓ Alice is second
+  ✓ total discounts = 5
+— Item ranking, both directions —
+  ✓ Burger leads on sales
+  ✓ ordering flips for "lowest"
+  ✓ headline says lowest
+— Hour and category dimensions —
+  ✓ hours are labelled readably
+  ✓ 11am bucket holds the $20 order
+  ✓ Entrees lead at 30
+— Degrades honestly —
+  ✓ no data returns a plain statement
+  ✓ no data returns no rows
+  ✓ a metric with no activity says so
+  ✓ never throws on odd input
+— Suggested questions all resolve —
+  ✓ every suggestion maps onto the grammar
+  ✓ every suggestion returns rows against real data
+
+32 passed, 0 failed
+
+═══ security ═══
+— XSS: print/export HTML escaping —
+  ✓ script tags are escaped
+  ✓ img/onerror payload cannot break out of the tag
+  ✓ no raw < or > survive
+  ✓ double-quote is escaped (attribute breakout blocked)
+  ✓ benign item name preserved
+  ✓ ampersand encoded once
+  ✓ rendered sink contains only the intended <strong> tags
+  ✓ interpolated region has no unescaped angle brackets
+— trust proxy: per-client IP for rate limiting —
+  ✓ index.js sets app.set('trust proxy', 1)
+  ✓ trusted proxy → req.ip is the XFF client A
+  ✓ trusted proxy → req.ip is the XFF client B (distinct)
+  ✓ two clients resolve to different limiter keys
+  ✓ untrusted app ignores XFF (would collapse all clients to one key)
+— /health does not leak internals to anonymous prod callers —
+  ✓ /health gates detail on a token or non-prod
+  ✓ /health has a bare-response branch that omits checks
+  ✓ the detailed checks are only sent inside the showDetail branch
+— Webhook signature rejection (regression) —
+  ✓ unsigned/forged webhook payload is rejected
+— Upload size limit is enforced at the multer layer (regression) —
+  ✓ multer fileSize limit configured server-side
+  ✓ limit is 50MB (not unbounded)
+— Production error handler does not leak internals (regression) —
+  ✓ prod branch returns generic 'Internal server error'
+  ✓ err.message only exposed off-production
+— JWT verify is algorithm-pinned to HS256 —
+  ✓ legit HS256 token verifies under the pin
+  ✓ alg:none token is rejected by pinned verify
+  ✓ token signed with a non-HS256 algorithm is rejected
+  ✓ found the expected jwt.verify call sites
+  ✓ every jwt.verify pins algorithms:[HS256]
+
+26 passed, 0 failed
+
+═══ securityAuth ═══
+— #1 authenticate accepts only type:access owner sessions —
+  ✓ valid access token → next, userId set
+  ✓ email-verify token rejected as a session
+  ✓ password-reset token rejected as a session
+  ✓ team token rejected as a session
+  ✓ legacy (typeless) token rejected → forces re-login
+  ✓ access token with no userId rejected
+  ✓ access token with empty userId rejected
+  ✓ access token for a non-existent user rejected (fail closed)
+  ✓ expired access token rejected
+  ✓ missing token rejected
+— #1 ownership guard never runs an unscoped query for blank identity —
+  ✓ undefined identity → 401
+  ✓ no location query was issued for a blank identity
+  ✓ cross-owner access → 403
+  ✓ own location → next with req.location
+— #3 isRevoked handles token-timestamp precision safely —
+  ✓ a token issued before revocation is revoked
+  ✓ a token issued in the SAME second as revocation is revoked
+  ✓ a token issued a second later survives (fresh login)
+  ✓ no revocation timestamp → not revoked
+  ✓ exact-second revocation rejects a same-second token
+  ✓ next-second login survives exact-second revocation
+  ✓ revoked account rejects invalid issuance time: undefined
+  ✓ revoked account rejects invalid issuance time: null
+  ✓ revoked account rejects invalid issuance time: 1700000000
+  ✓ revoked account rejects invalid issuance time: NaN
+  ✓ revoked account rejects invalid issuance time: Infinity
+— #2 private cache: auth required, per-user keys, revoke/plan before hit —
+  ✓ A gets a MISS then data
+  ✓ A second request is a per-user cache HIT
+  ✓ anonymous request is rejected, never served from cache
+  ✓ owner B is not served owner A's cached response
+  ✓ revoked session is rejected even though a cache entry exists
+— #2 downgraded plan is rejected before the operations cache —
+  ✓ pro user primes the operations cache
+  ✓ downgraded plan is 403, not served the cached ops data
+— Password screening fails closed —
+  ✓ registration is unavailable rather than accepting an unchecked password
+  ✓ no user is created during a screening outage
+— #3 password reset revokes sessions + refresh credential —
+  ✓ reset succeeds
+  ✓ sessionsInvalidatedAt is stamped by the reset
+  ✓ refresh credential is cleared by the reset
+  ✓ the reset token is single-use (cleared)
+  ✓ password recovery invalidates pending email takeover link
+  ✓ old refresh token is rejected after reset
+— #3 profile password change revokes sessions and forces re-login —
+  ✓ password change succeeds
+  ✓ response signals re-authentication is required
+  ✓ session cookie is cleared on the response
+  ✓ sessionsInvalidatedAt is stamped by the change
+  ✓ refresh credential is cleared by the change
+  ✓ password change cancels pending email confirmation
+— #3 rotated refresh token cannot be replayed (CAS) —
+  ✓ first refresh succeeds and rotates
+  ✓ refresh does not grant fresh interactive reauthentication
+  ✓ rotation preserves the original absolute session expiry
+  ✓ replaying the SAME (now rotated) refresh token is rejected
+— #4 email is NOT changeable from a bare session via /profile —
+  ✓ session-only email change is rejected (400)
+  ✓ the rejection points to the confirmation flow
+  ✓ the live email is unchanged
+— #4 change-request requires reauthentication —
+  ✓ no current password → 400
+  ✓ wrong current password → 401
+  ✓ requesting an address already in use → 409
+— #4 change-request keeps the live email until confirmation —
+  ✓ valid reauth → 200
+  ✓ pendingEmail is staged
+  ✓ a hashed confirmation token is stored (not raw)
+  ✓ the LIVE login email is still unchanged
+  ✓ confirmation email sent to the new address
+  ✓ security notice sent to the old address
+  ✓ a single-use raw token is delivered to the new address
+  ✓ stored hash is the sha256 of the delivered token
+— #4 a superseding request invalidates the earlier token —
+  ✓ second request succeeds
+  ✓ the superseded (first) confirmation token is now invalid
+— #4 expired confirmation token is refused —
+  ✓ expired token → 400
+  ✓ expired pending change is cleared
+— #4 successful confirmation swaps the email; replay is refused —
+  ✓ confirmation succeeds (200)
+  ✓ the login email is now the confirmed address
+  ✓ pending state is fully cleared
+  ✓ the OLD address is notified of completion
+  ✓ replaying a used confirmation token is refused
+— #4 confirmation enforces uniqueness at completion (race) —
+  ✓ confirmation into a now-taken address → 409
+  ✓ e2 keeps its original email
+— #4 Google-only account requires a recent interactive reauth —
+  ✓ Google-only with no recent reauth → 401
+  ✓ another session logging in does not authorize this session
+  ✓ expired session proof is rejected
+  ✓ Google-only with a recent reauth → 200
+— #4 a 2FA account must supply a valid TOTP —
+  ✓ 2FA account without a code → 400
+  ✓ 2FA account with a valid code → 200
+  ✓ superseded confirmation cannot win a race
+  ✓ new pending request survives stale confirmation
+  ✓ foreign-browser callback rejected before provider exchange
+  ✓ Google 2FA account receives challenge instead of full session
+  ✓ wrong Google second factor rejected
+  ✓ correct Google second factor issues session
+  ✓ Google challenge is single-use
+
+88 passed, 0 failed
+
+═══ securityBilling ═══
+— getBillableLocationCount is the server-side active count —
+  ✓ userA active count is 3
+  ✓ userB active count is 5
+  ✓ a user with 0 active floors to 1
+— updateSubscriptionQuantity bills the SERVER count, ignoring any argument —
+  ✓ Stripe was asked to update sub_A
+  ✓ billed quantity is the real 3, not the passed 1
+— another customer's locations do not change the quantity —
+  ✓ userA still billed 3 despite userB owning 5
+— no active subscription is a safe no-op, not a throw —
+  ✓ does not throw when there is no subscription
+  ✓ returns null and makes no Stripe update call
+— POST /update-quantity ignores a client locationCount —
+  ✓ request succeeds
+  ✓ response reports the server-derived quantity 3
+  ✓ Stripe was billed 3, not the client's 1
+  ✓ already-correct billing does not create another Stripe update
+  ✓ missing identity cannot count all owners locations
+{"level":50,"time":"2026-09-30T06:26:28.364Z","pid":35868,"hostname":"Campbell-Russo-Laptop","err":{"type":"Error","message":"Synthetic billing outage","stack":"Error: Synthetic billing outage\n    at fakeStripe.subscriptions.update (C:\\Users\\Cruzz\\venulo-swarm-workrepo\\server\\tests\\securityBilling.test.js:197:42)\n    at reconcileSubscriptionQuantity (C:\\Users\\Cruzz\\venulo-swarm-workrepo\\server\\services\\stripeService.js:305:46)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"},"userId":"userA","msg":"Billing reconciliation failed; next sweep will retry"}
+  ✓ one failing owner does not prevent reconciliation for another
+  ✓ failed owner is not incorrectly marked repaired
+  ✓ later sweep retries failed owner without a location mutation
+  ✓ reconciliation has a recurring 15-minute retry schedule
+
+17 passed, 0 failed
+{"level":50,"time":"2026-09-30T06:26:28.365Z","pid":35868,"hostname":"Campbell-Russo-Laptop","checked":2,"failed":1,"msg":"Billing quantities remain out of sync"}
+
+═══ securityLogRedaction ═══
+— sanitizeUrl strips query-string secrets —
+  ✓ secret gone from /verify-email?token=eyJhbGciOiJIUzI1NiJ9…
+  ✓   redaction marker present
+  ✓ secret gone from /reset-password?token=a1b2c3d4e5f6071829…
+  ✓   redaction marker present
+  ✓ secret gone from /api/auth/reset-password?reset_token=a1b…
+  ✓   redaction marker present
+  ✓ secret gone from /api/email/unsubscribe?token=Xk9Qw2Ee7Rt…
+  ✓   redaction marker present
+  ✓ secret gone from /api/auth/google/callback?code=4%2F0AY0e…
+  ✓   redaction marker present
+  ✓ secret gone from /api/auth/google/callback?code=4%2F0AY0e…
+  ✓   redaction marker present
+  ✓ secret gone from /x?access_token=eyJhbGciOiJIUzI1NiJ9.eyJ…
+  ✓   redaction marker present
+  ✓ secret gone from /x?refresh_token=a1b2c3d4e5f60718293a4b5…
+  ✓   redaction marker present
+  ✓ secret gone from /x?apiKey=Xk9Qw2Ee7Rt5Yu8Io1Pa3Sd6Fg0Hj4…
+  ✓   redaction marker present
+  ✓ secret gone from /x?%74%6f%6b%65%6e=a1b2c3d4e5f60718293a4…
+  ✓   redaction marker present
+  ✓ secret gone from /x?%ZZ=a1b2c3d4e5f60718293a4b5c6d7e8f901…
+  ✓   redaction marker present
+— sanitizeUrl strips token-bearing PATH segments —
+  ✓ path secret gone from /api/reports/shared/eyJhbGciOiJIUz…
+  ✓ path secret gone from /api/reports/shared/a1b2c3d4e5f607…
+  ✓ path secret gone from /api/team/invite/Xk9Qw2Ee7Rt5Yu8Io…
+  ✓ path secret gone from /api/team/invitations/a1b2c3d4e5f6…
+  ✓ path secret gone from /verify-email/eyJhbGciOiJIUzI1NiJ9…
+  ✓ path secret gone from /api/reports/%73hared/short-secret…
+  ✓ path secret gone from /api/reports/shared/%61%62%63…
+— route shape is retained (useful for debugging) —
+  ✓ keeps /verify-email prefix
+  ✓ keeps /api/reports/shared prefix
+  ✓ keeps the callback route path
+  ✓ non-sensitive query preserved
+— the message-string builders route through sanitizeUrl —
+  ✓ success message carries no secret
+  ✓ error message carries no secret
+— structured req.url serialization carries no secret —
+  ✓ serialized structured field carries no secret
+— degenerate inputs do not throw —
+  ✓ empty string
+  ✓ null passthrough
+  ✓ no query
+  ✓ bare root
+
+40 passed, 0 failed
+
+═══ securityLiability ═══
+— Account deletion removes owned files and DB data —
+{"level":30,"time":"2026-09-30T06:26:28.519Z","pid":26640,"hostname":"Campbell-Russo-Laptop","userId":"u1","locationsDeleted":2,"uploadsDeleted":2,"reportsDeleted":2,"filesDeleted":8,"msg":"Account application data permanently deleted"}
+  ✓ active and archived report, upload and stage files are removed
+  ✓ user deletion is owner-scoped
+  ✓ orphan forecasts are explicitly deleted
+  ✓ deletion result records the full blast radius
+— Stored path traversal fails closed —
+  ✓ unsafe stored filename is rejected
+  ✓ Windows-style traversal is rejected on every host OS
+— Liability guardrails remain in source —
+  ✓ named scorecards require at least 30 distinct orders
+  ✓ team comparison requires at least three eligible staff
+  ✓ scorecard page forbids sole-basis discipline
+  ✓ employee detail says the pattern is not proof
+  ✓ staff identities are pseudonymous by default
+  ✓ name reveal requires an explicit acknowledgement
+  ✓ identity reveal acknowledgements are written to the audit log
+  ✓ employee analytics responses cannot be stored in shared caches
+  ✓ employee detail links use opaque scorecard IDs
+  ✓ dashboard removes accusatory employee labels and grades
+  ✓ AI leak prompts do not include raw finding detail
+  ✓ item-pairing scripts stay local
+  ✓ unsafe immediate account deletion route is retired
+  ✓ reauthenticated deletion route is used
+  ✓ new recovery codes have 128 bits of entropy
+  ✓ OAuth failure logs exclude provider response bodies
+  ✓ preview and direct-confirm uploads both verify content signatures
+  ✓ upload errors do not expose raw exception messages
+
+24 passed, 0 failed
+
+═══ retentionGuard ═══
+4 passed, 0 failed
+
+═══ scorecardThreshold ═══
+{"level":30,"time":"2026-09-30T06:26:28.641Z","pid":5556,"hostname":"Campbell-Russo-Laptop","locationId":"location","uploadId":"upload-missing","employeeCount":0,"minimum":3,"msg":"Scorecards: not enough employees for a defensible comparison"}
+6 passed, 0 failed
+{"level":30,"time":"2026-09-30T06:26:28.642Z","pid":5556,"hostname":"Campbell-Russo-Laptop","locationId":"location","uploadId":"upload-items","employeeCount":0,"minimum":3,"msg":"Scorecards: not enough employees for a defensible comparison"}
+{"level":30,"time":"2026-09-30T06:26:28.643Z","pid":5556,"hostname":"Campbell-Russo-Laptop","locationId":"location","uploadId":"upload-valid","count":3,"msg":"Scorecards generated"}
+
+═══ mfaHardening ═══
+— MFA replay and encrypted-seed controls —
+  ✓ current TOTP is accepted once
+  ✓ accepted TOTP step is recorded
+  ✓ legacy plaintext seed is encrypted after successful use
+  ✓ encrypted seed decrypts to the original value
+  ✓ same TOTP cannot be replayed
+  ✓ adjacent-step TOTP is rejected
+  ✓ missing encryption key refuses writes and reads
+  ✓ malformed encryption key refuses writes
+
+8 passed, 0 failed
+
+═══ preOutreach ═══
+{"level":30,"time":"2026-09-30T06:26:28.764Z","pid":1160,"hostname":"Campbell-Russo-Laptop","msg":"BullMQ upload worker started"}
+21 passed, 0 failed
+
+═══ parserEncoding ═══
+— encoding detection —
+  ✓ plain UTF-8 round-trips
+  ✓ UTF-8 BOM is stripped
+  ✓ first header is "Date", not "\uFEFFDate"
+  ✓ UTF-16LE (Excel Unicode Text) decodes
+  ✓ UTF-16BE decodes
+  ✓ BOM-less UTF-16LE is detected
+  ✓ (the bug) reading UTF-16 as UTF-8 really does corrupt it
+— non-ASCII item names survive —
+  ✓ UTF-8 accents preserved
+  ✓ UTF-16 accents preserved
+— readTabularFile end-to-end on real files —
+  ✓ a BOM'd CSV on disk yields a clean first header
+  ✓ a UTF-16 CSV on disk is readable
+— Excel sheet selection prefers the data sheet —
+  ✓ picks the sheet with the most rows, not the first
+  ✓ a single-sheet workbook still returns that sheet
+  ✓ no sheets returns null
+  ✓ a sheet with no !ref does not crash selection
+— money parsing across export dialects —
+  ✓ "12.50" → 12.5
+  ✓ "$12.50" → 12.5
+  ✓ "1,234.56" → 1234.56
+  ✓ "(1.00)" → -1
+  ✓ "($1.00)" → -1
+  ✓ "-5.25" → -5.25
+  ✓ "+3.00" → 3
+  ✓ "€12.50" → 12.5
+  ✓ "£8.00" → 8
+  ✓ "¥500" → 500
+  ✓ "12.50-" → -12.5
+  ✓ "" → 0
+  ✓ "   " → 0
+  ✓ "12abc" is rejected, not truncated to 12
+  ✓ the rejection is recorded on the tracker
+
+30 passed, 0 failed
+
+═══ venueProfilePerLocation ═══
+— an unconfigured location is never labelled as a real venue type —
+  ✓ unspecified renders as the neutral "Restaurant"
+  ✓ unspecified is NOT labelled Fast Food
+  ✓ unspecified is not a real venue type
+  ✓ PDF header does not name a venue the operator never chose
+— an unconfigured location keeps every algorithm active (fails open) —
+  ✓ every algorithm still applies when the venue is unknown
+  ✓ a configured venue still filters algorithms
+  ✓ unmapped algorithms remain universal
+— copying a profile between an owner's own locations —
+  ✓ copy succeeds
+  ✓ operating characteristics were copied
+  ✓ it targets the right location
+  ✓ the source keeps its own profile
+  ✓ the response names where it came from
+— cross-tenant copy is refused —
+  ✓ copying from another tenant is 403
+  ✓ no competitor data leaks in the rejection
+  ✓ owner A's location was not overwritten with B's profile
+— misuse is rejected cleanly —
+  ✓ copying a location onto itself is 400
+  ✓ missing sourceLocationId is 400
+  ✓ anonymous copy is rejected
+
+18 passed, 0 failed
+
+═══ authSessionLimiter ═══
+— login keeps the strict ten-attempt budget —
+  ✓ first ten logins are allowed
+  ✓ the eleventh is refused
+— once login is exhausted, session upkeep still works —
+  ✓ GET /me is not locked out
+  ✓ POST /refresh is not locked out
+  ✓ POST /logout is not locked out
+  ✓ trailing slash is still upkeep
+— every other auth route stays on the strict budget —
+  ✓ register is still refused
+  ✓ 2FA verification is still refused
+  ✓ GET /refresh is not upkeep
+— upkeep does not replenish the login budget —
+  ✓ login is still refused after many /me calls
+— upkeep is limited, not unlimited —
+  ✓ the ordinary API ceiling still applies
+— the app actually mounts the new limiter —
+  ✓ /api/auth uses authRequestLimiter
+  ✓ the bare authLimiter is no longer on the mount
+
+13 passed, 0 failed
+
+═══ softDeletePurge ═══
+— production: counts, alerts, and deletes NOTHING —
+  ✓ no DELETE was issued
+  ✓ every query was a SELECT COUNT
+  ✓ reports it did not purge
+  ✓ reports the total due
+  ✓ reports per-model counts
+  ✓ raises a Sentry alert when anything is due
+  ✓ logs it at error level so it is seen
+— production with nothing due is quiet —
+  ✓ no alert when nothing is due
+  ✓ still no delete
+  ✓ total is zero
+— the model list is the middleware's, not a second copy —
+  ✓ every soft-deletable model is checked
+  ✓ BusinessContextNote is included
+  ✓ PromotionScenario is included
+— the cutoff is 90 days and is parameterized —
+  ✓ retention is 90 days
+  ✓ cutoff is passed as a parameter, not interpolated
+— a failed count is reported, not swallowed —
+  ✓ the failure is logged
+  ✓ other models are still counted
+— outside production it purges, and failures are visible —
+  ✓ it deletes in development
+  ✓ one DELETE per model
+  ✓ the delete failure is logged, not silent
+  ✓ successful counts are reported
+— index.js no longer carries an inline ungated purge —
+  ✓ no raw DELETE FROM in index.js
+  ✓ the monthly cron calls the guarded service
+  ✓ the cron handles a rejected promise
+
+24 passed, 0 failed
+
+═══ planWriteGuard ═══
+— the self-upgrade endpoint is gone —
+  ✓ PUT /plan {"plan":"enterprise"} is not found
+  ✓ PUT /plan {"plan":"pro"} is not found
+  ✓ no plan write reached the database
+— no route handler writes a plan taken from request input —
+  ✓ no route file writes a client-chosen plan
+— the explanation is left where the next person will look —
+  ✓ notifications.js has no /plan route
+  ✓ notifications.js says why
+
+6 passed, 0 failed
+
+═══ queryOperatorInjection ═══
+— why the parser matters: the default builds operator objects —
+  ✓ default parser yields an object (the root cause)
+  ✓ hardened parser yields no object
+— the attack does not leak another tenant, fully hardened —
+  ✓ no victim data: locationId[not]=zzz
+  ✓ no victim data: locationId[not]=zzz&uploadId[not]=zzz
+  ✓ no victim data: locationId[in][]=locA&locationId[in][]=locV
+— defense in depth: the router alone no longer leaks, even on the old parser —
+  ✓ router-level: no victim data: locationId[not]=zzz
+  ✓ router-level: no victim data: locationId[not]=zzz&uploadId[not]=zzz
+  ✓ router-level: no victim data: locationId[in][]=locA&locationId[in][]=locV
+— legitimate use still works —
+  ✓ owner gets their own analytics
+  ✓ asking for the victim location by id is refused
+— body and query identifiers must be strings —
+  ✓ object locationId in a body is rejected
+  ✓ array uploadId in a body is rejected
+  ✓ numeric reportId is rejected
+  ✓ a repeated query key (array) is rejected
+  ✓ strings pass, and plural array fields are untouched
+  ✓ null is allowed (handlers decide if it is required)
+— the ownership gate refuses a non-string id on its own —
+  ✓ gate returns 400 for an operator object
+— index.js wires both layers in the only order that works —
+  ✓ query parser is set before the first app.use
+  ✓ the id guard runs after body parsing
+  ✓ the id guard runs before the routes
+
+20 passed, 0 failed
+
+═══ phase13-integration ═══
+
+🧪 Phase 13 Integration Tests
+
+  ✅ 1. PLAN_HIERARCHY has correct ordering (basic=0 < pro=1 < enterprise=2)
+  ✅ 2. PLAN_PRICES match spec ($99, $199, $299)
+  ✅ 3. PLAN_DISPLAY_NAMES are correct
+  ✅ 4. Algorithm tiers map correctly (basic, pro, enterprise)
+  ✅ 5. Legacy hyphenated algorithm IDs resolve to correct tiers
+  ✅ 6. planCanRunAlgorithm enforces hierarchy correctly
+  ✅ 7. requirePlan() returns an async middleware function
+  ✅ 8. Admin JWT signs and verifies correctly
+  ✅ 9. Admin JWT fails with wrong secret
+  ✅ 10. adminAuth middleware rejects request without token
+  ✅ 11. adminAuth middleware accepts valid admin token
+  ✅ 12. Client planUtils exports match server planGate values
+
+──────────────────────────────────────────────────
+  Results: 12 passed, 0 failed out of 12
+  🎉 All tests passed!
+
+
+═══ Summary ═══
+  ✓ pilotControls
+  ✓ pilotEmail
+  ✓ queueShutdown
+  ✓ uploadPollingLimit
+  ✓ algorithms
+  ✓ stats
+  ✓ compAbuse
+  ✓ cashComp
+  ✓ voidOutlier
+  ✓ drinkAttach
+  ✓ venueVocab
+  ✓ venuePairingAlgorithms
+  ✓ discountDaypartReview
+  ✓ periodNormalization
+  ✓ algorithmInvariants
+  ✓ basicAlgorithms
+  ✓ pathTraversal
+  ✓ itemGrouping
+  ✓ uploadGate
+  ✓ uploadSafety
+  ✓ parserIsolation
+  ✓ moneyDates
+  ✓ posCompatibility
+  ✓ messyFiles
+  ✓ explainFinding
+  ✓ reportTrust
+  ✓ reportCalibrationBackfill
+  ✓ workerRecovery
+  ✓ menuEconomics
+  ✓ menuContribution
+  ✓ menuEconomicsRoutes
+  ✓ proAlgorithms
+  ✓ correctness
+  ✓ parsers
+  ✓ validation
+  ✓ emailNormalization
+  ✓ analytics
+  ✓ forecast
+  ✓ pos-sync
+  ✓ authorization
+  ✓ email-stripe
+  ✓ billing
+  ✓ excel
+  ✓ ask
+  ✓ security
+  ✓ securityAuth
+  ✓ securityBilling
+  ✓ securityLogRedaction
+  ✓ securityLiability
+  ✓ retentionGuard
+  ✓ scorecardThreshold
+  ✓ mfaHardening
+  ✓ preOutreach
+  ✓ parserEncoding
+  ✓ venueProfilePerLocation
+  ✓ authSessionLimiter
+  ✓ softDeletePurge
+  ✓ planWriteGuard
+  ✓ queryOperatorInjection
+  ✓ phase13-integration
+
+60/60 suites passed.

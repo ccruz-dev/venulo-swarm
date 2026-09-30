@@ -1,6 +1,6 @@
 {
   "agent": "runner",
-  "ts": "2026-09-30T06:19:34Z",
+  "ts": "2026-09-30T06:22:47Z",
   "state": "working",
-  "detail": "2026-09-29-fix-paid-signup-handoff"
+  "detail": "2026-09-29-report-calibration-backfill"
 }
