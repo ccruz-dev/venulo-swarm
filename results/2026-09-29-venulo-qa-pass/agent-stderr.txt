@@ -1,16 +1,15 @@
----
-id: 2026-09-29-venulo-qa-pass
-title: End-to-end QA pass on Venulo — find logic and UI bugs
-owner: codex
-status: open
-repo: venulo
-branch: swarm/2026-09-29-venulo-qa-pass
-created: 2026-09-29
-priority: high
-budget: standard
-needs_approval: false
-attempts: 1
----
+OpenAI Codex v0.158.0-alpha.2
+--------
+workdir: C:\Users\Cruzz\venulo-swarm-workrepo
+model: gpt-6-astra
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: low
+reasoning summaries: none
+session id: 01a0efc0-fcd1-7440-a573-6998d8582284
+--------
+user
 
 ## Context
 Venulo is a revenue-intelligence platform for independent restaurants (Postgres, Prisma, Railway). Before pilots see it, we need a ruthless end-to-end QA pass: broken flows, wrong logic, and UI flaws, severity-ordered so builders know what to fix first.
@@ -33,3 +32,5 @@ Report-only brief — do not modify application code. Use fake restaurant data e
 - Never deploy, send email, or spend money.
 - Report-only: read and run code, don't change it. Use only fake data.
 - If the app cannot be run locally, document the blocker precisely and stop instead of guessing.
+ERROR: You’ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 11:00 PM.
+ERROR: You’ve hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 11:00 PM.
