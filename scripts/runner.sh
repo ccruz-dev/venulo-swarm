@@ -26,6 +26,7 @@ POLL_INTERVAL="${POLL_INTERVAL:-300}"           # seconds between polls; 0 = sin
 ENABLED_AGENTS="${ENABLED_AGENTS:-claude-code,codex}"
 CODEX_MODEL="${CODEX_MODEL:-}"                  # e.g. gpt-5-mini; empty = codex default
 PYTHON_BIN="${PYTHON_BIN:-}"                  # python3 preferred; python fallback on Windows
+ONLY_BRIEF="${ONLY_BRIEF:-}"                    # run just this brief id (dry runs); empty = all
 MAX_ATTEMPTS=2
 XP_PER_BRIEF=100
 
@@ -285,6 +286,11 @@ pass_once() {
   for brief in "$SWARM_REPO"/briefs/*.md; do
     [ -e "$brief" ] || continue
     case "$brief" in *_TEMPLATE.md) continue ;; esac
+    # ONLY_BRIEF=<id>: restrict this run to one brief. Without it a single
+    # pass claims every open brief, so a "dry run" is really the whole queue.
+    if [ -n "${ONLY_BRIEF:-}" ] && [ "$(basename "$brief" .md)" != "$ONLY_BRIEF" ]; then
+      continue
+    fi
 
     local status owner approval
     status=$(frontmatter "$brief" status)
