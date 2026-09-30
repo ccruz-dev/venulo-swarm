@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T04:05:54.860214+00:00",
+  "updated": "2026-09-30T05:00:38.038870+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -23,7 +23,7 @@
     {
       "id": "2026-09-29-actionable-upload-errors",
       "title": "Show actionable upload errors; fix premature job-failed state (G4)",
-      "owner": "claude-code",
+      "owner": "codex",
       "status": "open",
       "budget": "standard",
       "priority": "normal"
@@ -39,7 +39,7 @@
     {
       "id": "2026-09-29-ecc-evaluation",
       "title": "Evaluate Everything Claude Code for swarm integration",
-      "owner": "claude-code",
+      "owner": "codex",
       "status": "open",
       "budget": "cheap",
       "priority": "normal"
@@ -95,7 +95,7 @@
     {
       "id": "2026-09-29-venulo-qa-pass",
       "title": "End-to-end QA pass on Venulo \u00e2\u20ac\u201d find logic and UI bugs",
-      "owner": "claude-code",
+      "owner": "codex",
       "status": "open",
       "budget": "standard",
       "priority": "high"
