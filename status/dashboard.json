@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-30T23:58:05.613291+00:00",
+  "updated": "2026-10-01T00:03:10.381664+00:00",
   "agents": {
     "runner": {
       "state": "online"
@@ -109,20 +109,7 @@
       "priority": "high"
     }
   ],
-  "tokens_today": {
-    "codex": {
-      "input": 0,
-      "output": 0,
-      "runs": 9,
-      "unknown": 9
-    },
-    "claude-code": {
-      "input": 548,
-      "output": 138768,
-      "runs": 18,
-      "unknown": 1
-    }
-  },
+  "tokens_today": {},
   "stats": {
     "done_total": 2,
     "open": 2,
